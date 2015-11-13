@@ -41,7 +41,10 @@ namespace Blog
                  
                 ));
             bundles.Add(new StyleBundle("~/Content/css/dashboard").Include(
-                "~/Content/css/page/dashboard.css"
+                "~/Content/css/page/dashboard.css",
+              "~/Content/css/bootstrap.css",
+              "~/Content/css/bootstrap.min.css",
+                "~/Content/css/fonts.css"
                 ));
             bundles.Add(new StyleBundle("~/Content/css/error").Include(
                 "~/Content/css/page/error.css"

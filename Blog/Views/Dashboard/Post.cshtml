@@ -2,12 +2,8 @@
 @model Blog.Models.ArticleSubmitView
 @{
     ViewBag.Title = "Post";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    Layout = "~/Views/Dashboard/_Layout.cshtml";
 }
-
-<div id="page-wrapper">
-    <div class="container-fluid">
-        <div class="row">
             <div class="col-lg-12">
                 <h1 class="page-header">Article <small>Post</small>
                 </h1>
@@ -16,9 +12,7 @@
                         <i class="fa fa-paper-plane"></i>Article Post
                     </li>
                 </ol>
-
             </div>
-
 
             @using(Html.BeginForm("ArticleReview", "Article", FormMethod.Post, new { @class = "col-lg-12" }))
             {
@@ -47,8 +41,4 @@
             <button type="submit" class="btn btn-success  btn-lg" id="preview" name="Action" value="preview">Preview</button>
                 <button type="submit" class="btn btn-primary btn-lg" id="post" name="Action" value="post">Post</button>
             }
-        </div>
-
-    </div>
-</div>
 
