@@ -1,0 +1,31 @@
+﻿@model Blog.Models.Article
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Index</h2>
+    <!-- Page Header -->
+    <!-- Set your background image for this header on the line below. -->
+    <header class="intro-header" style="background-image: url('/Content/img/article-bg.jpg')">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                    <div class="post-heading">
+                        <h1>@Html.DisplayFor(item=>Model.Title)</h1>
+                        <h2 class="subheading">@Html.DisplayFor(item=>Model.SubTitle)</h2>
+                        <span class="meta">Posted by <a href="#">@ViewBag.AuthorName</a> on @Html.DisplayFor(item=>Model.PostDate)</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+ <article>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1" id="">
+                     @Html.Raw(HttpUtility.HtmlDecode(Model.Content));
+                </div>
+            </div>
+        </div>
+    </article>

@@ -1,0 +1,54 @@
+﻿@Scripts.Render("~/bundles/jquery/TextEditor")
+@model Blog.Models.ArticleSubmitView
+@{
+    ViewBag.Title = "Post";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div id="page-wrapper">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-12">
+                <h1 class="page-header">Article <small>Post</small>
+                </h1>
+                <ol class="breadcrumb">
+                    <li class="active">
+                        <i class="fa fa-paper-plane"></i>Article Post
+                    </li>
+                </ol>
+
+            </div>
+
+
+            @using(Html.BeginForm("ArticleReview", "Article", FormMethod.Post, new { @class = "col-lg-12" }))
+            {
+                 @Html.AntiForgeryToken();
+                  @Html.ValidationSummary(true);
+                <div class="input-group">
+                    <span class="input-group-addon"><b>Title</b></span>
+                    @Html.TextBoxFor(a => a.Title, new { @class = "form-control input-lg" })
+            </div>
+            <br />
+            <div class="input-group">
+                <span class="input-group-addon"><b>SubTitle</b></span>
+                @Html.TextBoxFor(a=>a.SubTitle, new { @class = "form-control input-lg" })
+            </div>
+            <hr />
+            @Html.TextAreaFor(a => a.Content,new { @class="form-control",name="Content", id="Content", rows="100",cols="80"})
+            <script>
+                CKEDITOR.replace('Content', {
+                    filebrowserImageBrowseUrl: '/home/ViewImage/'+@Session["LoggedUserID"]+'',
+                    filebrowserImageUploadUrl: '/home/UploadImage/' +@Session["LoggedUserID"] +'',
+                    customConfig:'/Scripts/TextEditor/config.js'
+                });
+            </script>
+            <br>
+                <input type="text" name="AuthorID" value="@Session["LoggedUserID"]" hidden />
+            <button type="submit" class="btn btn-success  btn-lg" id="preview" name="Action" value="preview">Preview</button>
+                <button type="submit" class="btn btn-primary btn-lg" id="post" name="Action" value="post">Post</button>
+            }
+        </div>
+
+    </div>
+</div>
+
