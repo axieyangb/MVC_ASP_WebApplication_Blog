@@ -59,3 +59,34 @@ C:\Users\Scott2\Desktop\WebApp\MVC_ASP_WebApplication_Blog\Blog\bin\System.Web.W
 C:\Users\Scott2\Desktop\WebApp\MVC_ASP_WebApplication_Blog\Blog\obj\Release\Blog.csprojResolveAssemblyReference.cache
 C:\Users\Scott2\Desktop\WebApp\MVC_ASP_WebApplication_Blog\Blog\obj\Release\Blog.dll
 C:\Users\Scott2\Desktop\WebApp\MVC_ASP_WebApplication_Blog\Blog\obj\Release\Blog.pdb
+C:\Users\axiey_000\Documents\Visual Studio 2012\Projects\Blog\MVC_ASP_WebApplication_Blog\Blog\bin\Blog.dll
+C:\Users\axiey_000\Documents\Visual Studio 2012\Projects\Blog\MVC_ASP_WebApplication_Blog\Blog\bin\Blog.pdb
+C:\Users\axiey_000\Documents\Visual Studio 2012\Projects\Blog\MVC_ASP_WebApplication_Blog\Blog\bin\Antlr3.Runtime.dll
+C:\Users\axiey_000\Documents\Visual Studio 2012\Projects\Blog\MVC_ASP_WebApplication_Blog\Blog\bin\EntityFramework.dll
+C:\Users\axiey_000\Documents\Visual Studio 2012\Projects\Blog\MVC_ASP_WebApplication_Blog\Blog\bin\Microsoft.Web.Infrastructure.dll
+C:\Users\axiey_000\Documents\Visual Studio 2012\Projects\Blog\MVC_ASP_WebApplication_Blog\Blog\bin\Microsoft.Web.Mvc.FixedDisplayModes.dll
+C:\Users\axiey_000\Documents\Visual Studio 2012\Projects\Blog\MVC_ASP_WebApplication_Blog\Blog\bin\Newtonsoft.Json.dll
+C:\Users\axiey_000\Documents\Visual Studio 2012\Projects\Blog\MVC_ASP_WebApplication_Blog\Blog\bin\System.Net.Http.Formatting.dll
+C:\Users\axiey_000\Documents\Visual Studio 2012\Projects\Blog\MVC_ASP_WebApplication_Blog\Blog\bin\System.Web.Http.dll
+C:\Users\axiey_000\Documents\Visual Studio 2012\Projects\Blog\MVC_ASP_WebApplication_Blog\Blog\bin\System.Web.Http.WebHost.dll
+C:\Users\axiey_000\Documents\Visual Studio 2012\Projects\Blog\MVC_ASP_WebApplication_Blog\Blog\bin\System.Web.Mvc.dll
+C:\Users\axiey_000\Documents\Visual Studio 2012\Projects\Blog\MVC_ASP_WebApplication_Blog\Blog\bin\System.Web.Optimization.dll
+C:\Users\axiey_000\Documents\Visual Studio 2012\Projects\Blog\MVC_ASP_WebApplication_Blog\Blog\bin\System.Web.Providers.dll
+C:\Users\axiey_000\Documents\Visual Studio 2012\Projects\Blog\MVC_ASP_WebApplication_Blog\Blog\bin\System.Web.Razor.dll
+C:\Users\axiey_000\Documents\Visual Studio 2012\Projects\Blog\MVC_ASP_WebApplication_Blog\Blog\bin\System.Web.WebPages.Deployment.dll
+C:\Users\axiey_000\Documents\Visual Studio 2012\Projects\Blog\MVC_ASP_WebApplication_Blog\Blog\bin\System.Web.WebPages.dll
+C:\Users\axiey_000\Documents\Visual Studio 2012\Projects\Blog\MVC_ASP_WebApplication_Blog\Blog\bin\System.Web.WebPages.Razor.dll
+C:\Users\axiey_000\Documents\Visual Studio 2012\Projects\Blog\MVC_ASP_WebApplication_Blog\Blog\bin\WebGrease.dll
+C:\Users\axiey_000\Documents\Visual Studio 2012\Projects\Blog\MVC_ASP_WebApplication_Blog\Blog\bin\EntityFramework.xml
+C:\Users\axiey_000\Documents\Visual Studio 2012\Projects\Blog\MVC_ASP_WebApplication_Blog\Blog\bin\Newtonsoft.Json.xml
+C:\Users\axiey_000\Documents\Visual Studio 2012\Projects\Blog\MVC_ASP_WebApplication_Blog\Blog\bin\System.Net.Http.Formatting.xml
+C:\Users\axiey_000\Documents\Visual Studio 2012\Projects\Blog\MVC_ASP_WebApplication_Blog\Blog\bin\System.Web.Http.xml
+C:\Users\axiey_000\Documents\Visual Studio 2012\Projects\Blog\MVC_ASP_WebApplication_Blog\Blog\bin\System.Web.Http.WebHost.xml
+C:\Users\axiey_000\Documents\Visual Studio 2012\Projects\Blog\MVC_ASP_WebApplication_Blog\Blog\bin\System.Web.Mvc.xml
+C:\Users\axiey_000\Documents\Visual Studio 2012\Projects\Blog\MVC_ASP_WebApplication_Blog\Blog\bin\System.Web.Razor.xml
+C:\Users\axiey_000\Documents\Visual Studio 2012\Projects\Blog\MVC_ASP_WebApplication_Blog\Blog\bin\System.Web.WebPages.xml
+C:\Users\axiey_000\Documents\Visual Studio 2012\Projects\Blog\MVC_ASP_WebApplication_Blog\Blog\bin\System.Web.WebPages.Deployment.xml
+C:\Users\axiey_000\Documents\Visual Studio 2012\Projects\Blog\MVC_ASP_WebApplication_Blog\Blog\bin\System.Web.WebPages.Razor.xml
+C:\Users\axiey_000\Documents\Visual Studio 2012\Projects\Blog\MVC_ASP_WebApplication_Blog\Blog\obj\Release\Blog.csprojResolveAssemblyReference.cache
+C:\Users\axiey_000\Documents\Visual Studio 2012\Projects\Blog\MVC_ASP_WebApplication_Blog\Blog\obj\Release\Blog.dll
+C:\Users\axiey_000\Documents\Visual Studio 2012\Projects\Blog\MVC_ASP_WebApplication_Blog\Blog\obj\Release\Blog.pdb
