@@ -40,13 +40,11 @@ body {
         padding-bottom: 0px;
     }
 
-<<<<<<< HEAD
+
         .side-nav > li > a {
             min-width: 220px;
         }
-=======
- 
->>>>>>> 5636cd8c16ca37313bba9058a1385058bea27e92
+
 
         .side-nav li a:hover,
         .side-nav li a:focus {
