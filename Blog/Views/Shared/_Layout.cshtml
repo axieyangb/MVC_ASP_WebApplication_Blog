@@ -59,7 +59,7 @@
                         }
                         else
                         {
-                            <a  data-toggle="collapse"  href="#menu"> @Session["LoggedUserName"].ToString()<span class="caret"></span></a>
+                            <a  data-toggle="collapse" class="dropdown" href="#menu" data-options="is_hover:true;align:right"> @Session["LoggedUserName"].ToString()<span class="caret"></span></a>
                              <ul class="dropdown-menu" id="menu">
                                   <li>
                                     <a href ="/Admin/Dashboard"><p class="profile">面板 Dashboard</p></a>
@@ -70,6 +70,7 @@
                              </ul>
                         }
                     </li>
+                    </ul>
             </div>
             <!-- /.navbar-collapse -->
         </div>
