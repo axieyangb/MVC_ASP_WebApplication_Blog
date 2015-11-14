@@ -32,32 +32,29 @@ body {
 }
 
 /* Side Navigation */
-
-@media  only screen and (min-width:768px) {
+@media (min-width: @screen-sm-min) {
     .side-nav {
         border: none;
         border-radius: 0;
         background-color: #ebebeb;
         bottom: 0;
         padding-bottom: 0px;
-
     }
 
-    .side-nav>li>a {
-        min-width:220px;
-    }
+        .side-nav > li > a {
+            min-width: 220px;
+        }
 
-    .side-nav li a:hover,
-    .side-nav li a:focus {
-        outline: none;
-        background-color: #f3f3f3 !important;
-    }
-       #page-wrapper {
+        .side-nav li a:hover,
+        .side-nav li a:focus {
+            outline: none;
+            background-color: #f3f3f3 !important;
+        }
+
+    #page-wrapper {
         padding-left: 0px;
     }
-
 }
-
 .side-nav>li>ul {
     padding: 0;
 }
