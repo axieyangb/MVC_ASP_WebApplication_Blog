@@ -5,10 +5,10 @@ For licensing, see LICENSE.md or http://ckeditor.com/license
 CKEDITOR.plugins.setLang( 'font', 'eu', {
 	fontSize: {
 		label: 'Tamaina',
-		voiceLabel: 'Letra-tamaina',
-		panelTitle: 'Letra-tamaina'
+		voiceLabel: 'Tamaina',
+		panelTitle: 'Tamaina'
 	},
 	label: 'Letra-tipoa',
-	panelTitle: 'Letra-tipoaren izena',
+	panelTitle: 'Letra-tipoa',
 	voiceLabel: 'Letra-tipoa'
 } );

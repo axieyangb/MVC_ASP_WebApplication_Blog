@@ -1,4 +1,5 @@
-﻿@model Blog.Models.Article
+﻿@model Blog.Models.ArticleStruct
+@Scripts.Render("~/bundles/jquery/TextEditor")
 @{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -12,9 +13,9 @@
             <div class="row">
                 <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
                     <div class="post-heading">
-                        <h1>@Html.DisplayFor(item=>Model.Title)</h1>
-                        <h2 class="subheading">@Html.DisplayFor(item=>Model.SubTitle)</h2>
-                        <span class="meta">Posted by <a href="#">@ViewBag.AuthorName</a> on @Html.DisplayFor(item=>Model.PostDate)</span>
+                        <h1>@Html.DisplayFor(item => Model.article.Title)</h1>
+                        <h2 class="subheading">@Html.DisplayFor(item => Model.article.SubTitle)</h2>
+                        <span class="meta">Posted by <a href="#">@ViewBag.AuthorName</a> on @Html.DisplayFor(item => Model.article.PostDate)</span>
                     </div>
                 </div>
             </div>
@@ -24,8 +25,80 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1" id="">
-                     @Html.Raw(HttpUtility.HtmlDecode(Model.Content));
+                     @Html.Raw(HttpUtility.HtmlDecode(Model.article.Content))
+             <hr>
+
+                <!-- Blog Comments -->
+                    @if (ViewBag.isPreView != true)
+                    {
+                <!-- Comments Form -->
+                <div class="well">
+                    <h4>Leave a Comment:</h4>
+                    <form role="form">
+                        <div class="form-group">
+                            <textarea class="form-control" ,name="Content", id="Content",rows="3"></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </form>
+                </div>
+                    }
+                  <hr>
+                  
+                    
+                <!-- Comment -->@if (Model.rootComments != null)
+                                {
+                                    foreach (var item in Model.rootComments)
+                                    {
+                <!-- Comment -->
+                <div class="media">
+                    <a class="pull-left" href="#">
+                        <img class="media-object" src="http://placehold.it/64x64" alt="">
+                    </a>
+                    <div class="media-body">
+                        <h4 class="media-heading">@item.parentComment.CommentName
+                            <small>@item.parentComment.CreateDate</small>
+                        </h4>
+ 
+                        @item.parentComment.Content
+                         <!-- Nested Comment -->
+                        @if (item.childComments != null)
+                        {
+                            foreach (var subitem in item.childComments)
+                            {
+                        <div class="media">
+                            <a class="pull-left" href="#">
+                                <img class="media-object" src="http://placehold.it/64x64" alt="">
+                            </a>
+                            <div class="media-body">
+                                <h4 class="media-heading">@subitem.CommentName
+                                    <small> @subitem.CreateDate</small>
+                                </h4>
+                              @subitem.Content
+                            </div>
+                        </div>
+                        <!-- End Nested Comment -->
+                            }
+                        }
+                    </div>
+                </div>
+                                    }
+                                }
+
+
+
+
+
                 </div>
             </div>
         </div>
     </article>
+
+
+
+            <script>
+                CKEDITOR.replace('Content', {
+                    filebrowserImageBrowseUrl: '/home/ViewImage/' +@Session["LoggedUserID"] +'',
+                    filebrowserImageUploadUrl: '/home/UploadImage/' +@Session["LoggedUserID"] +'',
+                    customConfig: '/Scripts/TextEditor/config.js'
+                });
+            </script>

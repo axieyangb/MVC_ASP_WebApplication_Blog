@@ -13,7 +13,7 @@ namespace Blog.Controllers
         // GET: /Article/
         private BlogContext db = new BlogContext();
         [HttpGet]
-        public ActionResult Index(int ArticleID=0)
+        public ActionResult Index(long ArticleID=0)
         {
             Article article = db.Articles.Find(ArticleID);
             if (article == null)
@@ -26,7 +26,20 @@ namespace Blog.Controllers
                             select String.IsNullOrEmpty(a.NickName) ? a.UserName : a.NickName;
                 ViewBag.AuthorName = query.ToList().ElementAt(0).ToString();
             }
-            return View(article);
+
+            List<CommentDetailInfoView> comments = db.CommentDetailInfo.Where(a => (a.ArticleID == ArticleID && a.ReplyID==0)).ToList();
+            ArticleStruct oneArticle = new ArticleStruct();
+            oneArticle.article = article;
+            oneArticle.rootComments = new List<CommentLevel>();
+            CommentLevel oneComment;
+            foreach (CommentDetailInfoView rootComment in comments)
+            {
+                oneComment = new CommentLevel();
+                oneComment.parentComment = rootComment;
+                oneComment.childComments = db.CommentDetailInfo.Where(a => (a.ArticleID == ArticleID && a.ReplyID == rootComment.CommenterID)).ToList();
+                oneArticle.rootComments.Add(oneComment);
+            }
+            return View(oneArticle);
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -38,6 +51,9 @@ namespace Blog.Controllers
             article.SubTitle = articlePost.SubTitle;
             article.Content = articlePost.Content;
             article.PostDate = System.DateTime.Now;
+            ArticleStruct one = new ArticleStruct();
+            one.article = article;
+            one.rootComments = new List<CommentLevel>();
             if (articlePost.Action.Equals("post"))
             {
                 if (ModelState.IsValid && !String.IsNullOrEmpty(article.Title))
@@ -45,16 +61,19 @@ namespace Blog.Controllers
                    
                     db.Articles.Add(article);
                     db.SaveChanges();
-                    return View("Index", article);
+                    return View("Index", one);
                 }
                 else return View();
             }
               
             else
             {
-                return View("Index", article);
+                ViewBag.isPreView = true;
+                return View("Index", one);
             }
         }
+
+
 
     }
 }

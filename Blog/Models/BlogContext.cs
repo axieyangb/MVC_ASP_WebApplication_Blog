@@ -10,5 +10,7 @@ namespace Blog.Models
         public DbSet<Article> Articles { get; set; }
         public DbSet<Member> Members { get; set; }
         public DbSet<ImageView> Images { get; set; }
+        public DbSet<ArticleComment> ArticleComments { get; set; }
+        public DbSet<CommentDetailInfoView> CommentDetailInfo { get; set; }
     }
 }

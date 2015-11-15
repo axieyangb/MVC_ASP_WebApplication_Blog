@@ -4,7 +4,7 @@
     ViewBag.Title = "UploadImage";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
+<link href="~/Content/css/page/home.css" rel="stylesheet" type="text/css">
 <h2>UploadImage</h2>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 
@@ -26,7 +26,10 @@
                     <img src="@image.Url" alt="Hejsan" id="#image" data-source="@image.Url" class="img-responsive" width="200" height="200"/>
                 </a>
                 <br>
+                <div>
                 <p>Post at @image.UpdateDate</p>
+                <p id="refUrl"> @image.Url</p>
+                </div>
             </div>
         }
     </div>

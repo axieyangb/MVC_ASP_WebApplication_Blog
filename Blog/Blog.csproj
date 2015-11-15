@@ -140,8 +140,11 @@
     </Compile>
     <Compile Include="Models\Article.cs" />
     <Compile Include="Models\ArticleAbstract.cs" />
+    <Compile Include="Models\ArticleComment.cs" />
+    <Compile Include="Models\ArticleStruct.cs" />
     <Compile Include="Models\ArticleSubmitView.cs" />
     <Compile Include="Models\BlogContext.cs" />
+    <Compile Include="Models\CommentDetailInfoView.cs" />
     <Compile Include="Models\ImageView.cs" />
     <Compile Include="Models\Member.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -152,6 +155,7 @@
     <Content Include="Content\css\bootstrap.css" />
     <Content Include="Content\css\bootstrap.min.css" />
     <Content Include="Content\css\page\dashboard.css" />
+    <Content Include="Content\css\page\home.css" />
     <Content Include="Content\css\page\login.css" />
     <Content Include="Content\css\page\postArticle.css" />
     <Content Include="Content\css\page\signup.css" />
@@ -358,13 +362,6 @@
     <Content Include="Scripts\TextEditor\plugins\font\plugin.js" />
     <Content Include="Scripts\TextEditor\plugins\icons.png" />
     <Content Include="Scripts\TextEditor\plugins\icons_hidpi.png" />
-    <Content Include="Scripts\TextEditor\plugins\imagerotate\icons\hidpi\rotate-left.png" />
-    <Content Include="Scripts\TextEditor\plugins\imagerotate\icons\hidpi\rotate-right.png" />
-    <Content Include="Scripts\TextEditor\plugins\imagerotate\icons\rotate-left.png" />
-    <Content Include="Scripts\TextEditor\plugins\imagerotate\icons\rotate-right.png" />
-    <Content Include="Scripts\TextEditor\plugins\imagerotate\lang\en.js" />
-    <Content Include="Scripts\TextEditor\plugins\imagerotate\lang\et.js" />
-    <Content Include="Scripts\TextEditor\plugins\imagerotate\plugin.js" />
     <Content Include="Scripts\TextEditor\plugins\imageuploader\dist\jquery.lazyload.min.js" />
     <Content Include="Scripts\TextEditor\plugins\imageuploader\dist\js.cookie-2.0.3.min.js" />
     <Content Include="Scripts\TextEditor\plugins\imageuploader\dist\sweetalert.css" />
