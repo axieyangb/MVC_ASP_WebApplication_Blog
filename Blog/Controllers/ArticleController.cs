@@ -18,7 +18,7 @@ namespace Blog.Controllers
             Article article = db.Articles.Find(ArticleID);
             if (article == null)
                 return HttpNotFound();
-            article.Content=article.Content.Replace("\r\n", "<br>");
+            article.Content = article.Content.Replace("\r\n", "<br>");
             if (ArticleID > 0)
             {
                 var query = from a in db.Members
@@ -27,7 +27,7 @@ namespace Blog.Controllers
                 ViewBag.AuthorName = query.ToList().ElementAt(0).ToString();
             }
 
-            List<CommentDetailInfoView> comments = db.CommentDetailInfo.Where(a => (a.ArticleID == ArticleID && a.ReplyID==0)).ToList();
+            List<CommentDetailInfoView> comments = db.CommentDetailInfo.Where(a => (a.ArticleID == ArticleID && ( a.ReplyID ==-1))).ToList();
             ArticleStruct oneArticle = new ArticleStruct();
             oneArticle.article = article;
             oneArticle.rootComments = new List<CommentLevel>();
@@ -36,7 +36,7 @@ namespace Blog.Controllers
             {
                 oneComment = new CommentLevel();
                 oneComment.parentComment = rootComment;
-                oneComment.childComments = db.CommentDetailInfo.Where(a => (a.ArticleID == ArticleID && a.ReplyID == rootComment.CommenterID)).ToList();
+                oneComment.childComments = db.CommentDetailInfo.Where(a => (a.ArticleID == ArticleID && a.ReplyID == rootComment.CommentID)).ToList();
                 oneArticle.rootComments.Add(oneComment);
             }
             return View(oneArticle);
@@ -49,7 +49,7 @@ namespace Blog.Controllers
             article.AuthorID = articlePost.AuthorID;
             article.Title = HttpUtility.HtmlEncode(articlePost.Title);
             article.SubTitle = articlePost.SubTitle;
-            article.Content = articlePost.Content;
+            article.Content = articlePost.Content.Replace("'", "''").Replace("style=\"height:", "name=\"height:").Replace("<img ", "<img class=\"col-sm-12 col-xs-12 \" ");
             article.PostDate = System.DateTime.Now;
             ArticleStruct one = new ArticleStruct();
             one.article = article;
@@ -71,6 +71,27 @@ namespace Blog.Controllers
                 ViewBag.isPreView = true;
                 return View("Index", one);
             }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult CommentPost(ArticleStruct articlePost)
+        {
+            if (!String.IsNullOrEmpty(articlePost.commentArticle.Content))
+            {
+                articlePost.commentArticle.CommentID = null;
+                articlePost.commentArticle.isValid = 1;
+                if (Session["LoggedUserID"] !=null)
+                articlePost.commentArticle.CommenterID =Int64.Parse(Session["LoggedUserID"].ToString());
+                if (articlePost.commentArticle.ReplyID == null)
+                    articlePost.commentArticle.ReplyID = -1;
+                articlePost.commentArticle.ArticleID = articlePost.article.ArticleID;
+                articlePost.commentArticle.CreateDate = System.DateTime.Now;
+                articlePost.commentArticle.Content = HttpUtility.HtmlEncode(articlePost.commentArticle.Content.Replace("\r\n", "<br>"));
+                db.ArticleComments.Add(articlePost.commentArticle);
+                db.SaveChanges();
+            }
+            return RedirectToAction("Index", "Article", new{ArticleID=articlePost.article.ArticleID});
         }
 
 
