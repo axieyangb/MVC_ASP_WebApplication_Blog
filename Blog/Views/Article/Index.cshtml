@@ -124,5 +124,16 @@
             $("#CommentContext").removeAttr("hidden");
             $("#CommentContext").html($(this).attr("content"));
         })
+        var win_width = $(window).width();
+        $("img").each(function () {
+            if ($(this).width() > win_width) {
+                var img_width = $(this).width();
+                var img_height = $(this).height();
+                $(this).width(win_width * 0.9);
+                $(this).height(win_width * 0.9 * img_height / img_width);
+            }
+        });
+
     })
+
 </script>
