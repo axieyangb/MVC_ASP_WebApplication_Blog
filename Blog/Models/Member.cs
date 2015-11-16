@@ -10,7 +10,7 @@ namespace Blog.Models
     public class Member
     {
          [Key]
-         public long UserID { set; get; }
+         public long? UserID { set; get; }
          [Required(ErrorMessage="Please provide username",AllowEmptyStrings=false)]
          public string UserName { set; get; }
          [Required(ErrorMessage="Please provide password",AllowEmptyStrings=false)]

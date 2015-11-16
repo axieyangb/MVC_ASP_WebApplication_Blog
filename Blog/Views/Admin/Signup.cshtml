@@ -5,12 +5,14 @@
 }
 
   <div class="wrapper">
-      @using (Html.BeginForm("Signin", "Admin", FormMethod.Post, new { @class = "form-signup" }))
+      @using (Html.BeginForm("Signup", "Admin", FormMethod.Post, new { @class = "form-signup" }))
       {
+          @Html.AntiForgeryToken();
+          @Html.ValidationSummary(true);
       <h2 class="form-signup-heading">注册 Sign Up</h2>
           @Html.TextBoxFor(a => a.UserName, new {@class="form-control", placeholder="用户名 Username" ,autofocus=""})
         <br>
-          @Html.TextBoxFor(a=>a.Password, new {@class ="form-control",placeholder="密码 Password" })    
+          @Html.TextBoxFor(a=>a.Password, new {@class ="form-control",type ="password",placeholder="密码 Password" })    
         <br>
           @Html.TextBoxFor(a => a.NickName, new { @class="form-control", placeholder="昵称 nickname" })
         <br>
