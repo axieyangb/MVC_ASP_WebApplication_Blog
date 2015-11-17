@@ -28,7 +28,7 @@
         </div>
         <div class="item">
             <!-- Set the second background image using inline CSS below. -->
-            <div class="fill" style="background-image:  url('Content/img/home-freedom.jpg');"></div>
+            <div class="fill" style="background-image: url('Content/img/home-freedom.jpg');"></div>
             <div class="carousel-caption">
                 <div class="site-heading">
                     <h1 class="title-heading">Free 自由</h1>
@@ -37,21 +37,21 @@
                 </div>
             </div>
         </div>
-            <div class="item">
-        <!-- Set the third background image using inline CSS below. -->
-        <div class="fill" style="background-image:  url('Content/img/home-brave.png');"></div>
-        <div class="carousel-caption">
-              <div class="site-heading">
+        <div class="item">
+            <!-- Set the third background image using inline CSS below. -->
+            <div class="fill" style="background-image: url('Content/img/home-brave.png');"></div>
+            <div class="carousel-caption">
+                <div class="site-heading">
                     <h1 class="title-heading">Brave 勇敢</h1>
                     <hr class="small">
                     <span class="subheading">往前一步是蓝天 You jump I jump</span>
                 </div>
+            </div>
         </div>
     </div>
-    </div>
 
 
-        <!-- Controls -->
+    <!-- Controls -->
     <a class="left carousel-control" href="#myCarousel" data-slide="prev">
         <span class="icon-prev"></span>
     </a>
@@ -67,35 +67,32 @@
 
 <!-- Main Content -->
 
+<div class="col-lg-4 col-lg-offset-4 col-md-4 col-md-offset-4 col-xs-10 col-xs-offset-1">
+    @foreach (var item in Model)
+    {
+        <a href='Article/Index/@item.ArticleID'>
+            <div class="post-preview">
 
-        <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 col-xs-10 col-xs-offset-1">
-            @foreach (var item in Model)
+                <h2 class="post-title">
+                    @Html.DisplayFor(modelItem => item.Title)
+                </h2>
+                <h3 class="post-subtitle">
+                    @Html.DisplayFor(modelItem => item.SubTitle)
+                </h3>
+                <p class="post-meta">Posted by <a href="#">@Html.DisplayFor(modelItem => item.AuthorName)</a> on @Html.DisplayFor(modelItem => item.PostDate)</p>
+            </div>
+        </a>
+        <hr>
+    }
+    <!-- Pager -->
+    <ul class="pager">
+        <li class="next">
+            @if (Model.Count() < ViewBag.ArticleAmount)
             {
-                <div class="post-preview">
-                    <a href='Article/Index/@item.ArticleID'>
-                        <h2 class="post-title">
-                            @Html.DisplayFor(modelItem => item.Title)
-                        </h2>
-                           </a>
-                    <a href='Article/Index/@item.ArticleID'>
-                        <h3 class="post-subtitle">
-                            @Html.DisplayFor(modelItem => item.SubTitle)
-                        </h3>
-                        </a>
-                 
-                    <p class="post-meta">Posted by <a href="#">@Html.DisplayFor(modelItem => item.AuthorName)</a> on @Html.DisplayFor(modelItem => item.PostDate)</p>
-                </div>
-                <hr>
+                <a href="@Url.Action("IndexPrev", "Home", new { num = Model.Count() })" >Older Posts &rarr;</a>
             }
-            <!-- Pager -->
-            <ul class="pager">
-                <li class="next">
-                    @if (Model.Count() < ViewBag.ArticleAmount)
-                    {
-                        <a href="@Url.Action("IndexPrev", "Home", new { num = Model.Count() })" >Older Posts &rarr;</a>
-                    }
-                </li>
-            </ul>
-        </div>
+        </li>
+    </ul>
+</div>
 
 <hr>
