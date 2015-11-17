@@ -12,20 +12,42 @@ namespace Blog.Controllers
         //
         // GET: /Home/
         private BlogContext db = new BlogContext();
+        [HttpGet]
         public ActionResult Index()
         {
             var Home_Article = from a in db.Articles
                                join b in db.Members on a.AuthorID equals b.UserID
                                select new ArticleAbstract
                                {
-                                   ArticleID=a.ArticleID,
-                                   AuthorID=b.UserID,
-                                  Title=a.Title,
-                                  SubTitle=a.SubTitle,
-                                  PostDate=a.PostDate,
-                                  AuthorName= String.IsNullOrEmpty(b.NickName) ? b.UserName:b.NickName
+                                   ArticleID = a.ArticleID,
+                                   AuthorID = b.UserID,
+                                   Title = a.Title,
+                                   SubTitle = a.SubTitle,
+                                   PostDate = a.PostDate,
+                                   AuthorName = String.IsNullOrEmpty(b.NickName) ? b.UserName : b.NickName
                                };
+            ViewBag.ArticleAmount = Home_Article.Count();
+           Home_Article=Home_Article.OrderBy(i => i.ArticleID).Take(10);
             return View(Home_Article.ToList());
+        }
+
+        [HttpGet]
+        public ActionResult IndexPrev(int num)
+        {
+            var Home_Article = from a in db.Articles
+                               join b in db.Members on a.AuthorID equals b.UserID
+                               select new ArticleAbstract
+                               {
+                                   ArticleID = a.ArticleID,
+                                   AuthorID = b.UserID,
+                                   Title = a.Title,
+                                   SubTitle = a.SubTitle,
+                                   PostDate = a.PostDate,
+                                   AuthorName = String.IsNullOrEmpty(b.NickName) ? b.UserName : b.NickName
+                               };
+            ViewBag.ArticleAmount = Home_Article.Count();
+            Home_Article = Home_Article.OrderBy(i => i.ArticleID).Take(num+10);
+            return View("Index",Home_Article.ToList());
         }
         public ActionResult UploadImage(int id, HttpPostedFileWrapper upload)
         {

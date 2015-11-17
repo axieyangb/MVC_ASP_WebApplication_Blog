@@ -33,6 +33,7 @@ namespace Blog
                 "~/Content/css/blog.min.css",
                 "~/Content/css/bootstrap.css",
                 "~/Content/css/bootstrap.min.css",
+                 "~/Content/css/Home-half-slider.css",
                   "~/Content/css/fonts.css"
                 ));
             bundles.Add(new StyleBundle("~/Content/css/admin").Include(

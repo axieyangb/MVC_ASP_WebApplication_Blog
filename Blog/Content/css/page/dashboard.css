@@ -56,12 +56,15 @@ body {
         padding-left: 0px;
     }
 }
-.side-nav>li>ul {
-    padding: 0;
+
+
+.navbar-nav > li > a {
+    margin-left: 15px
 }
 
 .side-nav>li>ul>li>a {
     display: block;
+    margin-left:5px;
     text-decoration: none;
     color: #999;
 }
@@ -70,7 +73,7 @@ body {
     color: #fff;
 }
 #Container {
-    margin-top: 50px;
+    margin-top: 5px;
     padding:0;
     margin-left:0;
 }
@@ -81,3 +84,6 @@ body {
     background-color: #fff;
 }
 
+.page-header {
+    margin:50px 0 20px;
+}

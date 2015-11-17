@@ -154,6 +154,7 @@
     <Content Include="Content\css\blog.min.css" />
     <Content Include="Content\css\bootstrap.css" />
     <Content Include="Content\css\bootstrap.min.css" />
+    <Content Include="Content\css\Home-half-slider.css" />
     <Content Include="Content\css\page\dashboard.css" />
     <Content Include="Content\css\page\home.css" />
     <Content Include="Content\css\page\login.css" />

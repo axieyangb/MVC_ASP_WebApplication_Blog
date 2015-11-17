@@ -3,56 +3,96 @@
     ViewBag.Title = "Blog";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-    <!-- Page Header -->
-    <!-- Set your background image for this header on the line below. -->
-    <header class="intro-header" style="background-image: url('Content/img/home-bg.jpg')">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-                    <div class="site-heading">
-                        <h1 class="title-heading">Share 分享</h1>
-                        <hr class="small">
-                        <span class="subheading">套马的汉子 horse's soulmate</span>
-                    </div>
+
+<!-- Half Page Image Background Carousel Header -->
+<header id="myCarousel" class="carousel slide col-xs-12">
+    <!-- Indicators -->
+    <ol class="carousel-indicators">
+        <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+        <li data-target="#myCarousel" data-slide-to="1"></li>
+        <li data-target="#myCarousel" data-slide-to="2"></li>
+    </ol>
+
+    <!-- Wrapper for Slides -->
+    <div class="carousel-inner">
+        <div class="item active">
+            <!-- Set the first background image using inline CSS below. -->
+            <div class="fill" style="background-image: url('Content/img/home-bg.jpg');"></div>
+            <div class="carousel-caption">
+                <div class="site-heading">
+                    <h1 class="title-heading">Share 分享</h1>
+                    <hr class="small">
+                    <span class="subheading">套马的汉子 horse's soulmate</span>
                 </div>
             </div>
         </div>
-    </header>
+        <div class="item">
+            <!-- Set the second background image using inline CSS below. -->
+            <div class="fill" style="background-image:  url('Content/img/home-freedom.jpg');"></div>
+            <div class="carousel-caption">
+                <div class="site-heading">
+                    <h1 class="title-heading">Free 自由</h1>
+                    <hr class="small">
+                    <span class="subheading">心理鸡汤 Decay Chicken Soup</span>
+                </div>
+            </div>
+        </div>
+            <div class="item">
+        <!-- Set the third background image using inline CSS below. -->
+        <div class="fill" style="background-image:  url('Content/img/home-brave.png');"></div>
+        <div class="carousel-caption">
+              <div class="site-heading">
+                    <h1 class="title-heading">Brave 勇敢</h1>
+                    <hr class="small">
+                    <span class="subheading">往前一步是蓝天 You jump I jump</span>
+                </div>
+        </div>
+    </div>
+    </div>
+
+
+        <!-- Controls -->
+    <a class="left carousel-control" href="#myCarousel" data-slide="prev">
+        <span class="icon-prev"></span>
+    </a>
+    <a class="right carousel-control" href="#myCarousel" data-slide="next">
+        <span class="icon-next"></span>
+    </a>
+
+</header>
 
 
 
 
 
+<!-- Main Content -->
 
-    <!-- Main Content -->
 
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-                @foreach (var item in Model) {
+        <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 col-xs-10 col-xs-offset-1">
+            @foreach (var item in Model)
+            {
                 <div class="post-preview">
                     <a href='Article/Index/@item.ArticleID'>
                         <h2 class="post-title">
-                           @Html.DisplayFor(modelItem => item.Title)
+                            @Html.DisplayFor(modelItem => item.Title)
                         </h2>
                         <h3 class="post-subtitle">
-                           @Html.DisplayFor(modelItem =>item.SubTitle)
+                            @Html.DisplayFor(modelItem => item.SubTitle)
                         </h3>
                     </a>
-                    <p class="post-meta">Posted by <a href="#">@Html.DisplayFor(modelItem=>item.AuthorName)</a> on @Html.DisplayFor(modelItem=>item.PostDate)</p>
+                    <p class="post-meta">Posted by <a href="#">@Html.DisplayFor(modelItem => item.AuthorName)</a> on @Html.DisplayFor(modelItem => item.PostDate)</p>
                 </div>
                 <hr>
-                }
-                <!-- Pager -->
-                <ul class="pager">
-                    <li class="next">
-                        <a href="#">Older Posts &rarr;</a>
-                    </li>
-                </ul>
-            </div>
+            }
+            <!-- Pager -->
+            <ul class="pager">
+                <li class="next">
+                    @if (Model.Count() < ViewBag.ArticleAmount)
+                    {
+                        <a href="@Url.Action("IndexPrev", "Home", new { num = Model.Count() })" >Older Posts &rarr;</a>
+                    }
+                </li>
+            </ul>
         </div>
-    </div>
 
-    <hr>
-
-<p> The time is @DateTime.Now</p>
+<hr>
