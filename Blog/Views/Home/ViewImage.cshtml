@@ -5,10 +5,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <link href="~/Content/css/page/home.css" rel="stylesheet" type="text/css">
-<h2>UploadImage</h2>
-
-
-
+<script src="/Scripts/cardFlip.js"></script>
 <div class="container">
 
     <div class="row">
@@ -19,21 +16,35 @@
 
         @foreach (var image in Model)
         {
-            <div class="col-lg-3 col-md-4 col-xs-6 thumb" id ="flipper">
-                <div class="front">
-                <a href="@Url.Action("ImageDetail", "Home", new Blog.Models.ImageView { Url = image.Url })" class="returnImage" data-url="@Request.Url.GetLeftPart(UriPartial.Authority)@image.Url">
-                    <img src="@image.Url" alt="Hejsan" id="#image" data-source="@image.Url" class="img-responsive" width="200" height="200"/>
-                </a>
+            <div class="col-lg-3 col-md-4 col-xs-6 unit">
+                <div class="col-lg-12 col-md-12 col-xs-12 thumb">
+                    <div class="col-lg-3 col-md-4 col-xs-6 front">
+                        <img src="@image.Url" alt="Hejsan" id="#image" data-source="@image.Url" class="img-thumbnail" width="200" height="200"/>
+                    </div>
+                    <div class="col-lg-3 col-md-4 col-xs-6 back">
+                        <p class="alert alert-success col-lg-10 col-md-10 col-xs-10 col-sm-10">Post at @image.UpdateDate</p>
+                    </div>
                 </div>
-                <div class="back">
-                    <p>Post at @image.UpdateDate</p>
-                    <p id="refUrl">@image.Url</p>
-                </div>
-                <br>
-                <button class="btn btn-default btn-sm detail">Detail</button>
-                <div>
-                    
-                    
+                <div class="detail">
+                    <div class="input-group col-lg-10 col-md-10 col-xs-10 col-sm-10">
+                        <span class="input-group-addon">URL</span>
+                        <input type="text" class="form-control " id="basic-url" aria-describedby="basic-addon3" value="@image.Url">
+                        <span class="btn-default btn-sm input-group-addon copyIcon" id="toolTipSpan" data-toggle="tooltip" data-original-title="Copy to ClipBoard"></span>
+                    </div>
+                    @using (Html.BeginForm("PicOperation", "Home", FormMethod.Post))
+                    {
+                        <a class="btn btn-default btn-sm"  href="@Url.Action("ImageDetail", "Home", new Blog.Models.ImageView { Url = image.Url })" data-url="@Request.Url.GetLeftPart(UriPartial.Authority)@image.Url" data-toggle="tooltip" data-original-title="View Raw Picture">Large</a>
+                        <button class="btn btn-default btn-sm"  type="submit" name="operation" value="2">Delete</button>
+                        <input type="text" name="ImageID" value=@image.ImageID hidden />
+                        if (@image.isPublish == 0)
+                        {
+                        <button class="btn btn-default btn-sm" id="bePublic" type="submit" name="operation" value="1">Be Public</button>
+                        }
+                        else
+                        {
+                        <button class="btn btn-info btn-sm" id="bePrivate" type="submit" name="operation" value="0">Be Private</button>
+                        }
+                    }
                 </div>
             </div>
         }
@@ -44,10 +55,15 @@
 <hr>
 <script type="text/javascript">
     $(document).ready(function () {
-        $(".returnImage").click("click", function (e) {
-            var urlImage = $(this).attr("data-url");
-            window.opener.$("div[name='info']>table>tbody>tr:nth-of-type(1)>td.cke_dialog_ui_vbox_child>div>table>tbody>tr>td>table>tbody>tr>td>div>div>div>input.cke_dialog_ui_input_text").val(urlImage);
-            window.close();
+        $('.copyIcon').click(function () { // IE 11, Chrome, Firefox 42
+            $(this).prev('input').focus().select();
+            document.execCommand('copy');
         });
+
     });
+    $(".thumb").flip({
+        axis: 'y',
+        trigger: 'click'
+    });
+
 </script>

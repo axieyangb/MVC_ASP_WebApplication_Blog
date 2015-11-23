@@ -13,7 +13,7 @@
     <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
     <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
     @Styles.Render("~/Content/css")
-        @Scripts.Render("~/bundles/jquery")
+
     @RenderSection("scripts", required: false)
         <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -24,7 +24,7 @@
 </head>
 <body>
 
-    
+            @Scripts.Render("~/bundles/jquery")
     <!-- Navigation -->
     <nav class="navbar navbar-default navbar-custom">
         <div class="container-fluid">
@@ -36,36 +36,40 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href='@Url.Action("Index","Home")'><span>Welcome to <img src="\Content\img\home-horseBrain.png" class="navbar-brand-icon"> Gobi Desert</span></a>
+                <a class="navbar-brand" href='@Url.Action("Index", "Home")'><span>Welcome to <img src="\Content\img\home-horseBrain.png" class="navbar-brand-icon"> Gobi Desert</span></a>
             </div>
 
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav navbar-right">
                     <li>
-                        @Html.ActionLink("主页 Home", "Index", new { action="Index",Controller="Home"})
+                        @Html.ActionLink("主页 Home", "Index", "Home" ,null,new Dictionary<string, object> { { "data-toggle", "tooltip" }, { "data-original-title", "主页" } })
                     </li>
                     <li>
-                        <a href="about.html">图片 Gallery</a>
+                        <a href="Home/ViewImage" data-toggle="tooltip" data-original-title="图片">Gallery</a>
                     </li>
                     <li>
-                        @Html.ActionLink("文章 Article", "Index", new { action="Index",Controller="Article"})
+                        @Html.ActionLink("Article", "Index","Article",null,new Dictionary<string, object> { { "data-toggle", "tooltip" }, { "data-original-title", "文章" } } )
                     </li>
                     <li>
                         <a href="contact.html">联系 Contact</a>
                     </li>
                     <li>
-                        @if (Session["LoggedUserID"]==null)
+                        @if (Session["LoggedUserID"] == null)
                         {
                             @Html.ActionLink("登录 Login", "Login", "Admin");
                         }
                         else
                         {
-                            <a  data-toggle="collapse" class="collapse navbar-collapse" href="#menu" data-options="is_hover:true;align:right" id="bs-example-navbar-collapse-2"> @Session["LoggedUserName"].ToString()<span class="caret"></span></a>
+                            <a  data-toggle="collapse" class="collapse navbar-collapse"  id="bs-example-navbar-collapse-2" data-target="#menu"> @Session["LoggedUserName"].ToString()<span class="caret"></span></a>
                              <ul class="collapse navbar-collapse-2" id="menu" >
                                   <li>
                                     <a href ="/Admin/Dashboard"><p class="profile">面板 Dashboard</p></a>
                                  </li>
+                                   <li>
+                                    <a href ="/Home/ViewImage/@Session["LoggedUserID"]"><p class="profile">私人图库 Personal Gallery</p></a>
+                                 </li>
+
                                  <li>
                                     <a href ="/Admin/Logout"><p class="profile">登出 Logout</p></a>
                                  </li>
@@ -113,6 +117,10 @@
                     </ul>
                     <p class="copyright text-muted">Copyright &copy; Your Website 2014</p>
         </div>
-
+    <script>
+        jQuery(document).ready(function ($) {
+            $('[data-toggle="tooltip"]').tooltip({ 'placement': 'bottom' });
+        });
+    </script>
 </body>
 </html>

@@ -24,10 +24,10 @@ namespace Blog.Controllers
                                    Title = a.Title,
                                    SubTitle = a.SubTitle,
                                    PostDate = a.PostDate,
-                                   AuthorName = String.IsNullOrEmpty(b.NickName) ? b.UserName : b.NickName
+                                   AuthorName = String.IsNullOrEmpty(b.NickName) ? b.UserName : b.NickName,
                                };
             ViewBag.ArticleAmount = Home_Article.Count();
-           Home_Article=Home_Article.OrderBy(i => i.ArticleID).Take(10);
+            Home_Article = Home_Article.OrderBy(i => i.ArticleID).Take(10);
             return View(Home_Article.ToList());
         }
 
@@ -46,46 +46,91 @@ namespace Blog.Controllers
                                    AuthorName = String.IsNullOrEmpty(b.NickName) ? b.UserName : b.NickName
                                };
             ViewBag.ArticleAmount = Home_Article.Count();
-            Home_Article = Home_Article.OrderBy(i => i.ArticleID).Take(num+10);
-            return View("Index",Home_Article.ToList());
+            Home_Article = Home_Article.OrderBy(i => i.ArticleID).Take(num + 10);
+            return View("Index", Home_Article.ToList());
         }
+
+        [HttpPost]
         public ActionResult UploadImage(int id, HttpPostedFileWrapper upload)
         {
-            string url="";
+            string ret = "";
             if (upload != null)
             {
-                string ImageName = DateTime.Now.ToString("yyyyMMddHHmmss") +'_' + upload.FileName;
-                if (!System.IO.Directory.Exists(Server.MapPath("/Content/img/article/" + id)))
+                if (upload.ContentLength <= 1024 * 1024 * 5)
                 {
-                    System.IO.Directory.CreateDirectory(Server.MapPath("/Content/img/article/" + id));
+                    string url = "";
+                    string ImageName = DateTime.Now.ToString("yyyyMMddHHmmss") + '_' + upload.FileName;
+                    if (!System.IO.Directory.Exists(Server.MapPath("/Content/img/article/" + id)))
+                    {
+                        System.IO.Directory.CreateDirectory(Server.MapPath("/Content/img/article/" + id));
+                    }
+                    string path = System.IO.Path.Combine(Server.MapPath("/Content/img/article/" + id), ImageName);
+                    url = "/Content/img/article/" + id + "/" + ImageName;
+                    upload.SaveAs(path);
+                    ImageView image = new ImageView();
+                    image.UpdateDate = System.DateTime.Now;
+                    image.UserID = long.Parse(Session["LoggedUserID"].ToString());
+                    image.Url = url;
+                    db.Images.Add(image);
+                    db.SaveChanges();
+                    ret = url;
                 }
-                string path = System.IO.Path.Combine(Server.MapPath("/Content/img/article/" + id), ImageName);
-                url = "/Content/img/article/" + id + "/" + ImageName;
-                upload.SaveAs(path);
-                ImageView image = new ImageView();
-                image.UpdateDate=System.DateTime.Now;
-                image.UserID = long.Parse(Session["LoggedUserID"].ToString());
-                image.Url=url;
-                db.Images.Add(image);
-                db.SaveChanges();
-                
+                else
+                {
+                    ret = "<p style=\"color:red\">image exceed the maximum 5MB</p>";
+                }
             }
-
-            return Content(url);
+            else
+            {
+                ret = "<p style=\"color:red\">image is empty</p>";
+            }
+            return Content(ret);
         }
+
+        [HttpGet]
         public ActionResult ViewImage(int id)
         {
             if (Session["LoggedUserID"] == null)
             {
                 return Content("Sorry ! please login first");
             }
-            var Imgdir = Server.MapPath("/Content/img/article/" + id);
-            var images = db.Images.Where(a => a.UserID == id);
+            var images = db.Images.Where(a => a.UserID == id && a.isBlock == 0 && a.DeleteTime == null);
             return View(images);
         }
+        [HttpGet]
         public ActionResult ImageDetail(ImageView image)
         {
             return View(image);
+        }
+
+        [HttpPost]
+        public ActionResult PicOperation(string ImageID, string operation)
+        {
+            long imageId = long.Parse(ImageID);
+            int oper = int.Parse(operation);
+            long id = long.Parse(Session["LoggedUserID"].ToString());
+            var query = from image in db.Images
+                        where image.ImageID == imageId && image.UserID == id 
+                        select image;
+            foreach (ImageView one in query)
+            {
+                if (oper == 1)
+                    one.isPublish = 1;
+                else if(oper==0)
+                    one.isPublish = 0;
+                else
+                    one.DeleteTime = System.DateTime.Now;
+            }
+            try
+            {
+                db.SaveChanges();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
+            var images = db.Images.Where(a => a.UserID == id && a.isBlock == 0 && a.DeleteTime == null);
+            return View("ViewImage", images);
         }
 
 

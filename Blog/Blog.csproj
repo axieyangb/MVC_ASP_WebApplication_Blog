@@ -155,6 +155,12 @@
     <Content Include="Content\css\bootstrap.css" />
     <Content Include="Content\css\bootstrap.min.css" />
     <Content Include="Content\css\Home-half-slider.css" />
+    <Content Include="Content\css\jquery-ui.css" />
+    <Content Include="Content\css\jquery-ui.min.css" />
+    <Content Include="Content\css\jquery-ui.structure.css" />
+    <Content Include="Content\css\jquery-ui.structure.min.css" />
+    <Content Include="Content\css\jquery-ui.theme.css" />
+    <Content Include="Content\css\jquery-ui.theme.min.css" />
     <Content Include="Content\css\page\dashboard.css" />
     <Content Include="Content\css\page\home.css" />
     <Content Include="Content\css\page\login.css" />
@@ -164,6 +170,7 @@
     <Content Include="Content\img\about-bg.jpg" />
     <Content Include="Content\img\article-bg.jpg" />
     <Content Include="Content\img\contact-bg.jpg" />
+    <Content Include="Content\img\copy.png" />
     <Content Include="Content\img\home-bg.jpg" />
     <Content Include="Content\img\home-horseBrain.png" />
     <Content Include="Content\img\login-password.png" />
@@ -174,6 +181,9 @@
     <Content Include="Content\Site.css" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Scripts\cardFlip.js" />
+    <Content Include="Scripts\jquery-ui.js" />
+    <Content Include="Scripts\jquery-ui.min.js" />
     <Content Include="Scripts\jquery.js" />
     <Content Include="Scripts\jquery.min.js" />
     <Content Include="Scripts\TextEditor\ckeditor.js" />

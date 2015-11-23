@@ -25,24 +25,23 @@
                 </nav>
       <div class="container-fluid" id="Container">
         <div class="row">
-            <div class="col-lg-2 col-md-2 col-xs-0">
-                <nav>
+                <nav class="col-lg-2 col-md-2 col-sm-2 col-xs-0" id="side-navbar">
                     <!-- Sidebar Menu Items - These collapse to the responsive navigation menu on small screens -->
-                    <div class="collapse navbar-collapse navbar-ex1-collapse">
+                    <div class=" collapse navbar-collapse navbar-ex1-collapse"  id="side-ul-block">
                         <ul class="nav navbar-nav side-nav">
-                            <li>
+                            <li class=" col-md-12 col-ml-12 col-xs-12" id="Index">
                                 <a href="/Admin/Dashboard"><i class="fa fa-fw fa-dashboard"></i>Dashboard</a>
                             </li>
-                            <li>
+                            <li  class=" col-md-12 col-ml-12 col-xs-12"  id="Post">
                                 <a href="/Admin/Dashboard/Post"><i class="fa fa-paper-plane"></i>Article Post</a>
                             </li>
-                            <li>
+                            <li  class=" col-md-12 col-ml-12 col-xs-12 "  id="Tables">
                                 <a href="tables.html"><i class="fa fa-fw fa-table"></i>Tables</a>
                             </li>
-                            <li>
+                            <li class=" col-md-12 col-ml-12 col-xs-12"  id="Review"> 
                                 <a href="forms.html"><i class="fa fa-fw fa-edit"></i>Article Review</a>
                             </li>
-                            <li>
+                            <li  class=" col-md-12  col-ml-12 col-xs-12"  id="Empty">
                                 <a href="javascript:;" data-toggle="collapse" data-target="#demo"><i class="fa fa-fw fa-arrows-v"></i>Empty <i class="fa fa-fw fa-caret-down"></i></a>
                                 <ul id="demo" class="collapse">
                                     <li>
@@ -53,20 +52,18 @@
                                     </li>
                                 </ul>
                             </li>
-                            <li>
+                            <li  class=" col-md-12 col-xs-12">
                                 <a href="blank-page.html"><i class="fa fa-fw fa-file"></i>Blank Page</a>
                             </li>
                         </ul>
                     </div>
                     <!-- /.navbar-collapse -->
                 </nav>
-            </div>
-            <div id="page-wrapper" class="col-lg-9 col-xs-10 col-md-10 col-xs-offset-1">
+            <div id="page-wrapper" class="col-lg-8 col-xs-10 col-xs-offset-1 col-sm-8 col-sm-offset-1 col-md-8 ">
                 @RenderBody()
             </div>
         </div>
     </div>
-
 </body>
 </html>
 

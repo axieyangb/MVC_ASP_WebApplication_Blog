@@ -25,7 +25,9 @@ namespace Blog
                        "~/Scripts/bootstrap.js",
                          "~/Scripts/bootstrap.min.js",
                          "~/Scripts/jquery.js",
-                         "~/Scripts/jquery.min.js"
+                         "~/Scripts/jquery-ui.js",
+                          "~/Scripts/jquery-ui.min.js"
+
                        ));
 
             bundles.Add(new StyleBundle("~/Content/css").Include("~/Content/site.css",
@@ -34,7 +36,14 @@ namespace Blog
                 "~/Content/css/bootstrap.css",
                 "~/Content/css/bootstrap.min.css",
                  "~/Content/css/Home-half-slider.css",
-                  "~/Content/css/fonts.css"
+                  "~/Content/css/fonts.css",
+                  "~/Content/css/jquery-ui.min.css",
+                  "~/Content/css/jquery-ui.css",
+                  "~/Content/css/jquery-ui.structure.css",
+                  "~/Content/css/jquery-ui.structure.min.css",
+                  "~/Content/css/jquery-ui.theme.css",
+                  "~/Content/css/jquery-ui.theme.min.css"
+
                 ));
             bundles.Add(new StyleBundle("~/Content/css/admin").Include(
                 "~/Content/css/page/login.css",

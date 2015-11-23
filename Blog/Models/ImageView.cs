@@ -16,5 +16,9 @@ namespace Blog.Models
         [DataType(System.ComponentModel.DataAnnotations.DataType.DateTime)]
         public DateTime UpdateDate { get; set; }
         public long UserID { get; set; }
+        [DataType(System.ComponentModel.DataAnnotations.DataType.DateTime)]
+        public DateTime? DeleteTime { get; set; }
+        public byte isPublish { get; set; }
+        public byte isBlock { get; set; }
     }
 }
