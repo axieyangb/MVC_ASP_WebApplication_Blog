@@ -17,6 +17,10 @@
     top:180px;
     position:inherit;
 }
+            .detail >.input-group {
+            margin-bottom:5px;
+            width:195px;
+        }
 }
 @media only screen and (max-width: 768px) {
        .unit {
@@ -27,11 +31,15 @@
         top: 150px;
         position: inherit;
     }
-}
-        .detail >.input-group {
+  #toolTipSpan {
+      display:none;
+    }
+          .detail >.input-group {
             margin-bottom:5px;
-            width:195px;
+            width:145px;
         }
+}
+
 .copyIcon,.copyIcon:hover {
     padding: 0px 20px;
     background-image:url('/Content/img/copy.png');

@@ -1,11 +1,14 @@
-﻿@model IEnumerable<Blog.Models.ImageView>
+﻿@model IEnumerable<Blog.Models.ImageViewModel>
 
 @{
     ViewBag.Title = "UploadImage";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <link href="~/Content/css/page/home.css" rel="stylesheet" type="text/css">
+<link href="~/Content/css/ekko-lightbox.css" rel="stylesheet" type="text/css">
 <script src="/Scripts/cardFlip.js"></script>
+<script src="/Scripts/ekko-lightbox.js"></script>
+
 <div class="container">
 
     <div class="row">
@@ -13,7 +16,7 @@
             <h1 class="page-header">@Session["LoggedUserName"].ToString()'s Gallery</h1>
         </div>
 
-
+        <div class="wrapper-parent">
         @foreach (var image in Model)
         {
             <div class="col-lg-3 col-md-4 col-xs-6 unit">
@@ -33,7 +36,7 @@
                     </div>
                     @using (Html.BeginForm("PicOperation", "Home", FormMethod.Post))
                     {
-                        <a class="btn btn-default btn-sm"  href="@Url.Action("ImageDetail", "Home", new Blog.Models.ImageView { Url = image.Url })" data-url="@Request.Url.GetLeftPart(UriPartial.Authority)@image.Url" data-toggle="tooltip" data-original-title="View Raw Picture">Large</a>
+                        <a class="btn btn-default btn-sm"  href="@image.Url" data-toggle="tooltip" data-original-title="View Raw Picture">Large</a>
                         <button class="btn btn-default btn-sm"  type="submit" name="operation" value="2">Delete</button>
                         <input type="text" name="ImageID" value=@image.ImageID hidden />
                         if (@image.isPublish == 0)
@@ -48,6 +51,7 @@
                 </div>
             </div>
         }
+            </div>
 
     </div>
 </div>
@@ -64,6 +68,11 @@
     $(".thumb").flip({
         axis: 'y',
         trigger: 'click'
+    });
+
+    $(document).delegate('*[data-original-title="View Raw Picture"]', 'click', function (event) {
+        event.preventDefault();
+        $(this).ekkoLightbox();
     });
 
 </script>

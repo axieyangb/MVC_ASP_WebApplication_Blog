@@ -88,5 +88,5 @@ C:\Users\axiey_000\Documents\Visual Studio 2012\Projects\Blog\MVC_ASP_WebApplica
 C:\Users\axiey_000\Documents\Visual Studio 2012\Projects\Blog\MVC_ASP_WebApplication_Blog\Blog\bin\System.Web.WebPages.Razor.xml
 C:\Users\axiey_000\Documents\Visual Studio 2012\Projects\Blog\MVC_ASP_WebApplication_Blog\Blog\obj\Release\Blog.dll
 C:\Users\axiey_000\Documents\Visual Studio 2012\Projects\Blog\MVC_ASP_WebApplication_Blog\Blog\obj\Release\Blog.pdb
-C:\Users\axiey_000\Documents\Visual Studio 2012\Projects\Blog\MVC_ASP_WebApplication_Blog\Blog\obj\Release\Blog.csprojResolveAssemblyReference.cache
 C:\Users\Scott2\Desktop\WebApp\MVC_ASP_WebApplication_Blog\Blog\obj\Release\Blog.csprojResolveAssemblyReference.cache
+C:\Users\axiey_000\Documents\Visual Studio 2012\Projects\Blog\MVC_ASP_WebApplication_Blog\Blog\obj\Release\Blog.csprojResolveAssemblyReference.cache

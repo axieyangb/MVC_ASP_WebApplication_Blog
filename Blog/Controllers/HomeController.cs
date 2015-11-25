@@ -67,7 +67,7 @@ namespace Blog.Controllers
                     string path = System.IO.Path.Combine(Server.MapPath("/Content/img/article/" + id), ImageName);
                     url = "/Content/img/article/" + id + "/" + ImageName;
                     upload.SaveAs(path);
-                    ImageView image = new ImageView();
+                    ImageViewModel image = new ImageViewModel();
                     image.UpdateDate = System.DateTime.Now;
                     image.UserID = long.Parse(Session["LoggedUserID"].ToString());
                     image.Url = url;
@@ -92,13 +92,13 @@ namespace Blog.Controllers
         {
             if (Session["LoggedUserID"] == null)
             {
-                return Content("Sorry ! please login first");
+                return Content("Sorry ! please login first <a href='Admin/Login'>Click Here to Login</a>");
             }
             var images = db.Images.Where(a => a.UserID == id && a.isBlock == 0 && a.DeleteTime == null);
             return View(images);
         }
         [HttpGet]
-        public ActionResult ImageDetail(ImageView image)
+        public ActionResult ImageDetail(ImageViewModel image)
         {
             return View(image);
         }
@@ -112,7 +112,7 @@ namespace Blog.Controllers
             var query = from image in db.Images
                         where image.ImageID == imageId && image.UserID == id 
                         select image;
-            foreach (ImageView one in query)
+            foreach (ImageViewModel one in query)
             {
                 if (oper == 1)
                     one.isPublish = 1;

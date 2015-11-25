@@ -129,11 +129,13 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Content Include="Content\css\ekko-lightbox.css" />
     <Content Include="Content\css\fonts.css" />
     <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\ArticleController.cs" />
     <Compile Include="Controllers\DashBoradControllers.cs" />
     <Compile Include="Controllers\ErrorController.cs" />
+    <Compile Include="Controllers\GalleryController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -145,8 +147,9 @@
     <Compile Include="Models\ArticleSubmitView.cs" />
     <Compile Include="Models\BlogContext.cs" />
     <Compile Include="Models\CommentDetailInfoView.cs" />
-    <Compile Include="Models\ImageView.cs" />
+    <Compile Include="Models\ImageViewModel.cs" />
     <Compile Include="Models\Member.cs" />
+    <Compile Include="Models\PublicImageModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -162,6 +165,7 @@
     <Content Include="Content\css\jquery-ui.theme.css" />
     <Content Include="Content\css\jquery-ui.theme.min.css" />
     <Content Include="Content\css\page\dashboard.css" />
+    <Content Include="Content\css\page\gallery.css" />
     <Content Include="Content\css\page\home.css" />
     <Content Include="Content\css\page\login.css" />
     <Content Include="Content\css\page\postArticle.css" />
@@ -182,6 +186,7 @@
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\cardFlip.js" />
+    <Content Include="Scripts\ekko-lightbox.js" />
     <Content Include="Scripts\jquery-ui.js" />
     <Content Include="Scripts\jquery-ui.min.js" />
     <Content Include="Scripts\jquery.js" />
@@ -641,6 +646,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Home\ImageDetail.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Gallery\Index.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

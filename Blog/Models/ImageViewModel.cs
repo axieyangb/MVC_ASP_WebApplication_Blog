@@ -7,7 +7,7 @@ using System.ComponentModel.DataAnnotations;
 namespace Blog.Models
 {
     [Table("ImageView")]
-    public class ImageView
+    public class ImageViewModel
     {
         [Key]
       public  long ImageID { get; set; }
