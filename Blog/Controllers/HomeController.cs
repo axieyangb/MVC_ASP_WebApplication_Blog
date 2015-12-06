@@ -92,7 +92,7 @@ namespace Blog.Controllers
         {
             if (Session["LoggedUserID"] == null)
             {
-                return Content("Sorry ! please login first <a href='Admin/Login'>Click Here to Login</a>");
+                return Content("Sorry ! please login first <a href='/Admin/Login'>Click Here to Login</a>");
             }
             var images = db.Images.Where(a => a.UserID == id && a.isBlock == 0 && a.DeleteTime == null);
             return View(images);

@@ -49,6 +49,7 @@ namespace Blog.Controllers
             article.AuthorID = articlePost.AuthorID;
             article.Title = HttpUtility.HtmlEncode(articlePost.Title);
             article.SubTitle = articlePost.SubTitle;
+            if(article.Content !=null)
             article.Content = articlePost.Content.Replace("'", "''").Replace("style=\"height:", "name=\"height:").Replace("<img ", "<img class=\"col-sm-12 col-xs-12 \" ");
             article.PostDate = System.DateTime.Now;
             ArticleStruct one = new ArticleStruct();

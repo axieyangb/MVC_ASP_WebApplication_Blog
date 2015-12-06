@@ -13,5 +13,6 @@ namespace Blog.Models
         public DbSet<ArticleComment> ArticleComments { get; set; }
         public DbSet<CommentDetailInfoView> CommentDetailInfo { get; set; }
         public DbSet<PublicImageModel> PublicImages { get; set; }
+        public DbSet<PublicImageViewModel> PublicImagesVW { get; set; }
     }
 }

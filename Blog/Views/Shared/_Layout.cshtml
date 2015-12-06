@@ -46,7 +46,7 @@
                         @Html.ActionLink("主页 Home", "Index", "Home" ,null,new Dictionary<string, object> { { "data-toggle", "tooltip" }, { "data-original-title", "主页" } })
                     </li>
                     <li>
-                        <a href="Home/ViewImage" data-toggle="tooltip" data-original-title="图片">Gallery</a>
+                        <a href="Gallery" data-toggle="tooltip" data-original-title="图片">Gallery</a>
                     </li>
                     <li>
                         @Html.ActionLink("Article", "Index","Article",null,new Dictionary<string, object> { { "data-toggle", "tooltip" }, { "data-original-title", "文章" } } )
@@ -61,8 +61,8 @@
                         }
                         else
                         {
-                            <a  data-toggle="collapse" class="collapse navbar-collapse"  id="bs-example-navbar-collapse-2" data-target="#menu"> @Session["LoggedUserName"].ToString()<span class="caret"></span></a>
-                             <ul class="collapse navbar-collapse-2" id="menu" >
+                            <a href="#" data-toggle="collapse"  data-target="#menu"> @Session["LoggedUserName"].ToString()<span class="caret"></span></a>
+                             <ul id="menu" class="collapse">
                                   <li>
                                     <a href ="/Admin/Dashboard"><p class="profile">面板 Dashboard</p></a>
                                  </li>
@@ -123,4 +123,8 @@
         });
     </script>
 </body>
+
+
+    <div id="dialog-confirm">
+</div>
 </html>

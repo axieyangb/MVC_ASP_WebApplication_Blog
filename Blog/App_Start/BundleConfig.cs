@@ -22,13 +22,17 @@ namespace Blog
             bundles.IgnoreList.Clear();
             AddDefaultIgnorePatterns(bundles.IgnoreList);
             bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
-                       "~/Scripts/bootstrap.js",
+                       
                          "~/Scripts/bootstrap.min.js",
                          "~/Scripts/jquery.js",
                          "~/Scripts/jquery-ui.js",
                           "~/Scripts/jquery-ui.min.js"
 
                        ));
+
+            bundles.Add(new ScriptBundle("~/bundles/upload").Include(
+                       "~/Scripts/FileUpload/*.js"
+                     ));
 
             bundles.Add(new StyleBundle("~/Content/css").Include("~/Content/site.css",
                 "~/Content/css/blog.css",

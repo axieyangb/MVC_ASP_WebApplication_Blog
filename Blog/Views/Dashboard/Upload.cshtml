@@ -1,0 +1,86 @@
+﻿@{
+    ViewBag.Title = "Upload";
+    Layout = "~/Views/Dashboard/_Layout.cshtml";
+}
+@Scripts.Render("~/bundles/upload")
+
+<script>
+    function _(el) {
+        return document.getElementById(el);
+    }
+
+    function uploadFile() {
+        var file= _("file1").files[0];
+        //alert(file.name+"|" + file.size +"|" + file.type);
+        var formdata = new FormData();
+        formdata.append("file1", file);
+        var ajax = new XMLHttpRequest();
+        ajax.upload.addEventListener("progress", progressHandler, false);
+        ajax.addEventListener("load", completeHandler, false);
+        ajax.addEventListener("error", errorHandler, false);
+        ajax.addEventListener("abort", abortHandler, false);
+        ajax.open("POST", "@Url.Action("FileUpload","DashBoard")");
+        ajax.send();
+    }
+
+    function progressHandler(event) {
+        _("loaded_n_total").innerHTML = "Uploaded " + even.loaded + " bypes of " + event.total;
+        var percent = (event.loaded / event.total) * 100;
+        _("progressBar").style.width = Math.round(percent) + "%";
+        _("status").innerHTML = Math.round(percent) + "% Uploaded... please wait";
+    }
+    function completeHandler(event) {
+        _("progressBar").style.width = "100%";
+        var successRecord = document.createElement("a");
+        successRecord.href = "#";
+        successRecord.className = "list-group-item list-group-item-success";
+        var innerLink = document.createElement("span");
+        innerLink.className = "badge alert-success pull-right";
+        innerLink.innerText = "Success";
+        successRecord.appendChild(innerLink);
+        successRecord.innerHTML +="image name";
+        _("resultList").appendChild(successRecord);
+    }
+    function errorHandler(event) {
+        _("status").innerHTML = "Upload Failed";
+    }
+    function abortHandler(event) {
+        _("status").innerHTML = "Upload Aborted";
+    }
+</script>
+
+<div class="col-lg-12">
+    <h1 class="page-header">Media <small>Post</small>
+    </h1>
+    <ol class="breadcrumb">
+        <li class="active">
+            <i class="fa fa-paper-plane"></i>Media Post
+        </li>
+    </ol>
+</div>
+            <input type="file" name="files1" class="form-control"  id="file1">
+        <button type="button" class="btn btn-sm btn-primary" id="upload-submit" onclick="uploadFile()">Upload files</button>
+
+
+<!-- Drop Zone -->
+<h4>Or drag and drop files below</h4>
+<div class="upload-drop-zone" id="drop-zone">
+    Just drag and drop files here
+</div>
+
+<!--  Load bytes-->
+<p id="loaded_n_total"></p>
+ <p id="status"></p>
+<!-- Progress Bar -->
+<div class="progress">
+    <div class="progress-bar" id="progressBar" role="progressbar"  aria-valuemin="0" aria-valuemax="100" >
+
+    </div>
+</div>
+
+<!-- Upload Finished -->
+<div class="js-upload-finished">
+    <h3>Processed files</h3>
+    <div class="list-group" id="resultList">
+    </div>
+</div>

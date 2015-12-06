@@ -10,51 +10,74 @@
 <script src="/Scripts/ekko-lightbox.js"></script>
 
 <div class="container">
+    <div class="row">
+        <h1 class="page-header">@Session["LoggedUserName"].ToString()'s Gallery</h1>
+    </div>
 
     <div class="row">
-        <div class="col-lg-12">
-            <h1 class="page-header">@Session["LoggedUserName"].ToString()'s Gallery</h1>
-        </div>
-
-        <div class="wrapper-parent">
         @foreach (var image in Model)
         {
             <div class="col-lg-3 col-md-4 col-xs-6 unit">
-                <div class="col-lg-12 col-md-12 col-xs-12 thumb">
-                    <div class="col-lg-3 col-md-4 col-xs-6 front">
-                        <img src="@image.Url" alt="Hejsan" id="#image" data-source="@image.Url" class="img-thumbnail" width="200" height="200"/>
+                <div class="thumb">
+                    <div class="front">
+                        <img src="@image.Url" alt="Hejsan" id="#image" data-source="@image.Url" class="img-thumbnail" />
                     </div>
-                    <div class="col-lg-3 col-md-4 col-xs-6 back">
-                        <p class="alert alert-success col-lg-10 col-md-10 col-xs-10 col-sm-10">Post at @image.UpdateDate</p>
+                    <div class="back">
+                        <p class="alert alert-success">Post at @image.UpdateDate</p>
                     </div>
                 </div>
                 <div class="detail">
-                    <div class="input-group col-lg-10 col-md-10 col-xs-10 col-sm-10">
+                    <div class="input-group  input-group-sm">
                         <span class="input-group-addon">URL</span>
-                        <input type="text" class="form-control " id="basic-url" aria-describedby="basic-addon3" value="@image.Url">
+                        <input type="text" class="form-control" value="@image.Url">
                         <span class="btn-default btn-sm input-group-addon copyIcon" id="toolTipSpan" data-toggle="tooltip" data-original-title="Copy to ClipBoard"></span>
                     </div>
-                    @using (Html.BeginForm("PicOperation", "Home", FormMethod.Post))
-                    {
-                        <a class="btn btn-default btn-sm"  href="@image.Url" data-toggle="tooltip" data-original-title="View Raw Picture">Large</a>
-                        <button class="btn btn-default btn-sm"  type="submit" name="operation" value="2">Delete</button>
-                        <input type="text" name="ImageID" value=@image.ImageID hidden />
-                        if (@image.isPublish == 0)
+                    <span>
+                        @using (Html.BeginForm("PicOperation", "Home", FormMethod.Post))
                         {
-                        <button class="btn btn-default btn-sm" id="bePublic" type="submit" name="operation" value="1">Be Public</button>
+                            <button class="btn btn-default btn-sm" href="@image.Url" id="viewLarge" data-toggle="tooltip" data-original-title="View Raw Picture">Large</button>
+                            <input type="text" name="ImageID" id="imageID" value="@image.ImageID" hidden />
+                            if (image.isPublish == 1)
+                            {  
+                            <input type="text" name="Operation" value="0" hidden />
+                            <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modalPopMessage" data-operate="BePrivate">Be Private</button>
+                            }
+                            else
+                            {
+                            <input type="text" name="Operation" value="1" hidden />
+                            <button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#modalPopMessage" data-operate="BePublic">Be Public</button>
+                            }
+                             <button type="button" class="btn btn-default btn-sm" name="operation" data-toggle="modal" data-target="#modalPopMessage" data-operate="Delete" value="2">Delete</button>
+
                         }
-                        else
-                        {
-                        <button class="btn btn-info btn-sm" id="bePrivate" type="submit" name="operation" value="0">Be Private</button>
-                        }
-                    }
+                       
                 </div>
             </div>
         }
+    </div>
+
+</div>
+
+<div class="modal fade" id="modalPopMessage" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Modal Header</h4>
             </div>
+            <div class="modal-body">
+                <p id="pop-up-message"></p>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" id="pop-up-confirm" class="btn btn-primary btn-sm">Comfirm</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
 
     </div>
 </div>
+
 
 <hr>
 <script type="text/javascript">
@@ -62,6 +85,27 @@
         $('.copyIcon').click(function () { // IE 11, Chrome, Firefox 42
             $(this).prev('input').focus().select();
             document.execCommand('copy');
+        });
+
+        $('#modalPopMessage').on('show.bs.modal', function (event) {
+            var target = $(event.relatedTarget);
+            var oper = target.data("operate");
+            if (oper == "BePublic") {
+                $(".modal-title").text('Be Public')
+                $("#pop-up-message").text("Are you sure you want to public your picture?")
+            }
+            else if (oper == "BePrivate") {
+                $(".modal-title").text('Be Private')
+                $("#pop-up-message").text("Are you sure you want to private your picture?")
+            }
+            else if (oper == "Delete") {
+                $(".modal-title").text('Delete')
+                $("#pop-up-message").text("Are you sure you want to delete your picture?")
+            }
+
+            $("#pop-up-confirm").click(function () {
+                target.closest('form').submit()
+            })
         });
 
     });
@@ -74,5 +118,7 @@
         event.preventDefault();
         $(this).ekkoLightbox();
     });
+
+
 
 </script>
