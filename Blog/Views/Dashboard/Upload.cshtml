@@ -20,17 +20,19 @@
         ajax.addEventListener("error", errorHandler, false);
         ajax.addEventListener("abort", abortHandler, false);
         ajax.open("POST", "@Url.Action("FileUpload","DashBoard")");
-        ajax.send();
+        ajax.send(formdata);
     }
 
     function progressHandler(event) {
-        _("loaded_n_total").innerHTML = "Uploaded " + even.loaded + " bypes of " + event.total;
+        _("loaded_n_total").innerHTML = "Uploaded " + event.loaded + " bypes of " + event.total;
         var percent = (event.loaded / event.total) * 100;
         _("progressBar").style.width = Math.round(percent) + "%";
         _("status").innerHTML = Math.round(percent) + "% Uploaded... please wait";
     }
     function completeHandler(event) {
+        alert(JSON.stringify(event.currentTarget.response));
         _("progressBar").style.width = "100%";
+        _("status").innerHTML = "done";
         var successRecord = document.createElement("a");
         successRecord.href = "#";
         successRecord.className = "list-group-item list-group-item-success";
