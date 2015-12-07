@@ -37,20 +37,18 @@
                         {
                             <button class="btn btn-default btn-sm" href="@image.Url" id="viewLarge" data-toggle="tooltip" data-original-title="View Raw Picture">Large</button>
                             <input type="text" name="ImageID" id="imageID" value="@image.ImageID" hidden />
+
                             if (image.isPublish == 1)
                             {  
-                            <input type="text" name="Operation" value="0" hidden />
                             <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modalPopMessage" data-operate="BePrivate">Be Private</button>
                             }
                             else
                             {
-                            <input type="text" name="Operation" value="1" hidden />
                             <button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#modalPopMessage" data-operate="BePublic">Be Public</button>
                             }
-                             <button type="button" class="btn btn-default btn-sm" name="operation" data-toggle="modal" data-target="#modalPopMessage" data-operate="Delete" value="2">Delete</button>
-
+                             <button type="button" class="btn btn-default btn-sm"  data-toggle="modal" data-target="#modalPopMessage" data-operate="Delete">Delete</button>
                         }
-                       
+                       </span>
                 </div>
             </div>
         }
@@ -104,6 +102,16 @@
             }
 
             $("#pop-up-confirm").click(function () {
+               
+                if (oper == "Delete") {
+                    target.after("<input type='text' name='operation' value='2' hidden>");
+                }
+                else if (oper == "BePrivate") {
+                    target.after("<input type='text' name='operation' value='0' hidden>");
+                }
+                else if (oper == "BePublic") {
+                    target.after("<input type='text' name='operation' value='1' hidden>");
+                }
                 target.closest('form').submit()
             })
         });
