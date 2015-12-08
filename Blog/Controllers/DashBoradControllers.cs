@@ -52,13 +52,19 @@ namespace Blog.Controllers
                     ret.fileName = DateTime.Now.ToString("yyyyMMddHHmmss") + '_' + file.FileName;
                     if (!String.IsNullOrEmpty(ret.UserID))
                     {
-                        ret.URL = "/Content/img/article/" + ret.UserID + "/" + ret.fileName;
-                        var path = Path.Combine(Server.MapPath("~/Content/img/article/" + ret.UserID + ""), ret.fileName);
+                        ret.URL = "/Content/Users/" + ret.UserID + "/" + ret.fileName;
+                        var path = Path.Combine(Server.MapPath("~/Content/Users/" + ret.UserID + ""), ret.fileName);
                         var stream = file.InputStream;
                         using (var fileStream = System.IO.File.Create(path))
                         {
                             stream.CopyTo(fileStream);
                         }
+                        ImageViewModel image = new ImageViewModel();
+                    image.UpdateDate = System.DateTime.Now;
+                    image.UserID = long.Parse(ret.UserID);
+                    image.Url = ret.URL;
+                    db.Images.Add(image);
+                    db.SaveChanges();
                     }
                     else
                     {
@@ -70,6 +76,7 @@ namespace Blog.Controllers
                 else
                 {
                     ret.isAccept = 1;
+                    ret.fileName = file.FileName;
                     ret.Error = "Content Type Deny";
                 }
                 retList.AddLast(ret);

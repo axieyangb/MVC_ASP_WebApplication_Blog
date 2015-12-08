@@ -10,6 +10,7 @@
     }
 
     function uploadFile() {
+        _("progressBar").style.width = "0%";
         var file= _("file1").files[0];
         //alert(file.name+"|" + file.size +"|" + file.type);
         var formdata = new FormData();
@@ -19,6 +20,7 @@
         ajax.addEventListener("load", completeHandler, false);
         ajax.addEventListener("error", errorHandler, false);
         ajax.addEventListener("abort", abortHandler, false);
+        ajax.responseType = 'json';
         ajax.open("POST", "@Url.Action("FileUpload","DashBoard")");
         ajax.send(formdata);
     }
@@ -30,18 +32,31 @@
         _("status").innerHTML = Math.round(percent) + "% Uploaded... please wait";
     }
     function completeHandler(event) {
-        alert(JSON.stringify(event.currentTarget.response));
-        _("progressBar").style.width = "100%";
+        var res = event.currentTarget.response;
+        //res=res.substring(1, res.length - 1);
+        var feedback = JSON.parse(res);
         _("status").innerHTML = "done";
-        var successRecord = document.createElement("a");
-        successRecord.href = "#";
-        successRecord.className = "list-group-item list-group-item-success";
-        var innerLink = document.createElement("span");
-        innerLink.className = "badge alert-success pull-right";
-        innerLink.innerText = "Success";
-        successRecord.appendChild(innerLink);
-        successRecord.innerHTML +="image name";
-        _("resultList").appendChild(successRecord);
+        for (var i = 0 ; feedback!=null && i < feedback.length; i++) {
+            var oneRecord = document.createElement("a");
+            if (feedback[i]["isAccept"] == 0) {
+                oneRecord.href = "/Home/ViewImage/" + feedback[i]["UserID"];
+                oneRecord.className = "list-group-item list-group-item-success";
+                var innerLink = document.createElement("span");
+                innerLink.className = "badge alert-success pull-right";
+                innerLink.innerText = "Success";
+                oneRecord.appendChild(innerLink);
+                oneRecord.innerHTML += feedback[i]["fileName"];
+            }
+            else {
+                oneRecord.className = "list-group-item list-group-item-danger";
+                var innerLink = document.createElement("span");
+                innerLink.className = "badge alert-danger pull-right";
+                innerLink.innerText = "Failed";
+                oneRecord.appendChild(innerLink);
+                oneRecord.innerHTML += feedback[i]["fileName"] +"["+ feedback[i]["Error"] +"]";
+            }
+            _("resultList").appendChild(oneRecord);
+        }
     }
     function errorHandler(event) {
         _("status").innerHTML = "Upload Failed";

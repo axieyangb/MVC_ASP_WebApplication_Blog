@@ -60,12 +60,12 @@ namespace Blog.Controllers
                 {
                     string url = "";
                     string ImageName = DateTime.Now.ToString("yyyyMMddHHmmss") + '_' + upload.FileName;
-                    if (!System.IO.Directory.Exists(Server.MapPath("/Content/img/article/" + id)))
+                    if (!System.IO.Directory.Exists(Server.MapPath("/Content/Users/" + id)))
                     {
-                        System.IO.Directory.CreateDirectory(Server.MapPath("/Content/img/article/" + id));
+                        System.IO.Directory.CreateDirectory(Server.MapPath("/Content/users/" + id));
                     }
-                    string path = System.IO.Path.Combine(Server.MapPath("/Content/img/article/" + id), ImageName);
-                    url = "/Content/img/article/" + id + "/" + ImageName;
+                    string path = System.IO.Path.Combine(Server.MapPath("/Content/users/" + id), ImageName);
+                    url = "/Content/users/" + id + "/" + ImageName;
                     upload.SaveAs(path);
                     ImageViewModel image = new ImageViewModel();
                     image.UpdateDate = System.DateTime.Now;
