@@ -67,7 +67,9 @@ namespace Blog.Controllers
                     db.Members.Add(member);
                     db.SaveChanges();
                 }
+                return Content("Congratulation ! New Member "+(String.IsNullOrEmpty(member.NickName) ? member.UserName : member.NickName)+". Please <b><a href='/Admin/Login'>Click Here to Login</a></b>");
             }
+            else
             return View();
         }
         public ActionResult Logout()

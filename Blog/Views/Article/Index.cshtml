@@ -112,10 +112,6 @@
     });
 
 
-</script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-<script>
-
     $(document).ready(function () {
         $(".media-body > button").click(function () {
             $("#ReplyId").val($(this).val());
@@ -132,6 +128,12 @@
                 $(this).height(win_width * 0.9 * img_height / img_width);
             }
         });
+        $("table").each(function () {
+            if ($(this).width() > win_width) {
+                var img_width = $(this).width(); 
+                $(this).width(win_width * 0.9);
+            }
+        })
 
     })
 

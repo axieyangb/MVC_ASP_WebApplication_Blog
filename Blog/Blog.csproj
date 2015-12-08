@@ -171,6 +171,7 @@
     <Content Include="Content\css\page\postArticle.css" />
     <Content Include="Content\css\page\signup.css" />
     <Content Include="Content\css\page\error.css" />
+    <Content Include="Content\fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Content\img\about-bg.jpg" />
     <Content Include="Content\img\article-bg.jpg" />
     <Content Include="Content\img\contact-bg.jpg" />
@@ -183,6 +184,7 @@
     <Content Include="Content\img\login-user.png" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="Scripts\FileUpload\bootstrap-filestyle.min.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\cardFlip.js" />
@@ -555,7 +557,6 @@
     <Folder Include="App_Data\" />
     <Folder Include="Content\css\fileUpload\" />
     <Folder Include="Content\css\TextEditor\" />
-    <Folder Include="Scripts\FileUpload\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
@@ -654,6 +655,14 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Dashboard\Upload.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content\fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="Content\fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="Content\fonts\glyphicons-halflings-regular.woff" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content\fonts\glyphicons-halflings-regular.woff2" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

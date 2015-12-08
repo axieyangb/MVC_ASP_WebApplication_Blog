@@ -1,5 +1,4 @@
-﻿body {
-}
+﻿
 
 #refUrl {
     font-size: 10px;
@@ -10,6 +9,9 @@
         min-height:280px;
         padding:5px;
     }
+    .front > img {
+    max-height:280px;
+}
     .detail {
         position: relative;
     }
@@ -28,6 +30,9 @@
     #toolTipSpan {
         display: none;
     }
+        .front > img {
+    max-height:150px;
+}
 }
 
 .detail {
@@ -45,3 +50,4 @@
     opacity: 0.6;
    min-width:41px;
 }
+

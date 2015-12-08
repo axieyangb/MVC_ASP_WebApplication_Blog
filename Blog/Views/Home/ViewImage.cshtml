@@ -35,7 +35,7 @@
                     <span>
                         @using (Html.BeginForm("PicOperation", "Home", FormMethod.Post))
                         {
-                            <button class="btn btn-default btn-sm" href="@image.Url" id="viewLarge" data-toggle="tooltip" data-original-title="View Raw Picture">Large</button>
+                            <button class="btn btn-default btn-sm" href="@image.Url" id="viewLarge" data-usage="viewLarge" >Large</button>
                             <input type="text" name="ImageID" id="imageID" value="@image.ImageID" hidden />
 
                             if (image.isPublish == 1)
@@ -84,7 +84,6 @@
             $(this).prev('input').focus().select();
             document.execCommand('copy');
         });
-
         $('#modalPopMessage').on('show.bs.modal', function (event) {
             var target = $(event.relatedTarget);
             var oper = target.data("operate");
@@ -122,7 +121,7 @@
         trigger: 'click'
     });
 
-    $(document).delegate('*[data-original-title="View Raw Picture"]', 'click', function (event) {
+    $(document).delegate('*[data-usage="viewLarge"]', 'click', function (event) {
         event.preventDefault();
         $(this).ekkoLightbox();
     });
