@@ -43,13 +43,13 @@
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav navbar-right">
                     <li>
-                        @Html.ActionLink("主页 Home", "Index", "Home" ,null,new Dictionary<string, object> { { "data-toggle", "tooltip" }, { "data-original-title", "主页" } })
+                        @Html.ActionLink("主页 Home", "Index", "Home" ,null)
                     </li>
                     <li>
-                        <a href="Gallery" data-toggle="tooltip" data-original-title="图片">Gallery</a>
+                        <a href="Gallery">Gallery</a>
                     </li>
                     <li>
-                        @Html.ActionLink("Article", "Index","Article",null,new Dictionary<string, object> { { "data-toggle", "tooltip" }, { "data-original-title", "文章" } } )
+                        @Html.ActionLink("文章 Article", "Index","Article",null)
                     </li>
                     <li>
                         <a href="contact.html">联系 Contact</a>

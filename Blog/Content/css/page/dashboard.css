@@ -1,64 +1,65 @@
 ﻿
 body {
-  font-family: 'Lora', 'Times New Roman','chineseCute', serif;
-  font-size: 20px;
-  color: #404040;
-      padding:0;
-    margin:0;
-  
+    font-family: 'Lora', 'Times New Roman','chineseCute', serif;
+    font-size: 20px;
+    color: #404040;
+    padding: 0;
+    margin: 0;
 }
 /* Top Navigation */
 
 
-.top-nav>li {
+.top-nav > li {
     display: inline-block;
 }
 
-.top-nav>li {
+.top-nav > li {
     padding-top: 15px;
     padding-bottom: 15px;
     line-height: 20px;
     color: #999;
 }
 
-.top-nav>li:hover,
-.top-nav>li:focus,
-.top-nav>.open,
-.top-nav>.open:hover,
-.top-nav>.open:focus {
-    color: #fff;
-    background-color: #000;
-}
+    .top-nav > li:hover,
+    .top-nav > li:focus,
+    .top-nav > .open,
+    .top-nav > .open:hover,
+    .top-nav > .open:focus {
+        color: #fff;
+        background-color: #000;
+    }
 
 
 /* Side Navigation */
 
-    .side-nav {
-        border: none;
-        background-color: #303030;
-        bottom: 0;
-        padding-bottom: 0px;
-           border-radius:5px;
+.side-nav {
+    border: none;
+    background-color: #303030;
+    bottom: 0;
+    padding-bottom: 0px;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+}
+
+    .side-nav > li > a {
+        color: #999;
     }
-        .side-nav > li > a {
-            color:#999;
-        }
 
-        .side-nav > li  {
-            display:block;
-        }
+    .side-nav > li {
+        display: block;
+    }
 
 
-        .side-nav li :hover,
-        .side-nav li :focus {
-            outline: none;
-            background-color: #f3f3f3 !important;
-        }
+    .side-nav li :hover,
+    .side-nav li :focus {
+        outline: none;
+        background-color: #f3f3f3 !important;
+    }
 
 
 
 #Container {
-    padding:0;
+    padding: 0;
 }
 
 /*content*/
@@ -68,24 +69,25 @@ body {
 }
 
 .page-header {
-    margin:50px 0 20px;
+    margin: 50px 0 20px;
 }
 /* layout.css Style */
 .upload-drop-zone {
-  height: 200px;
-  border-width: 2px;
-  margin-bottom: 20px;
+    height: 200px;
+    border-width: 2px;
+    margin-bottom: 20px;
 }
 
 /* skin.css Style*/
 .upload-drop-zone {
-  color: #ccc;
-  border-style: dashed;
-  border-color: #ccc;
-  line-height: 200px;
-  text-align: center
+    color: #ccc;
+    border-style: dashed;
+    border-color: #ccc;
+    line-height: 200px;
+    text-align: center;
 }
-.upload-drop-zone.drop {
-  color: #222;
-  border-color: #222;
-}
+
+    .upload-drop-zone.drop {
+        color: #222;
+        border-color: #222;
+    }

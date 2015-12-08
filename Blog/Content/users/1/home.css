@@ -10,7 +10,7 @@
         padding:5px;
     }
     .front > img {
-    max-height:270px;
+    max-height:275px;
 }
     .detail {
         position: relative;
@@ -31,7 +31,7 @@
         display: none;
     }
         .front > img {
-    max-height:140px;
+    max-height:145px;
 }
 }
 
