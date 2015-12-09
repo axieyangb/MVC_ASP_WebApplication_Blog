@@ -19,6 +19,7 @@ namespace Blog.Models
         public float? Rate { get; set; }
         public int Like { get; set; }
         public string AuthorName {get;set;}
+        public string ContentType { get; set; }
     }
 
     [Table("PublicImage")]

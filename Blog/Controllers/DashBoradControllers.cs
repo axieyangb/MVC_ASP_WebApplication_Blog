@@ -63,6 +63,7 @@ namespace Blog.Controllers
                     image.UpdateDate = System.DateTime.Now;
                     image.UserID = long.Parse(ret.UserID);
                     image.Url = ret.URL;
+                    image.ContentType = file.ContentType;
                     db.Images.Add(image);
                     db.SaveChanges();
                     }

@@ -10,7 +10,7 @@ namespace Blog.Models
     public class ImageViewModel
     {
         [Key]
-      public  long ImageID { get; set; }
+        public long ImageID { get; set; }
         [DataType(System.ComponentModel.DataAnnotations.DataType.ImageUrl)]
         public string Url { get; set; }
         [DataType(System.ComponentModel.DataAnnotations.DataType.DateTime)]
@@ -20,5 +20,6 @@ namespace Blog.Models
         public DateTime? DeleteTime { get; set; }
         public byte isPublish { get; set; }
         public byte isBlock { get; set; }
+        public string ContentType { get; set; }
     }
 }

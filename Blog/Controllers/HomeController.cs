@@ -68,6 +68,7 @@ namespace Blog.Controllers
                     url = "/Content/users/" + id + "/" + ImageName;
                     upload.SaveAs(path);
                     ImageViewModel image = new ImageViewModel();
+                    image.ContentType=upload.ContentType;
                     image.UpdateDate = System.DateTime.Now;
                     image.UserID = long.Parse(Session["LoggedUserID"].ToString());
                     image.Url = url;
