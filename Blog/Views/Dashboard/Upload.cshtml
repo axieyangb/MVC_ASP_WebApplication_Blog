@@ -21,7 +21,7 @@
         ajax.addEventListener("load", completeHandler, false);
         ajax.addEventListener("error", errorHandler, false);
         ajax.addEventListener("abort", abortHandler, false);
-        ajax.open("POST", "@Url.Action("FileUpload", "DashBoard")");
+        ajax.open("POST", "/DashBoard/FileUpload");
         ajax.responseType = "json";
         ajax.send(formdata);
     }
