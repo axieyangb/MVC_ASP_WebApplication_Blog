@@ -50,8 +50,11 @@ namespace Blog.Controllers
             article.Title = HttpUtility.HtmlEncode(articlePost.Title);
             article.SubTitle = articlePost.SubTitle;
             article.Content = articlePost.Content;
-            if(article.Content !=null)
-            article.Content = articlePost.Content.Replace("'", "''").Replace("style=\"height:", "name=\"height:").Replace("<img ", "<img class=\"col-sm-12 col-xs-12 \" ");
+            if (article.Content != null)
+            {
+                article.Content = articlePost.Content.Replace("style=\"height:", "name=\"height:").Replace("\r\n", "<br>");
+                article.Content = HttpUtility.HtmlEncode(article.Content);
+            }
             article.PostDate = System.DateTime.Now;
             ArticleStruct one = new ArticleStruct();
             one.article = article;
@@ -96,6 +99,47 @@ namespace Blog.Controllers
             return RedirectToAction("Index", "Article", new{ArticleID=articlePost.article.ArticleID});
         }
 
+
+        [HttpPost]
+        public JsonResult ArticleUpdate()
+        {
+            retJsonModel ret = new retJsonModel();
+            string ArticleContent  =HttpUtility.UrlDecode(Request.Form["Content"]);
+            string userID_str = Request.Form["UserID"];
+            string ArticeID_str = Request.Form["ArticleID"];
+            try
+            {
+                long ArticleID = long.Parse(ArticeID_str);
+                long userID = long.Parse(userID_str);
+                Article article = db.Articles.Find(ArticleID);
+                if (Session["LoggedUserID"].Equals(userID_str) && article.AuthorID == userID)
+                {
+                    article.Content = HttpUtility.HtmlEncode(ArticleContent.Replace("style=\"height:", "name=\"height:"));
+                    article.ModifyDate = DateTime.Now;
+                    db.SaveChanges();
+                    ret.isAccept = 1;
+                    ret.UserID = article.AuthorID.ToString();
+                }
+                else
+                {
+                    ret.isAccept = 0;
+                    ret.Error = "Update Failed";
+                }
+            }
+            catch (Exception ex)
+            {
+                ret.isAccept = 0;
+                ret.Error = ex.ToString();
+            }
+            return Json(ret);
+        }
+
+        private class retJsonModel
+        {
+            public int isAccept { get; set; }
+            public string UserID { get; set; }
+            public string Error { get; set; }
+        }
 
 
     }

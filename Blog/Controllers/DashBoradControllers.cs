@@ -44,12 +44,14 @@ namespace Blog.Controllers
                 HttpPostedFileBase file = Request.Files[i];
                 retJsonModel ret = new retJsonModel();
                 ret.ContentType = file.ContentType;
-                if (Session["LoggedUserID"] !=null)
+                ret.UserID = Session["LoggedUserID"].ToString();
+                if (ret.ContentType.Contains("image/") || ret.ContentType.Contains("video/"))
                 {
-                    ret.UserID = Session["LoggedUserID"].ToString();
-                    if ((ret.ContentType.Contains("image/") || ret.ContentType.Contains("video/")) && !ret.ContentType.Equals("video/x-ms-wmv"))
+                    ret.isAccept = 0;
+                    ret.fileTypeAccept = "yes";
+                    ret.fileName = DateTime.Now.ToString("yyyyMMddHHmmss") + '_' + file.FileName;
+                    if (!String.IsNullOrEmpty(ret.UserID))
                     {
-                        ret.fileName = DateTime.Now.ToString("yyyyMMddHHmmss") + '_' + file.FileName;
                         ret.URL = "/Content/Users/" + ret.UserID + "/" + ret.fileName;
                         var path = Path.Combine(Server.MapPath("~/Content/Users/" + ret.UserID + ""), ret.fileName);
                         var stream = file.InputStream;
@@ -58,36 +60,28 @@ namespace Blog.Controllers
                             stream.CopyTo(fileStream);
                         }
                         ImageViewModel image = new ImageViewModel();
-                        image.UpdateDate = System.DateTime.Now;
-                        image.UserID = long.Parse(ret.UserID);
-                        image.Url = ret.URL;
-                        image.ContentType = file.ContentType;
-                        db.Images.Add(image);
-                        try
-                        {
-                            db.SaveChanges();
-                            ret.isAccept = 0;
-                            ret.fileTypeAccept = "yes";
-                        }
-                        catch
-                        {
-                            ret.isAccept = 1;
-                            ret.Error = "Save Error";
-                        }
+                    image.UpdateDate = System.DateTime.Now;
+                    image.UserID = long.Parse(ret.UserID);
+                    image.Url = ret.URL;
+                    image.ContentType = file.ContentType;
+                    db.Images.Add(image);
+                    db.SaveChanges();
                     }
                     else
                     {
                         ret.isAccept = 1;
-                        ret.fileName = file.FileName;
-                        ret.Error = "Content Type Deny";
+                        ret.Error = "Member Session Expired";
                     }
+
                 }
                 else
                 {
                     ret.isAccept = 1;
-                    ret.Error = "Member Session Expired";
+                    ret.fileName = file.FileName;
+                    ret.Error = "Content Type Deny";
                 }
                 retList.AddLast(ret);
+
             }
             var javaScriptSerializer = new JavaScriptSerializer();
             string jsonString = javaScriptSerializer.Serialize(retList);

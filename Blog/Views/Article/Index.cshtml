@@ -5,6 +5,29 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+<script>
+    function updateArticle() {
+        var ajax = new XMLHttpRequest();
+        ajax.addEventListener("load", completeHandler, false);
+        var data = new FormData();
+        data.append('Content', encodeURI($('#articleContent').html()));
+        data.append('UserID', '@Session["LoggedUserID"]');
+        data.append('ArticleID', '@Model.article.ArticleID');
+        ajax.open("POST", "@Url.Action("ArticleUpdate", "Article")");
+        ajax.responseType = "json";
+        ajax.send(data);
+    }
+    function completeHandler(event) {
+        var feedback = event.currentTarget.response;
+        if (feedback["isAccept"] != null && feedback["isAccept"] == "1") {
+            alert("Article Modified Successfully");
+        }
+        else {
+            alert("Article Modified Failed <br>" + feedback["error"]);
+        }
+    }
+
+</script>
 <!-- Page Header -->
 <!-- Set your background image for this header on the line below. -->
 <header class="intro-header" style="background-image: url('/Content/img/article-bg.jpg')">
@@ -23,8 +46,11 @@
 <article>
     <div class="container">
         <div class="row">
+                    <button type="button" class="pull-right btn btn-info" id="ContentEditButton" style="display: none">Edit</button>
+            </div>
+        <div class="row">
             <div class="col-lg-8 col-lg-offset-2 col-md-12">
-                <div>@Html.Raw(HttpUtility.HtmlDecode(Model.article.Content))</div>
+                <div id="articleContent">@Html.Raw(HttpUtility.HtmlDecode(Model.article.Content))</div>
                 <br>
                 <hr>
 
@@ -40,8 +66,8 @@
                             <div class="form-group">
                                 @Html.AntiForgeryToken()
                                 @Html.ValidationSummary(true)
-                                @Html.HiddenFor(a => a.commentArticle.ReplyID, new {id="ReplyId"})
-                                @Html.HiddenFor(a => a.article.ArticleID, new { value=Model.article.ArticleID})
+                                @Html.HiddenFor(a => a.commentArticle.ReplyID, new { id = "ReplyId" })
+                                @Html.HiddenFor(a => a.article.ArticleID, new { value = Model.article.ArticleID })
                                 @Html.TextAreaFor(a => a.commentArticle.Content, new { @class = "form-control", name = "Content", id = "Content", rows = "3" })
                                 @*<textarea class="form-control" ,name="Content", id="Content",rows="3"></textarea>*@
                             </div>
@@ -82,7 +108,7 @@
                                         <h4 class="media-heading">@subitem.CommentName
                                             <small>@subitem.CreateDate</small>
                                         </h4>
-                                          @Html.Raw(HttpUtility.HtmlDecode(subitem.Content));
+                                        @Html.Raw(HttpUtility.HtmlDecode(subitem.Content))
                                     </div>
                                 </div>
                                 <!-- End Nested Comment -->
@@ -110,15 +136,52 @@
         filebrowserImageUploadUrl: '/home/UploadImage/' +@Session["LoggedUserID"] +'',
         customConfig: '/Scripts/TextEditor/config.js'
     });
-
-
+    var sessionID = "@Session["LoggedUserID"]";
+    var author = "@Model.article.AuthorID";
+    if (sessionID != null && sessionID == author) {
+        document.getElementById("ContentEditButton").style.display = "initial";
+    }
     $(document).ready(function () {
         $(".media-body > button").click(function () {
             $("#ReplyId").val($(this).val());
             $("#CommentTitle").html("Reply   " + $(this).attr("contentName") + "'s Comment:");
             $("#CommentContext").removeAttr("hidden");
             $("#CommentContext").html($(this).attr("content"));
+        });
+        $('#articleContent').find('.math-tex').each(function () {
+            var text = this.innerHTML;
+            this.setAttribute('data-formular1', text);
         })
+        $('#ContentEditButton').click(function () {
+            var operation = this.innerHTML;
+            if (operation == "Edit") {
+                $('#articleContent').find(".math-tex").each(function () {
+                    var formular = this.getAttribute('data-formular1');
+                    this.innerHTML = formular;
+                    this.removeAttribute('data-formular1');
+                });
+                if (!CKEDITOR.instances.articleContent) {
+                    CKEDITOR.disableAutoInline = true;
+                    $('#articleContent').attr('contenteditable', 'true');
+                    CKEDITOR.inline('articleContent', {
+                        filebrowserImageBrowseUrl: '/home/ViewImage/' +@Session["LoggedUserID"] +'',
+                        filebrowserImageUploadUrl: '/home/UploadImage/' +@Session["LoggedUserID"] +'',
+                        customConfig: '/Scripts/TextEditor/config.js',
+                        startupFocus: true
+                    });
+                    this.innerHTML = "Finish Edit";
+                }
+            }
+            else {
+              
+                $('#articleContent').attr('contenteditable', 'false');
+                
+                if (CKEDITOR.instances.articleContent)
+                    CKEDITOR.instances.articleContent.destroy();
+                updateArticle();
+                this.innerHTML = "Edit";
+            }
+        });
         var win_width = $(window).width();
         $("img").each(function () {
             if ($(this).width() > win_width) {
@@ -130,11 +193,15 @@
         });
         $("table").each(function () {
             if ($(this).width() > win_width) {
-                var img_width = $(this).width(); 
+                var img_width = $(this).width();
                 $(this).width(win_width * 0.9);
             }
         })
 
+
     })
 
+</script>
+<script type="text/javascript"
+  src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
 </script>

@@ -20,7 +20,7 @@
                     <div class="front">
                         @if (image.ContentType.Contains("video"))
                         {
-                        <img src="~/Content/img/video-icon.svg" alt="Hejsan" id="#image" data-source="@image.Url" class="img-thumbnail" />
+                            <img src="~/Content/img/video-icon.svg" alt="Hejsan" id="#image" data-source="@image.Url" class="img-thumbnail" />
                         }
                         else
                         {
@@ -52,9 +52,9 @@
                             {
                             <button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#modalPopMessage" data-operate="BePublic">Be Public</button>
                             }
-                             <button type="button" class="btn btn-default btn-sm"  data-toggle="modal" data-target="#modalPopMessage" data-operate="Delete">Delete</button>
+                            <button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#modalPopMessage" data-operate="Delete">Delete</button>
                         }
-                       </span>
+                    </span>
                 </div>
             </div>
         }
@@ -63,13 +63,14 @@
 </div>
 
 <div class="modal fade" id="modalPopMessage" role="dialog">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-lg">
 
         <!-- Modal content-->
         <div class="modal-content">
-            
+
             <div class="modal-header">
-                <h4 class="modal-title">Modal Header</h4>
+                <button type="button" class="close pull-right" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title"></h4>
             </div>
             <div class="modal-body">
                 <p id="pop-up-message"></p>
@@ -84,16 +85,19 @@
 </div>
 
 <div class="modal fade" id="MediaDetail" role="dialog">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-lg">
 
         <!-- Modal content-->
         <div class="container-fluid modal-content">
             <div class="modal-header col-lg-12 col-md-12 col-xs-12  col-sm-12">
-                <h4 class="modal-title">Gallery Title</h4>
+                <button type="button" class="close pull-right" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title pull-left">Media Detail</h4>
             </div>
-                <div id="pop-up-media" class="modal-body col-lg-12 col-md-12 col-xs-12  col-sm-12"></div>
-            <div class="modal-footer col-lg-12 col-md-12 col-xs-12  col-sm-12" >
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            <div class="modal-body col-lg-12 col-md-12 col-xs-12  col-sm-12">
+                <div id="pop-up-media" class="col-lg-12 col-md-12 col-xs-12  col-sm-12"></div>
+            </div>
+            <div class="modal-footer col-lg-12 col-md-12 col-xs-12  col-sm-12">
+                  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
             </div>
         </div>
 
@@ -125,7 +129,7 @@
             }
 
             $("#pop-up-confirm").click(function () {
-               
+
                 if (oper == "Delete") {
                     target.after("<input type='text' name='operation' value='2' hidden>");
                 }
@@ -144,9 +148,9 @@
             var source = target.data("src");
             if (type.indexOf("image/") > -1) {
                 $("#pop-up-media").empty();
-                    $("#pop-up-media").append("<img id=\"inner-pop-img\" class =\"col-lg-12 col-md-12 col-xs-12  col-sm-12\" src=" + source + " />");
-                    var height = $("#inner-pop-img").height();
-              
+                $("#pop-up-media").append("<img id=\"inner-pop-img\" class =\"col-lg-12 col-md-12 col-xs-12  col-sm-12\" src=" + source + " />");
+                var height = $("#inner-pop-img").height();
+
             }
             else {
                 $("#pop-up-media").empty();
