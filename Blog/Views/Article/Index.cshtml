@@ -32,15 +32,13 @@
 <!-- Set your background image for this header on the line below. -->
 <header class="intro-header" style="background-image: url('/Content/img/article-bg.jpg')">
     <div class="container">
-        <div class="row">
-            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 col-sm-10  col-xs-offset-1 ">
+            <div class="col-xl-12 col-lg-12 col-md-12  col-sm-12  col-xs-12 ">
                 <div class="post-heading">
                     <h1>@Html.DisplayFor(item => Model.article.Title)</h1>
                     <h2 class="subheading">@Html.DisplayFor(item => Model.article.SubTitle)</h2>
                     <span class="meta">Posted by <a href="#">@ViewBag.AuthorName</a> on @Html.DisplayFor(item => Model.article.PostDate)</span>
                 </div>
             </div>
-        </div>
     </div>
 </header>
 <article>
@@ -182,19 +180,19 @@
                 this.innerHTML = "Edit";
             }
         });
-        var win_width = $(window).width();
+        var win_width = $("#articleContent").width();
         $("img").each(function () {
             if ($(this).width() > win_width) {
-                var img_width = $(this).width();
-                var img_height = $(this).height();
-                $(this).width(win_width * 0.9);
-                $(this).height(win_width * 0.9 * img_height / img_width);
+                $(this).css("width", "");
+                $(this).css("height", "");
+                $(this).addClass("col-lg-12  col-md-12  col-sm-12  col-xs-12");
             }
         });
         $("table").each(function () {
             if ($(this).width() > win_width) {
-                var img_width = $(this).width();
-                $(this).width(win_width * 0.9);
+                $(this).css("width", "");
+                $(this).css("height", "");
+                $(this).addClass("col-lg-12  col-md-12  col-sm-12  col-xs-12");
             }
         })
 

@@ -114,7 +114,7 @@ namespace Blog.Controllers
                 Article article = db.Articles.Find(ArticleID);
                 if (Session["LoggedUserID"].Equals(userID_str) && article.AuthorID == userID)
                 {
-                    article.Content = HttpUtility.HtmlEncode(ArticleContent.Replace("style=\"height:", "name=\"height:"));
+                    article.Content = HttpUtility.HtmlEncode(ArticleContent.Replace("style=\"height:", "style=\"name:"));
                     article.ModifyDate = DateTime.Now;
                     db.SaveChanges();
                     ret.isAccept = 1;
