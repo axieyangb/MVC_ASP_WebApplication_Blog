@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.Data.Entity;
 using Blog.Models;
+using System.Text.RegularExpressions;
 namespace Blog.Controllers
 {
     public class ArticleController : Controller
@@ -133,7 +134,41 @@ namespace Blog.Controllers
             }
             return Json(ret);
         }
-
+         [HttpPost]
+        public JsonResult TitleUpdate()
+        {
+            retJsonModel ret = new retJsonModel();
+            string Title_str  =HttpUtility.UrlDecode(Request.Form["Title"]);
+            string SubTitle_str = HttpUtility.UrlDecode(Request.Form["SubTitle"]);
+            string userID_str = Request.Form["UserID"];
+            string ArticeID_str = Request.Form["ArticleID"];
+            try
+            {
+                long ArticleID = long.Parse(ArticeID_str);
+                long userID = long.Parse(userID_str);
+                Article article = db.Articles.Find(ArticleID);
+                if (Session["LoggedUserID"].Equals(userID_str) && article.AuthorID == userID)
+                {
+                    article.Title = Regex.Replace(Title_str, "[^0-9a-zA-Z \u4E00-\u9FFF]+", "");
+                    article.SubTitle = Regex.Replace(SubTitle_str, "[^0-9a-zA-Z \u4E00-\u9FFF]+", ""); 
+                    article.ModifyDate = DateTime.Now;
+                    db.SaveChanges();
+                    ret.isAccept = 1;
+                    ret.UserID = article.AuthorID.ToString();
+                }
+                else
+                {
+                    ret.isAccept = 0;
+                    ret.Error = "Update Failed";
+                }
+            }
+            catch (Exception ex)
+            {
+                ret.isAccept = 0;
+                ret.Error = ex.ToString();
+            }
+            return Json(ret);
+        }
         private class retJsonModel
         {
             public int isAccept { get; set; }
