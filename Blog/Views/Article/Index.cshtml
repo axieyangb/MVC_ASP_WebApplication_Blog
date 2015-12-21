@@ -57,6 +57,8 @@
                 </div>
             </div>
     </div>
+            </div>
+        </div>
 </header>
 <article>
     <div class="container">
@@ -73,23 +75,7 @@
                 <!-- Blog Comments -->
                 @if (ViewBag.isPreView != true)
                 {
-                    <!-- Comments Form -->
-                    <div class="well">
-                        <h4 id="CommentTitle">Leave a Comment:</h4>
-                        <blockquote id="CommentContext" hidden></blockquote>
-                        @using (Html.BeginForm("CommentPost", "Article", FormMethod.Post, new { role = "form" }))
-                        {
-                            <div class="form-group">
-                                @Html.AntiForgeryToken()
-                                @Html.ValidationSummary(true)
-                                @Html.HiddenFor(a => a.commentArticle.ReplyID, new { id = "ReplyId" })
-                                @Html.HiddenFor(a => a.article.ArticleID, new { value = Model.article.ArticleID })
-                                @Html.TextAreaFor(a => a.commentArticle.Content, new { @class = "form-control", name = "Content", id = "Content", rows = "3" })
-                                @*<textarea class="form-control" ,name="Content", id="Content",rows="3"></textarea>*@
-                            </div>
-                            <button type="submit" class="btn btn-primary">Submit</button>
-                        }
-                    </div>
+                  <button class="btn btn-primary btn-block" data-toggle="modal" data-target="#Comment">Leave Comment</button>
                 }
                 <hr>
 
@@ -110,7 +96,7 @@
                             </h4>
 
                             @Html.Raw(HttpUtility.HtmlDecode(@item.parentComment.Content))
-                            <button type="button" class="btn btn-primary" value="@item.parentComment.CommentID" content="@Html.Raw(HttpUtility.HtmlDecode(item.parentComment.Content))" contentName="@item.parentComment.CommentName">Reply</button>
+                            <button type="button" class="btn btn-primary" value="@item.parentComment.CommentID" content="@Html.Raw(HttpUtility.HtmlDecode(item.parentComment.Content))" contentName="@item.parentComment.CommentName" data-toggle="modal" data-target="#Comment">Reply</button>
                             <!-- Nested Comment -->
                             @if (item.childComments != null)
                             {
@@ -174,7 +160,40 @@
     </div>
 </div>
 
+<div class="modal fade" id="Comment" role="dialog">
+       <div class="modal-dialog modal-lg">
+               
+        <!-- Modal content-->
+        <div class="modal-content">
 
+            <div class="modal-header">
+                <button type="button" class="close pull-right" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Leave Commend</h4>
+            </div>
+              <div class="modal-body">
+                    <!-- Comments Form -->
+                    <div class="well">
+                        <h4 id="CommentTitle">Leave a Comment:</h4>
+                        <blockquote id="CommentContext" hidden></blockquote>
+                        @using (Html.BeginForm("CommentPost", "Article", FormMethod.Post, new { role = "form" }))
+                        {
+                            <div class="form-group">
+                                @Html.AntiForgeryToken()
+                                @Html.ValidationSummary(true)
+                                @Html.HiddenFor(a => a.commentArticle.ReplyID, new { id = "ReplyId" })
+                                @Html.HiddenFor(a => a.article.ArticleID, new { value = Model.article.ArticleID })
+                                @Html.TextAreaFor(a => a.commentArticle.Content, new { @class = "form-control", name = "Content", id = "Content", rows = "3" })
+                                @*<textarea class="form-control" ,name="Content", id="Content",rows="3"></textarea>*@
+                            </div>
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        }
+                    </div>
+              </div>
+            </div>
+           </div>
+
+
+</div>
 <script>
     CKEDITOR.replace('Content', {
         filebrowserImageBrowseUrl: '/home/ViewImage/' +@Session["LoggedUserID"] +'',
