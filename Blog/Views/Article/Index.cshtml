@@ -14,10 +14,10 @@
         data.append('SubTitle', encodeURI($('#subTitleModified').val()));
         data.append('UserID', '@Session["LoggedUserID"]');
         data.append('ArticleID', '@Model.article.ArticleID');
-         ajax.open("POST", "@Url.Action("TitleUpdate", "Article")");
-         ajax.responseType = "json";
-         ajax.send(data);
-     }
+        ajax.open("POST", "@Url.Action("TitleUpdate", "Article")");
+        ajax.responseType = "json";
+        ajax.send(data);
+    }
     function updateArticle() {
         var ajax = new XMLHttpRequest();
         ajax.addEventListener("load", completeHandler, false);
@@ -48,17 +48,17 @@
         <div class="row">
 
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 col-sm-10  col-xs-offset-1 ">
-            <div class="col-xl-12 col-lg-12 col-md-12  col-sm-12  col-xs-12 ">
-                <div class="post-heading">
-                    <button type="button" class="pull-right btn btn-info" id="TitleEditButton" style="display: none" data-toggle="modal" data-target="#modalEditTitle">Edit</button>
-                    <h1>@Html.DisplayFor(item => Model.article.Title)</h1>
-                    <h2 class="subheading">@Html.DisplayFor(item => Model.article.SubTitle)</h2>
-                    <span class="meta">Posted by <a href="#">@ViewBag.AuthorName</a> on @Html.DisplayFor(item => Model.article.PostDate)</span>
+                <div class="col-xl-12 col-lg-12 col-md-12  col-sm-12  col-xs-12 ">
+                    <div class="post-heading">
+                        <button type="button" class="pull-right btn btn-info" id="TitleEditButton" style="display: none" data-toggle="modal" data-target="#modalEditTitle">Edit</button>
+                        <h1>@Html.DisplayFor(item => Model.article.Title)</h1>
+                        <h2 class="subheading">@Html.DisplayFor(item => Model.article.SubTitle)</h2>
+                        <span class="meta">Posted by <a href="#">@ViewBag.AuthorName</a> on @Html.DisplayFor(item => Model.article.PostDate)</span>
+                    </div>
                 </div>
             </div>
-    </div>
-            </div>
         </div>
+    </div>
 </header>
 <article>
     <div class="container">
@@ -72,54 +72,76 @@
                 <br>
                 <hr>
 
-                <!-- Blog Comments -->
-                @if (ViewBag.isPreView != true)
-                {
-                  <button class="btn btn-primary btn-block" data-toggle="modal" data-target="#Comment">Leave Comment</button>
-                }
-                <hr>
 
-
-                <!-- Comment -->
-                @if (Model.rootComments != null)
-                {
-                    foreach (var item in Model.rootComments)
+                    <!-- Blog Comments -->
+                    @if (ViewBag.isPreView != true)
                     {
-                    <!-- Comment -->
-                    <div class="media">
-                        <a class="pull-left" href="#">
-                            <img class="media-object" src="http://placehold.it/64x64" alt="">
-                        </a>
-                        <div class="media-body">
-                            <h4 class="media-heading">@item.parentComment.CommentName
-                                <small>@item.parentComment.CreateDate</small>
-                            </h4>
-
-                            @Html.Raw(HttpUtility.HtmlDecode(@item.parentComment.Content))
-                            <button type="button" class="btn btn-primary" value="@item.parentComment.CommentID" content="@Html.Raw(HttpUtility.HtmlDecode(item.parentComment.Content))" contentName="@item.parentComment.CommentName" data-toggle="modal" data-target="#Comment">Reply</button>
-                            <!-- Nested Comment -->
-                            @if (item.childComments != null)
-                            {
-                                foreach (var subitem in item.childComments)
-                                {
-                                <div class="media">
-                                    <a class="pull-left" href="#">
-                                        <img class="media-object" src="http://placehold.it/64x64" alt="">
-                                    </a>
-                                    <div class="media-body">
-                                        <h4 class="media-heading">@subitem.CommentName
-                                            <small>@subitem.CreateDate</small>
-                                        </h4>
-                                        @Html.Raw(HttpUtility.HtmlDecode(subitem.Content))
-                                    </div>
-                                </div>
-                                <!-- End Nested Comment -->
-                                }
-                            }
-                        </div>
-                    </div>
+                        <button class="btn btn-primary btn-block" data-toggle="modal" data-target="#Comment" id="LeaveCommend">Leave Comment</button>
+                        <a class="btn btn-primary btn-block" data-toggle="collapse" href="#comments">Comments <span class="badge">@Model.rootComments.Count</span></a>
                     }
-                }
+                    <hr>
+                    <!-- Comment -->
+                <div class="collapse" id="comments">
+                    @if (Model.rootComments != null)
+                    {
+                        for (int i = 0; i < Model.rootComments.Count;i++ )
+                        {
+                            var item = Model.rootComments.ElementAt(i);
+                        <!-- Comment -->
+                        <div class="media">
+                            <a class="pull-left" href="#">
+                                <img class="media-object" src="http://placehold.it/64x64" alt="">
+                            </a><span class="badge pull-right">@(i+1)@if((i+1)%10==2){WriteLiteral("nd");} else if((i+1)%10==3){WriteLiteral("rd");} else if((i+1)%10==1){WriteLiteral("st");}else{WriteLiteral("th");} Floor</span>
+                            <div class="media-body">
+                                @if(item.parentComment.CommenterID==Model.article.AuthorID)
+                                {
+                                <h4 class="media-heading" style="color:#0094ff">@item.parentComment.CommentName
+                                    <small>@item.parentComment.CreateDate</small>
+                                </h4>
+                                }
+                                else
+                                {
+                                    <h4 class="media-heading">@item.parentComment.CommentName
+                                    <small>@item.parentComment.CreateDate</small>
+                                </h4>
+                                }
+                                  <button type="button" class="btn btn-primary pull-right" value="@item.parentComment.CommentID" data-content="@HttpUtility.HtmlDecode(item.parentComment.Content)" data-contentName="@item.parentComment.CommentName" data-toggle="modal" data-target="#Comment">Reply</button>
+                                    
+                                @Html.Raw(HttpUtility.HtmlDecode(@item.parentComment.Content))
+                               
+                                 <!-- Nested Comment -->
+                                @if (item.childComments != null)
+                                {
+                                    foreach (var subitem in item.childComments)
+                                    {
+                                    <div class="media">
+                                        <a class="pull-left" href="#">
+                                            <img class="media-object" src="http://placehold.it/64x64" alt="">
+                                        </a>
+                                        <div class="media-body">
+                                             @if (subitem.CommenterID == Model.article.AuthorID)
+                                             {
+                                            <h4 class="media-heading" style="color:#0094ff">@subitem.CommentName
+                                                <small>@subitem.CreateDate</small>
+                                            </h4>
+                                             }
+                                            else
+                                            {
+                                              <h4 class="media-heading">@subitem.CommentName
+                                                <small>@subitem.CreateDate</small>
+                                            </h4>   
+                                             }
+                                            @Html.Raw(HttpUtility.HtmlDecode(subitem.Content))
+                                        </div>
+                                    </div>
+                                    <!-- End Nested Comment -->
+                                    }
+                                }
+                            </div>
+                        </div>
+                        }
+                    }
+                </div>
 
 
 
@@ -142,14 +164,14 @@
             </div>
             <div class="modal-body">
                 <div class="input-group  input-group-sm">
-                        <span class="input-group-addon">Title</span>
-                        <input type="text" class="form-control" id="titleModified" value="@Model.article.Title">
-                    </div>
+                    <span class="input-group-addon">Title</span>
+                    <input type="text" class="form-control" id="titleModified" value="@Model.article.Title">
+                </div>
                 <br />
-                 <div class="input-group  input-group-sm">
-                        <span class="input-group-addon">SubTitle</span>
-                        <input type="text" class="form-control" id="subTitleModified" value="@Model.article.SubTitle">
-                    </div>
+                <div class="input-group  input-group-sm">
+                    <span class="input-group-addon">SubTitle</span>
+                    <input type="text" class="form-control" id="subTitleModified" value="@Model.article.SubTitle">
+                </div>
             </div>
             <div class="modal-footer">
                 <button type="submit" id="pop-up-confirm" class="btn btn-primary btn-sm" onclick="updateTitle()">Comfirm</button>
@@ -161,45 +183,45 @@
 </div>
 
 <div class="modal fade" id="Comment" role="dialog">
-       <div class="modal-dialog modal-lg">
-               
+    <div class="modal-dialog modal-lg">
+
         <!-- Modal content-->
         <div class="modal-content">
 
             <div class="modal-header">
                 <button type="button" class="close pull-right" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">Leave Commend</h4>
+                <h4 class="modal-title">@Model.article.Title</h4>
             </div>
-              <div class="modal-body">
-                    <!-- Comments Form -->
-                    <div class="well">
-                        <h4 id="CommentTitle">Leave a Comment:</h4>
-                        <blockquote id="CommentContext" hidden></blockquote>
-                        @using (Html.BeginForm("CommentPost", "Article", FormMethod.Post, new { role = "form" }))
-                        {
-                            <div class="form-group">
-                                @Html.AntiForgeryToken()
-                                @Html.ValidationSummary(true)
-                                @Html.HiddenFor(a => a.commentArticle.ReplyID, new { id = "ReplyId" })
-                                @Html.HiddenFor(a => a.article.ArticleID, new { value = Model.article.ArticleID })
-                                @Html.TextAreaFor(a => a.commentArticle.Content, new { @class = "form-control", name = "Content", id = "Content", rows = "3" })
-                                @*<textarea class="form-control" ,name="Content", id="Content",rows="3"></textarea>*@
-                            </div>
-                            <button type="submit" class="btn btn-primary">Submit</button>
-                        }
-                    </div>
-              </div>
+            <div class="modal-body">
+                <!-- Comments Form -->
+                <div class="well">
+                    <h4 id="CommentTitle">Leave a Comment:</h4>
+                    <blockquote id="CommentContext" hidden></blockquote>
+                    @using (Html.BeginForm("CommentPost", "Article", FormMethod.Post, new { role = "form" }))
+                    {
+                        <div class="form-group">
+                            @Html.AntiForgeryToken()
+                            @Html.ValidationSummary(true)
+                            @Html.HiddenFor(a => a.commentArticle.ReplyID, new { id = "ReplyId" })
+                            @Html.HiddenFor(a => a.article.ArticleID, new { value = Model.article.ArticleID })
+                            @Html.TextAreaFor(a => a.commentArticle.Content, new { @class = "form-control", name = "Content", id = "Content", rows = "3" })
+                            @*<textarea class="form-control" ,name="Content", id="Content",rows="3"></textarea>*@
+                        </div>
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    }
+                </div>
             </div>
-           </div>
+        </div>
+    </div>
 
 
 </div>
 <script>
-    CKEDITOR.replace('Content', {
+@*    CKEDITOR.replace('Content', {
         filebrowserImageBrowseUrl: '/home/ViewImage/' +@Session["LoggedUserID"] +'',
         filebrowserImageUploadUrl: '/home/UploadImage/' +@Session["LoggedUserID"] +'',
         customConfig: '/Scripts/TextEditor/config.js'
-    });
+    });*@
     var sessionID = "@Session["LoggedUserID"]";
     var author = "@Model.article.AuthorID";
     if (sessionID != null && sessionID == author) {
@@ -209,9 +231,13 @@
     $(document).ready(function () {
         $(".media-body > button").click(function () {
             $("#ReplyId").val($(this).val());
-            $("#CommentTitle").html("Reply   " + $(this).attr("contentName") + "'s Comment:");
-            $("#CommentContext").removeAttr("hidden");
-            $("#CommentContext").html($(this).attr("content"));
+            $("#CommentTitle").html("Reply   " + $(this).attr("data-contentName") + "'s Comment:");
+            $("#CommentContext").html($(this).attr("data-content"));
+        });
+        $("#LeaveCommend").click(function () {
+            $("#ReplyId").val(null);
+            $("#CommentTitle").html("Leave a Comment:");
+            $("#CommentContext").html("");
         });
         $('#articleContent').find('.math-tex').each(function () {
             var text = this.innerHTML;
