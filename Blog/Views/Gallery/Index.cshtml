@@ -1,6 +1,24 @@
-﻿@model IEnumerable<Blog.Models.ImageViewModel>
+﻿@model IEnumerable<Blog.Models.PublicImageViewModel>
 @{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+<div class="container">
+    <div class="row">
+        <div class="col-lg-12">
+            <h1 class="pag-header">Public Gallery</h1>
+        </div>
+        @if (Model!=null)
+        {
+            foreach (var img in Model)
+            {
+            <div class="col-lg-3 col-md-4 col-xs-6 thumb">
+                <a class="thumbnail" href="#">
+                    <img class="img-responsive" src="@img.Url"/>
+                </a>
+            </div>
+            }
+        }
+    </div>
+</div>

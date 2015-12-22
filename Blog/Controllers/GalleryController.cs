@@ -14,7 +14,10 @@ namespace Blog.Controllers
         private BlogContext db = new BlogContext();
         public ActionResult Index()
         {
-            return View();
+            var publicImg = from x in db.PublicImagesVW
+                            orderby x.PublicID descending
+                            select x;
+            return View(publicImg);
         }
 
     }

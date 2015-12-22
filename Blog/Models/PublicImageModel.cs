@@ -15,8 +15,8 @@ namespace Blog.Models
         public long? PictureID { get; set; }
         public long? UserID { get; set; }
         public string Url  { get; set; }
-        public string Desacription { get; set; }
-        public float? Rate { get; set; }
+        public string Description { get; set; }
+        public double? Rate { get; set; }
         public int Like { get; set; }
         public string AuthorName {get;set;}
         public string ContentType { get; set; }
@@ -33,7 +33,7 @@ namespace Blog.Models
         public byte isBlock { get; set; }
         public DateTime RecentBePublicDate { get; set; }
         public DateTime? RecentBePrivateDate { get; set; }
-        public float? Rate { get; set; }
+        public double? Rate { get; set; }
         public int Like { get; set; }
     }
 }

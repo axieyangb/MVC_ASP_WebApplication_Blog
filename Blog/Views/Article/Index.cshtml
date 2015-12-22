@@ -50,7 +50,7 @@
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 col-sm-10  col-xs-offset-1 ">
                 <div class="col-xl-12 col-lg-12 col-md-12  col-sm-12  col-xs-12 ">
                     <div class="post-heading">
-                        <button type="button" class="pull-right btn btn-info" id="TitleEditButton" style="display: none" data-toggle="modal" data-target="#modalEditTitle">Edit</button>
+                        <a class="pull-right btn" id="TitleEditButton" style="display: none" data-toggle="modal" data-target="#modalEditTitle" data-operation="edit"><span class="glyphicon glyphicon-pencil"></span></a>
                         <h1>@Html.DisplayFor(item => Model.article.Title)</h1>
                         <h2 class="subheading">@Html.DisplayFor(item => Model.article.SubTitle)</h2>
                         <span class="meta">Posted by <a href="#">@ViewBag.AuthorName</a> on @Html.DisplayFor(item => Model.article.PostDate)</span>
@@ -63,7 +63,7 @@
 <article>
     <div class="container">
         <div class="row">
-            <button type="button" class="pull-right btn btn-info" id="ContentEditButton" style="display: none">Edit</button>
+            <a class="pull-right btn" id="ContentEditButton" style="display: none" data-operation="edit"><span class="glyphicon glyphicon-pencil"></span></a>
         </div>
         <br />
         <div class="row">
@@ -73,43 +73,34 @@
                 <hr>
 
 
-                    <!-- Blog Comments -->
-                    @if (ViewBag.isPreView != true)
-                    {
-                        <button class="btn btn-primary btn-block" data-toggle="modal" data-target="#Comment" id="LeaveCommend">Leave Comment</button>
-                        <a class="btn btn-primary btn-block" data-toggle="collapse" href="#comments">Comments <span class="badge">@Model.rootComments.Count</span></a>
-                    }
-                    <hr>
-                    <!-- Comment -->
+                <!-- Blog Comments -->
+                @if (ViewBag.isPreView != true)
+                {
+                    <button class="btn btn-primary btn-block" data-toggle="modal" data-target="#Comment" id="LeaveCommend">Leave Comment</button>
+                    <a class="btn btn-primary btn-block" data-toggle="collapse" href="#comments">Comments <span class="badge">@Model.rootComments.Count</span></a>
+                }
+                <hr>
+                <!-- Comment -->
                 <div class="collapse" id="comments">
                     @if (Model.rootComments != null)
                     {
-                        for (int i = 0; i < Model.rootComments.Count;i++ )
+                        for (int i = 0; i < Model.rootComments.Count; i++)
                         {
                             var item = Model.rootComments.ElementAt(i);
                         <!-- Comment -->
                         <div class="media">
-                            <a class="pull-left" href="#">
+                            <a class="pull-left btn" >
                                 <img class="media-object" src="http://placehold.it/64x64" alt="">
-                            </a><span class="badge pull-right">@(i+1)@if((i+1)%10==2){WriteLiteral("nd");} else if((i+1)%10==3){WriteLiteral("rd");} else if((i+1)%10==1){WriteLiteral("st");}else{WriteLiteral("th");} Floor</span>
+                            </a><span class="badge pull-right">@(i + 1)@if ((i + 1) % 10 == 2) { WriteLiteral("nd"); } else if ((i + 1) % 10 == 3) { WriteLiteral("rd"); } else if ((i + 1) % 10 == 1) { WriteLiteral("st"); } else { WriteLiteral("th"); } Floor</span>
                             <div class="media-body">
-                                @if(item.parentComment.CommenterID==Model.article.AuthorID)
-                                {
-                                <h4 class="media-heading" style="color:#0094ff">@item.parentComment.CommentName
+                                <h4 class="media-heading">@item.parentComment.CommentName
                                     <small>@item.parentComment.CreateDate</small>
                                 </h4>
-                                }
-                                else
-                                {
-                                    <h4 class="media-heading">@item.parentComment.CommentName
-                                    <small>@item.parentComment.CreateDate</small>
-                                </h4>
-                                }
-                                  <button type="button" class="btn btn-primary pull-right" value="@item.parentComment.CommentID" data-content="@HttpUtility.HtmlDecode(item.parentComment.Content)" data-contentName="@item.parentComment.CommentName" data-toggle="modal" data-target="#Comment">Reply</button>
-                                    
+
+                                <a class="pull-right btn"  data-value="@item.parentComment.CommentID" data-content="@HttpUtility.HtmlDecode(item.parentComment.Content)" data-contentName="@item.parentComment.CommentName" data-toggle="modal" data-target="#Comment"><span class="glyphicon glyphicon-comment"></span></a>
                                 @Html.Raw(HttpUtility.HtmlDecode(@item.parentComment.Content))
-                               
-                                 <!-- Nested Comment -->
+
+                                <!-- Nested Comment -->
                                 @if (item.childComments != null)
                                 {
                                     foreach (var subitem in item.childComments)
@@ -119,18 +110,9 @@
                                             <img class="media-object" src="http://placehold.it/64x64" alt="">
                                         </a>
                                         <div class="media-body">
-                                             @if (subitem.CommenterID == Model.article.AuthorID)
-                                             {
-                                            <h4 class="media-heading" style="color:#0094ff">@subitem.CommentName
+                                            <h4 class="media-heading">@subitem.CommentName
                                                 <small>@subitem.CreateDate</small>
                                             </h4>
-                                             }
-                                            else
-                                            {
-                                              <h4 class="media-heading">@subitem.CommentName
-                                                <small>@subitem.CreateDate</small>
-                                            </h4>   
-                                             }
                                             @Html.Raw(HttpUtility.HtmlDecode(subitem.Content))
                                         </div>
                                     </div>
@@ -229,23 +211,25 @@
         document.getElementById("TitleEditButton").style.display = "initial";
     }
     $(document).ready(function () {
-        $(".media-body > button").click(function () {
-            $("#ReplyId").val($(this).val());
+        $(".media-body > a").click(function () {
+            $("#ReplyId").val($(this).attr("data-value"));
             $("#CommentTitle").html("Reply   " + $(this).attr("data-contentName") + "'s Comment:");
+            $("#CommentContext").show();
             $("#CommentContext").html($(this).attr("data-content"));
         });
         $("#LeaveCommend").click(function () {
             $("#ReplyId").val(null);
             $("#CommentTitle").html("Leave a Comment:");
-            $("#CommentContext").html("");
+            $("#CommentContext").hide();
         });
         $('#articleContent').find('.math-tex').each(function () {
             var text = this.innerHTML;
             this.setAttribute('data-formular1', text);
         })
         $('#ContentEditButton').click(function () {
-            var operation = this.innerHTML;
-            if (operation == "Edit") {
+            var operation = this.getAttribute("data-operation");
+            if (operation == "edit") {
+                this.setAttribute("data-operation", "editing");
                 $('#articleContent').find(".math-tex").each(function () {
                     var formular = this.getAttribute('data-formular1');
                     this.innerHTML = formular;
@@ -266,11 +250,11 @@
             else {
 
                 $('#articleContent').attr('contenteditable', 'false');
-
                 if (CKEDITOR.instances.articleContent)
                     CKEDITOR.instances.articleContent.destroy();
                 updateArticle();
-                this.innerHTML = "Edit";
+                this.innerHTML = "<span class=\"glyphicon glyphicon-pencil\"></span>";
+                this.setAttribute("data-operation", "edit");
             }
         });
         var win_width = $("#articleContent").width();
