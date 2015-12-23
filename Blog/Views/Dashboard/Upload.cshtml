@@ -4,102 +4,6 @@
 }
 @Scripts.Render("~/bundles/upload")
 
-
-
-<script>
-    function _(el) {
-        return document.getElementById(el);
-    }
-    var ajax = new XMLHttpRequest();
-    function uploadFile() {
-        _("progressBar").style.width = "0%";
-        _("upload-cancel").style.display = "initial";
-        _("status").className = "alert alert-info";
-        var file = _("file1").files[0];
-        //alert(file.name+"|" + file.size +"|" + file.type);
-        var formdata = new FormData();
-        formdata.append("file1", file);
-        ajax.upload.addEventListener("progress", progressHandler, false);
-        ajax.addEventListener("load", completeHandler, false);
-        ajax.addEventListener("error", errorHandler, false);
-        ajax.addEventListener("abort", abortHandler, false);
-        ajax.open("POST", "@Url.Action("FileUpload", "DashBoard")");
-        ajax.responseType = "json";
-        ajax.send(formdata);
-    }
-    function progressHandler(event) {
-        _("loaded_n_total").innerHTML = "Uploaded " + event.loaded + " bytes of total " + event.total + "bytes";
-        var percent = (event.loaded / event.total) * 100;
-        _("progressBar").style.width = Math.round(percent) + "%";
-        _("status").innerHTML = Math.round(percent) + "% Uploaded... please wait";
-    }
-    function cancelFile()
-    {
-        if (ajax.readyState == 1) {
-            ajax.abort();
-            _("upload-cancel").style.display = "none";
-        }
-    }
-
-    function completeHandler(event) {
-        var res = event.currentTarget.response;
-        //res=res.substring(1, res.length - 1);
-        var feedback = JSON.parse(res);
-        _("status").innerHTML = "Done";
-        _("status").className = "alert alert-success";
-        _("upload-cancel").style.display = "none";
-        for (var i = 0 ; feedback != null && i < feedback.length; i++) {
-            var oneRecord = document.createElement("a");
-            if (feedback[i]["isAccept"] == 0) {
-                oneRecord.href = "/Home/ViewImage/" + feedback[i]["UserID"];
-                oneRecord.className = "list-group-item list-group-item-success";
-                var innerLink = document.createElement("span");
-                innerLink.className = "badge alert-success pull-right";
-                innerLink.innerText = "Success";
-                oneRecord.appendChild(innerLink);
-                oneRecord.innerHTML += feedback[i]["fileName"];
-            }
-            else {
-                oneRecord.className = "list-group-item list-group-item-danger";
-                var innerLink = document.createElement("span");
-                innerLink.className = "badge alert-danger pull-right";
-                innerLink.innerText = "Failed";
-                oneRecord.appendChild(innerLink);
-                oneRecord.innerHTML += feedback[i]["fileName"] + "[" + feedback[i]["Error"] + "]";
-            }
-            _("resultList").appendChild(oneRecord);
-        }
-    }
-    function errorHandler(event) {
-        _("status").className = "alert alert-danger";
-        _("status").innerHTML = "Upload Failed";
-    }
-    function abortHandler(event) {
-        _("progressBar").style.width = "0%";
-        _("loaded_n_total").innerHTML = "";
-        _("status").className = "alert alert-warning";
-        _("status").innerHTML = "Upload Aborted";
-    }
-    function handleFileSelect(evt) {
-        evt.stopPropagation();
-        evt.preventDefault();
-
-        var files = evt.dataTransfer.files; // FileList object.
-
-        // files is a FileList of File objects. List some properties.
-        var output = [];
-        for (var i = 0, f; f = files[i]; i++) {
-            output.push('<li><strong>', escape(f.name), '</strong> (', f.type || 'n/a', ') - ',
-                        f.size, ' bytes, last modified: ',
-                        f.lastModifiedDate ? f.lastModifiedDate.toLocaleDateString() : 'n/a',
-                        '</li>');
-        }
-        document.getElementById('list').innerHTML = '<ul>' + output.join('') + '</ul>';
-    }
-
-
-</script>
-
 <div class="col-lg-12">
     <h1 class="page-header">Media <small>Post</small>
     </h1>
@@ -109,7 +13,7 @@
         </li>
     </ol>
 </div>
-<input type="file" class="filestyle" name="files1" id="file1">
+<input type="file" class="filestyle" data-input="false" data-badge="false"  name="files1" id="file1" multiple>
 <br />
 <output id="list"></output>
 <br />
@@ -141,13 +45,11 @@
 <script>
     $(document).ready(function () {
         $('.side-nav > #Upload >a').css("color", "#fff");
-    });
-    function handleDragOver(evt) {
-        evt.stopPropagation();
-        evt.preventDefault();
-        evt.dataTransfer.dropEffect = 'copy'; // Explicitly show this is a copy.
-    }
+        $('input[type=file]').change(function () {
+            genList(this.files);
 
+        })
+    });
     // Setup the dnd listeners.
     var dropZone = document.getElementById('drop-zone');
     dropZone.addEventListener('dragover', handleDragOver, false);
