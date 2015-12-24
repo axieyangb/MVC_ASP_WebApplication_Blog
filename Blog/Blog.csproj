@@ -156,6 +156,10 @@
     <Content Include="Content\css\blog.min.css" />
     <Content Include="Content\css\bootstrap.css" />
     <Content Include="Content\css\bootstrap.min.css" />
+    <Content Include="Content\css\Gallery\gallery.css" />
+    <Content Include="Content\css\Gallery\jquery-fullsizable-theme.css" />
+    <Content Include="Content\css\Gallery\jquery-fullsizable.css" />
+    <Content Include="Content\css\Gallery\jquery-fullsizable.png" />
     <Content Include="Content\css\Home-half-slider.css" />
     <Content Include="Content\css\jquery-ui.css" />
     <Content Include="Content\css\jquery-ui.min.css" />
@@ -189,6 +193,9 @@
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\cardFlip.js" />
     <Content Include="Scripts\FileUpload\FileUpload.js" />
+    <Content Include="Scripts\Gallery\jquery-fullsizable.js" />
+    <Content Include="Scripts\Gallery\jquery-fullsizable.min.js" />
+    <Content Include="Scripts\Gallery\jquery.touchSwipe.min.js" />
     <Content Include="Scripts\jquery-ui.js" />
     <Content Include="Scripts\jquery-ui.min.js" />
     <Content Include="Scripts\jquery.js" />
@@ -864,6 +871,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Scripts\TextEditor\skins\kama\readme.md" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Scripts\Gallery\jquery-fullsizable.coffee" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

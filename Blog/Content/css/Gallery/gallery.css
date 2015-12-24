@@ -1,0 +1,9 @@
+﻿    .thumbnail :hover {
+        position:relative;
+        z-index:1;
+    }
+    .thumbnail :hover {
+  transform: scale(1.7,1.7);
+  transition: .8s transform;
+}
+

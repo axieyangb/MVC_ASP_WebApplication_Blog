@@ -34,6 +34,9 @@ namespace Blog
                        "~/Scripts/FileUpload/*.js"
                      ));
 
+            bundles.Add(new ScriptBundle("~/bundles/gallery").Include(
+                       "~/Scripts/Gallery/*.js"
+                     ));
             bundles.Add(new StyleBundle("~/Content/css").Include("~/Content/site.css",
                 "~/Content/css/blog.css",
                 "~/Content/css/blog.min.css",
@@ -54,6 +57,10 @@ namespace Blog
                 "~/Content/css/page/signup.css"
                  
                 ));
+            bundles.Add(new StyleBundle("~/Content/css/gallery").Include(
+    "~/Content/css/Gallery/*.css"
+    ));
+
             bundles.Add(new StyleBundle("~/Content/css/dashboard").Include(
                 "~/Content/css/page/dashboard.css",
               "~/Content/css/bootstrap.css",
