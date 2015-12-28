@@ -49,7 +49,7 @@ namespace Blog.Controllers
                 {
                     ret.isAccept = 0;
                     ret.fileTypeAccept = "yes";
-                    ret.fileName = DateTime.Now.ToString("yyyyMMddHHmmss") + '_' + file.FileName+'_'+i;
+                    ret.fileName = DateTime.Now.ToString("yyyyMMddHHmmss") + '_' + i + '_' + file.FileName;
                     if (!String.IsNullOrEmpty(ret.UserID))
                     {
                         ret.URL = "/Content/Users/" + ret.UserID + "/" + ret.fileName;

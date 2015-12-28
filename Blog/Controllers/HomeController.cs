@@ -117,10 +117,19 @@ namespace Blog.Controllers
             {
                 if (oper == 1)
                     one.isPublish = 1;
-                else if(oper==0)
+                else if (oper == 0)
                     one.isPublish = 0;
                 else
+                {
+                    string archivePath = Server.MapPath("/Content/Users/" + id + "/DelArchive");
+                    if (!System.IO.Directory.Exists(archivePath))
+                    {
+                        System.IO.Directory.CreateDirectory(archivePath);
+                    }
+                    string [] splits = one.Url.Split('/');
+                    System.IO.File.Move( Server.MapPath(one.Url), System.IO.Path.Combine(archivePath,splits[splits.Length-1]));
                     one.DeleteTime = System.DateTime.Now;
+                }
             }
             try
             {
