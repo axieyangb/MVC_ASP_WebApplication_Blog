@@ -6,4 +6,6 @@
   transform: scale(1.7,1.7);
   transition: .8s transform;
 }
-
+#pagination {
+    text-align:center;
+}

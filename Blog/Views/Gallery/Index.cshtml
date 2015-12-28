@@ -5,42 +5,108 @@
 }
 @Scripts.Render("~/bundles/gallery");
  @Styles.Render("~/Content/css/gallery")
-  <script>
-      $(function () {
-          $('#gallery > a').fullsizable({
-              detach_id: 'gallery'
-          })
+<script>
+    $(function () {
+        $('#gallery > a').fullsizable({
+            detach_id: 'gallery'
+        })
 
-          $(document).on('fullsizable:opened', function () {
-              $("#jquery-fullsizable").swipe({
-                  swipeLeft: function () {
-                      $(document).trigger('fullsizable:next')
-                  },
-                  swipeRight: function () {
-                      $(document).trigger('fullsizable:prev')
-                  },
-                  swipeUp: function () {
-                      $(document).trigger('fullsizable:close')
-                  }
-              });
-          });
-      });
-  </script>
+        $(document).on('fullsizable:opened', function () {
+            $("#jquery-fullsizable").swipe({
+                swipeLeft: function () {
+                    $(document).trigger('fullsizable:next')
+                },
+                swipeRight: function () {
+                    $(document).trigger('fullsizable:prev')
+                },
+                swipeUp: function () {
+                    $(document).trigger('fullsizable:close')
+                }
+            });
+        });
+    });
+</script>
 <div class="container">
     <div class="row">
         <div class="col-lg-12">
             <h1 class="pag-header">Public Gallery</h1>
         </div>
-        <div class="gallery" id="gallery">
-        @if (Model!=null)
-        {
-            foreach (var img in Model)
-            {
-                <a class="col-lg-3 col-md-4 col-xs-6 thumbnail thumb" href="@img.Url">
-                    <img class="img-responsive" src="@img.Url"/>
-                </a>
-            }
-        }
+        <div class="row">
+            <div class="gallery" id="gallery">
+                @if (Model != null)
+                {
+                    foreach (var img in Model)
+                    {
+                    <a class="col-lg-3 col-md-4 col-xs-6 thumbnail thumb" href="@img.Url">
+                        <img class="img-responsive" src="@img.Url"/>
+                    </a>
+                    }
+                }
             </div>
+
+        </div>
+    </div>
+    <hr />
+    <div class="row" id="pagination">
+        <nav>
+            <ul class="pagination">
+                @if ((int)ViewBag.pageCount / 5 <= (int)ViewBag.pageIndex)
+                {
+                    <li class="disabled">
+                        <span>
+                            <span aria-hidden="true">&laquo;</span>
+                        </span>
+                    </li>
+                }
+                else
+                {  
+                    <li>
+                        <a href="/Gallery/@(ViewBag.pageIndex-5)/12">
+                            <span>
+                                <span aria-hidden="true">&laquo;</span>
+                            </span>
+                        </a>
+                    </li>    
+                }
+                @for (int i = ((int)ViewBag.pageIndex / 5); i < ViewBag.pageCount && i < ((int)ViewBag.pageIndex / 5) + 5; i++)
+                {
+                    if (i == ViewBag.pageIndex)
+                    {
+                    <li class="active">
+                        <span>@(i + 1)</span>
+                    </li>
+                    }
+                    else
+                    {
+                   
+                    <li>
+                        <a href="/Gallery/@i/12">
+                            <span>@(i + 1)</span>
+                        </a>
+                    </li>
+                    
+                    }
+                }
+                @if ((int)ViewBag.pageCount -(int)ViewBag.pageIndex<=5)
+                {
+                <li class="disabled">
+                    <span>
+                        <span aria-hidden="true">&raquo;</span>
+                    </span>
+                </li>
+                }
+                else
+                {
+                    <li>
+                        <a href="/Gallery/@(ViewBag.pageIndex+5)/12">
+                            <span>
+                                <span aria-hidden="true">&laquo;</span>
+                            </span>
+                        </a>
+                    </li>   
+                }
+
+            </ul>
+        </nav>
     </div>
 </div>
