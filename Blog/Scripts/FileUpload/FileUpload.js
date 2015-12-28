@@ -53,6 +53,7 @@ function completeHandler(event) {
     _("status").innerHTML = "Done";
     _("status").className = "alert alert-success";
     _("upload-cancel").style.display = "none";
+    $("#list").empty();
     for (var i = 0 ; feedback != null && i < feedback.length; i++) {
         var oneRecord = document.createElement("a");
         if (feedback[i]["isAccept"] == 0) {
@@ -78,12 +79,17 @@ function completeHandler(event) {
 function errorHandler(event) {
     _("status").className = "alert alert-danger";
     _("status").innerHTML = "Upload Failed";
+    if (ajax.readyState == 1) {
+        ajax.abort();
+    }
+    _("upload-cancel").style.display = "none";
 }
 function abortHandler(event) {
     _("progressBar").style.width = "0%";
     _("loaded_n_total").innerHTML = "";
     _("status").className = "alert alert-warning";
     _("status").innerHTML = "Upload Aborted";
+    _("upload-cancel").style.display = "none";
 }
 function handleFileSelect(evt) {
     evt.stopPropagation();
@@ -93,7 +99,7 @@ function handleFileSelect(evt) {
 }
 
 function cancelFile(pos) {
-        UploadQueue.splice(pos, 1);
+    UploadQueue.splice(pos, 1);
         document.getElementById('list').innerHTML = '<ul>' + htmlListGen() + '</ul>';
 }
 
@@ -112,6 +118,11 @@ function htmlListGen() {
         str.push('<li>', '<strong>', escape(f.name), '</strong> (', f.type || 'n/a', ') - ', f.size, ' bytes, last modified: ', f.lastModifiedDate ? f.lastModifiedDate.toLocaleDateString() : 'n/a', '<span class="glyphicon glyphicon-remove btn btn-danger btn-xs " style="position:none; margin-right:10%;margin-left:90%" onclick="cancelFile(' + i + ')">', '</span>', '</li>');
         retHtml += str.join('');
     }
+    if (UploadQueue.length > 0) {
+        _("upload-submit").style.display = "initial";
+    }
+    else
+        _("upload-submit").style.display = "none";
     return retHtml;
 }
 
