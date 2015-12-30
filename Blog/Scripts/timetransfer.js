@@ -1,4 +1,11 @@
-﻿function time_ago(time) {
+﻿
+$(document).ready(function () {
+$(".postdate").each(function () {
+    var time = $(this).html();
+    $(this).html(time_ago(time));
+});
+})
+function time_ago(time) {
 
     switch (typeof time) {
         case 'number': break;

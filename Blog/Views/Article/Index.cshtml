@@ -53,7 +53,7 @@
                         <a class="pull-right btn" id="TitleEditButton" style="display: none" data-toggle="modal" data-target="#modalEditTitle" data-operation="edit"><span class="glyphicon glyphicon-pencil"></span></a>
                         <h1>@Html.DisplayFor(item => Model.article.Title)</h1>
                         <h2 class="subheading">@Html.DisplayFor(item => Model.article.SubTitle)</h2>
-                        <span class="meta">Posted by <a href="#">@ViewBag.AuthorName</a> on @Html.DisplayFor(item => Model.article.PostDate)</span>
+                        <span class="meta">Posted by <a href="#">@ViewBag.AuthorName</a> <span class="postdate"> @Html.DisplayFor(item => Model.article.PostDate)</span> </span>
                     </div>
                 </div>
             </div>
@@ -273,10 +273,7 @@
                 $(this).addClass("col-lg-12  col-md-12  col-sm-12  col-xs-12");
             }
         });
-        $(".postdate").each(function () {
-            var time=$(this).html();
-            $(this).html(time_ago(time));
-        });
+
     })
 </script>
 <script type="text/javascript"
