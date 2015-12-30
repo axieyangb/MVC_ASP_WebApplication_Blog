@@ -26,7 +26,8 @@ namespace Blog
                          "~/Scripts/bootstrap.min.js",
                          "~/Scripts/jquery.js",
                          "~/Scripts/jquery-ui.js",
-                          "~/Scripts/jquery-ui.min.js"
+                          "~/Scripts/jquery-ui.min.js",
+                          "~/Scripts/timetransfer.js"
 
                        ));
 

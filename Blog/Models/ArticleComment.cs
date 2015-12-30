@@ -20,6 +20,7 @@ namespace Blog.Models
         [AllowHtml]
         [DataType(DataType.Text)]
         public string Content { set; get; }
+        public string IPAddress { set; get; }
     }
 
 }

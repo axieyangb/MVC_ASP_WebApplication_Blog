@@ -28,6 +28,7 @@ namespace Blog.Controllers
                                };
             ViewBag.ArticleAmount = Home_Article.Count();
             Home_Article = Home_Article.OrderBy(i => i.ArticleID).Take(10);
+           
             return View(Home_Article.ToList());
         }
 

@@ -16,6 +16,7 @@ namespace Blog.Models
         public long ReplyID { set; get; }
         public DateTime CreateDate { set; get; }
         public string CommentName {set;get;}
+        public string Country { set; get; }
         public string Content { set; get; }
     }
 }

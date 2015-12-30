@@ -91,6 +91,8 @@ namespace Blog.Controllers
                 articlePost.commentArticle.CommenterID =Int64.Parse(Session["LoggedUserID"].ToString());
                 if (articlePost.commentArticle.ReplyID == null)
                     articlePost.commentArticle.ReplyID = -1;
+                string address = Request.ServerVariables["REMOTE_ADDR"];
+                articlePost.commentArticle.IPAddress = address;
                 articlePost.commentArticle.ArticleID = articlePost.article.ArticleID;
                 articlePost.commentArticle.CreateDate = System.DateTime.Now;
                 articlePost.commentArticle.Content = HttpUtility.HtmlEncode(articlePost.commentArticle.Content.Replace("\r\n", "<br>"));

@@ -767,6 +767,7 @@
     <Content Include="Scripts\TextEditor\skins\kama\images\toolbar_start.gif" />
     <Content Include="Scripts\TextEditor\skins\kama\skin.js" />
     <Content Include="Scripts\TextEditor\styles.js" />
+    <Content Include="Scripts\timetransfer.js" />
     <Content Include="Scripts\_references.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>

@@ -7,7 +7,7 @@
  @Styles.Render("~/Content/css/gallery")
 <script>
     $(function () {
-        $('#gallery > a').fullsizable({
+        $('#gallery >div> a').fullsizable({
             detach_id: 'gallery'
         })
 
@@ -28,47 +28,43 @@
 </script>
 <div class="container">
     <div class="row">
-        <div class="col-lg-12">
-            <h1 class="pag-header">Public Gallery</h1>
-        </div>
-        <div class="row">
-            <div class="gallery" id="gallery">
-                @if (Model != null)
+        <h1 class="pag-header">Public Gallery</h1>
+    </div>
+    <div class="gallery row" id="gallery">
+        @if (Model != null)
+        {
+            int i = 0;
+            while (i < Model.Count())
+            {
+                int j = 0;
+            <div class="row">
+                @while (j < 4 && i < Model.Count())
                 {
-                    foreach (var img in Model)
-                    {
+                    var img = Model.ElementAt(i);
                     <a class="col-lg-3 col-md-4 col-xs-6 thumbnail thumb" href="@img.Url">
                         <img class="img-responsive" src="@img.Url"/>
                     </a>
-                    }
+                    i++;
+                    j++;
                 }
             </div>
 
-        </div>
+            }
+        }
     </div>
-    <hr />
     <div class="row" id="pagination">
         <nav>
             <ul class="pagination">
-                @if ((int)ViewBag.pageCount / 5 <= (int)ViewBag.pageIndex)
+                @if ((int)ViewBag.pageIndex > 0)
                 {
-                    <li class="disabled">
-                        <span>
-                            <span aria-hidden="true">&laquo;</span>
-                        </span>
-                    </li>
-                }
-                else
-                {  
                     <li>
-                        <a href="/Gallery/@(ViewBag.pageIndex-5)/12">
-                            <span>
-                                <span aria-hidden="true">&laquo;</span>
-                            </span>
+                        <a href="/Gallery/@(ViewBag.pageIndex - 1)/12">
+                            <span aria-hidden="true">&lsaquo;</span>
+                            Previous                        
                         </a>
                     </li>    
                 }
-                @for (int i = ((int)ViewBag.pageIndex / 5); i < ViewBag.pageCount && i < ((int)ViewBag.pageIndex / 5) + 5; i++)
+                @for (int i = (((int)ViewBag.pageIndex - 4) < 0) ? 0 : ((int)ViewBag.pageIndex - 4); i < ViewBag.pageCount && i < (int)ViewBag.pageIndex + 5; i++)
                 {
                     if (i == ViewBag.pageIndex)
                     {
@@ -87,21 +83,11 @@
                     
                     }
                 }
-                @if ((int)ViewBag.pageCount -(int)ViewBag.pageIndex<=5)
-                {
-                <li class="disabled">
-                    <span>
-                        <span aria-hidden="true">&raquo;</span>
-                    </span>
-                </li>
-                }
-                else
+                @if ((int)ViewBag.pageCount > (int)ViewBag.pageIndex + 1)
                 {
                     <li>
-                        <a href="/Gallery/@(ViewBag.pageIndex+5)/12">
-                            <span>
-                                <span aria-hidden="true">&laquo;</span>
-                            </span>
+                        <a href="/Gallery/@(ViewBag.pageIndex + 1)/12">Next
+                                <span aria-hidden="true">&rsaquo;</span>
                         </a>
                     </li>   
                 }

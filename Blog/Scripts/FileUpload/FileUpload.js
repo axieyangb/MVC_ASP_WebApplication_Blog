@@ -55,6 +55,7 @@ function completeHandler(event) {
     _("upload-cancel").style.display = "none";
     _("upload-submit").style.display = "none";
     $("#list").empty();
+    UploadQueue = [];
     for (var i = 0 ; feedback != null && i < feedback.length; i++) {
         var oneRecord = document.createElement("a");
         if (feedback[i]["isAccept"] == 0) {

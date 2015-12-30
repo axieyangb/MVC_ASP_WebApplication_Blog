@@ -94,7 +94,8 @@
                             </a><span class="badge pull-right">@(i + 1)@if ((i + 1) % 10 == 2) { WriteLiteral("nd"); } else if ((i + 1) % 10 == 3) { WriteLiteral("rd"); } else if ((i + 1) % 10 == 1) { WriteLiteral("st"); } else { WriteLiteral("th"); } Floor</span>
                             <div class="media-body">
                                 <h4 class="media-heading">@item.parentComment.CommentName
-                                    <small>@item.parentComment.CreateDate</small>
+                                     
+                                    <small><em>From @item.parentComment.Country</em><p class="postdate" >@item.parentComment.CreateDate</p></small>
                                 </h4>
 
                                 <a class="pull-right btn"  data-value="@item.parentComment.CommentID" data-content="@HttpUtility.HtmlDecode(item.parentComment.Content)" data-contentName="@item.parentComment.CommentName" data-toggle="modal" data-target="#Comment"><span class="glyphicon glyphicon-comment"></span></a>
@@ -271,11 +272,12 @@
                 $(this).css("height", "");
                 $(this).addClass("col-lg-12  col-md-12  col-sm-12  col-xs-12");
             }
-        })
-
-
+        });
+        $(".postdate").each(function () {
+            var time=$(this).html();
+            $(this).html(time_ago(time));
+        });
     })
-
 </script>
 <script type="text/javascript"
     src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
