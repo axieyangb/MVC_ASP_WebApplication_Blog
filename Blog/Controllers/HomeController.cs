@@ -69,11 +69,16 @@ namespace Blog.Controllers
                     url = "/Content/users/" + id + "/" + ImageName;
                     upload.SaveAs(path);
                     ImageViewModel image = new ImageViewModel();
+                    ImageMetaDataModel metadata = new ImageMetaDataModel();
+                    ImageMetaData imageMetaDate = new ImageMetaData(Server.MapPath(image.Url));
+                    imageMetaDate.fetchData();
+                    metadata = imageMetaDate.getMetaData();
                     image.ContentType=upload.ContentType;
                     image.UpdateDate = System.DateTime.Now;
                     image.UserID = long.Parse(Session["LoggedUserID"].ToString());
                     image.Url = url;
                     db.Images.Add(image);
+                    db.ImageMetaData.Add(metadata);
                     db.SaveChanges();
                     ret = url;
                 }

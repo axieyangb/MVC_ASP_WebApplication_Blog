@@ -39,6 +39,13 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="ICSharpCode.SharpZipLib, Version=0.86.0.518, Culture=neutral, PublicKeyToken=1b03e6acf1164f73, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\SharpZipLib.0.86.0\lib\20\ICSharpCode.SharpZipLib.dll</HintPath>
+    </Reference>
+    <Reference Include="MetadataExtractor">
+      <HintPath>..\packages\MetadataExtractor.1.1.0\lib\net45\MetadataExtractor.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -123,6 +130,9 @@
       <Private>True</Private>
       <HintPath>..\packages\WebGrease.1.3.0\lib\Antlr3.Runtime.dll</HintPath>
     </Reference>
+    <Reference Include="XmpCore">
+      <HintPath>..\packages\XmpCore.1.1.0\lib\net35\XmpCore.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\BundleConfig.cs" />
@@ -136,6 +146,7 @@
     <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\GalleryController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\ImageMetaData.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -146,6 +157,7 @@
     <Compile Include="Models\ArticleSubmitView.cs" />
     <Compile Include="Models\BlogContext.cs" />
     <Compile Include="Models\CommentDetailInfoView.cs" />
+    <Compile Include="Models\ImageMetaDataModel.cs" />
     <Compile Include="Models\ImageViewModel.cs" />
     <Compile Include="Models\Member.cs" />
     <Compile Include="Models\PublicImageModel.cs" />

@@ -39,6 +39,7 @@ namespace Blog.Controllers
         public JsonResult FileUpload()
         {
             LinkedList<retJsonModel> retList = new LinkedList<retJsonModel>();
+            ImageMetaData imageMetaDate;
             for (int i = 0; i < Request.Files.Count; i++)
             {
                 HttpPostedFileBase file = Request.Files[i];
@@ -60,12 +61,17 @@ namespace Blog.Controllers
                             stream.CopyTo(fileStream);
                         }
                         ImageViewModel image = new ImageViewModel();
-                    image.UpdateDate = System.DateTime.Now;
-                    image.UserID = long.Parse(ret.UserID);
-                    image.Url = ret.URL;
-                    image.ContentType = file.ContentType;
-                    db.Images.Add(image);
-                    db.SaveChanges();
+                        ImageMetaDataModel metadata = new ImageMetaDataModel();
+                        imageMetaDate = new ImageMetaData(Server.MapPath(ret.URL));
+                        image.UpdateDate = System.DateTime.Now;
+                        image.UserID = long.Parse(ret.UserID);
+                        image.Url = ret.URL;
+                        image.ContentType = file.ContentType;
+                        db.Images.Add(image);
+                        imageMetaDate.fetchData();
+                        metadata = imageMetaDate.getMetaData();
+                        db.ImageMetaData.Add(metadata);
+                        db.SaveChanges();
                     }
                     else
                     {

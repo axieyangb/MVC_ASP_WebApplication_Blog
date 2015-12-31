@@ -1,6 +1,6 @@
 ﻿    .thumbnail :hover {
         position:relative;
-        z-index:1;
+        z-index:999
     }
     .thumbnail :hover {
   transform: scale(1.7,1.7);
@@ -8,4 +8,8 @@
 }
 #pagination {
     text-align:center;
+}
+
+.active {
+    z-index:2;
 }
