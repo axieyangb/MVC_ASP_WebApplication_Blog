@@ -77,6 +77,7 @@ namespace Blog.Controllers
                     image.UpdateDate = System.DateTime.Now;
                     image.UserID = long.Parse(Session["LoggedUserID"].ToString());
                     image.Url = url;
+                    image.FileName = ImageName;
                     db.Images.Add(image);
                     db.ImageMetaData.Add(metadata);
                     db.SaveChanges();

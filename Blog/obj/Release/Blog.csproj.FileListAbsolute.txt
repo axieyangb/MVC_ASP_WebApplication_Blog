@@ -94,3 +94,4 @@ C:\Users\Scott2\Desktop\WebApp\MVC_ASP_WebApplication_Blog\Blog\bin\MetadataExtr
 C:\Users\Scott2\Desktop\WebApp\MVC_ASP_WebApplication_Blog\Blog\bin\XmpCore.dll
 C:\Users\Scott2\Desktop\WebApp\MVC_ASP_WebApplication_Blog\Blog\bin\MetadataExtractor.xml
 C:\Users\Scott2\Desktop\WebApp\MVC_ASP_WebApplication_Blog\Blog\bin\XmpCore.xml
+C:\Users\Scott2\Desktop\WebApp\MVC_ASP_WebApplication_Blog\Blog\obj\Release\Blog.csprojResolveAssemblyReference.cache

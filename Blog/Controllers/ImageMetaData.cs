@@ -19,6 +19,8 @@ namespace Blog.Controllers
             directories = ImageMetadataReader.ReadMetadata(ImageFilePath);
             oneImage = new ImageMetaDataModel();
             oneImage.URL = ImageFilePath;
+            string [] splits = ImageFilePath.Split('\\');
+            oneImage.FileName = splits[splits.Length - 1];
         }
         public  ImageMetaData(long ImageID)
         {

@@ -1,6 +1,5 @@
 ﻿
 var UploadQueue = [];
-
 Array.prototype.contains = function (obj) {
     var i = this.length;
     while (i--) {
@@ -40,10 +39,8 @@ function progressHandler(event) {
 }
 function cancelFile()
 {
-    if (ajax.readyState == 1) {
         ajax.abort();
         _("upload-cancel").style.display = "none";
-    }
 }
 
 function completeHandler(event) {
@@ -56,6 +53,10 @@ function completeHandler(event) {
     _("upload-submit").style.display = "none";
     $("#list").empty();
     UploadQueue = [];
+    if (feedback == null) {
+        _("status").innerHTML = "Session Expired";
+        _("status").className = "alert alert-danger";
+    }
     for (var i = 0 ; feedback != null && i < feedback.length; i++) {
         var oneRecord = document.createElement("a");
         if (feedback[i]["isAccept"] == 0) {
@@ -114,13 +115,19 @@ function genList(fs) {
 
 function htmlListGen() {
     var retHtml = "";
+    var errorNum=0;
     for (var i = 0; i < UploadQueue.length; i++) {
         var str = [];
         var f = UploadQueue[i];
-        str.push('<li>', '<strong>', escape(f.name), '</strong> (', f.type || 'n/a', ') - ', f.size, ' bytes, last modified: ', f.lastModifiedDate ? f.lastModifiedDate.toLocaleDateString() : 'n/a', '<span class="glyphicon glyphicon-remove btn btn-danger btn-xs " style="position:none; margin-right:10%;margin-left:90%" onclick="cancelFile(' + i + ')">', '</span>', '</li>');
+        if (f.type.indexOf('image/')<=-1) {
+            errorNum++;
+            str.push('<li>', '<strong style="scolor:red">[ERROR]', escape(f.name), '</strong> (', f.type || 'n/a', ') - ', f.size, ' bytes, last modified: ', f.lastModifiedDate ? f.lastModifiedDate.toLocaleDateString() : 'n/a', '<span class="glyphicon glyphicon-remove btn btn-danger btn-xs " style="position:none; margin-right:10%;margin-left:90%" onclick="cancelFile(' + i + ')">', '</span>', '</li>');
+        }
+        else
+            str.push('<li>', '<strong>', escape(f.name), '</strong> (', f.type || 'n/a', ') - ', f.size, ' bytes, last modified: ', f.lastModifiedDate ? f.lastModifiedDate.toLocaleDateString() : 'n/a', '<span class="glyphicon glyphicon-remove btn btn-danger btn-xs " style="position:none; margin-right:10%;margin-left:90%" onclick="cancelFile(' + i + ')">', '</span>', '</li>');
         retHtml += str.join('');
     }
-    if (UploadQueue.length > 0) {
+    if (UploadQueue.length > 0 && errorNum==0) {
         _("upload-submit").style.display = "initial";
     }
     else

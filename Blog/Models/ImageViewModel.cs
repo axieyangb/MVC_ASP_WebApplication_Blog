@@ -21,5 +21,6 @@ namespace Blog.Models
         public byte isPublish { get; set; }
         public byte isBlock { get; set; }
         public string ContentType { get; set; }
+        public string FileName { get; set; }
     }
 }

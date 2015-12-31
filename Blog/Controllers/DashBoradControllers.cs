@@ -31,7 +31,10 @@ namespace Blog.Controllers
         }
         public ActionResult Upload()
         {
-            return View();
+            if (Session["LoggedUserID"] != null)
+                return View();
+            else
+                return RedirectToAction("Login", "Admin");
         }
 
 
@@ -63,6 +66,7 @@ namespace Blog.Controllers
                         ImageViewModel image = new ImageViewModel();
                         ImageMetaDataModel metadata = new ImageMetaDataModel();
                         imageMetaDate = new ImageMetaData(Server.MapPath(ret.URL));
+                        image.FileName = ret.fileName;
                         image.UpdateDate = System.DateTime.Now;
                         image.UserID = long.Parse(ret.UserID);
                         image.Url = ret.URL;

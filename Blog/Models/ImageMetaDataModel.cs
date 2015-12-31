@@ -29,5 +29,6 @@ namespace Blog.Models
         public string  WhiteBalanceMode { get; set; }
         public string LensModel { get; set; }
         public string URL { get; set; }
+        public string FileName { get; set; }
     }
 }
