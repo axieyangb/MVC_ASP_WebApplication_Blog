@@ -121,7 +121,7 @@ function htmlListGen() {
         var f = UploadQueue[i];
         if (f.type.indexOf('image/')<=-1) {
             errorNum++;
-            str.push('<li>', '<strong style="scolor:red">[ERROR]', escape(f.name), '</strong> (', f.type || 'n/a', ') - ', f.size, ' bytes, last modified: ', f.lastModifiedDate ? f.lastModifiedDate.toLocaleDateString() : 'n/a', '<span class="glyphicon glyphicon-remove btn btn-danger btn-xs " style="position:none; margin-right:10%;margin-left:90%" onclick="cancelFile(' + i + ')">', '</span>', '</li>');
+            str.push('<li>', '<strong style="color:red">[ERROR]', escape(f.name), '</strong> (', f.type || 'n/a', ') - ', f.size, ' bytes, last modified: ', f.lastModifiedDate ? f.lastModifiedDate.toLocaleDateString() : 'n/a', '<span class="glyphicon glyphicon-remove btn btn-danger btn-xs " style="position:none; margin-right:10%;margin-left:90%" onclick="cancelFile(' + i + ')">', '</span>', '</li>');
         }
         else
             str.push('<li>', '<strong>', escape(f.name), '</strong> (', f.type || 'n/a', ') - ', f.size, ' bytes, last modified: ', f.lastModifiedDate ? f.lastModifiedDate.toLocaleDateString() : 'n/a', '<span class="glyphicon glyphicon-remove btn btn-danger btn-xs " style="position:none; margin-right:10%;margin-left:90%" onclick="cancelFile(' + i + ')">', '</span>', '</li>');

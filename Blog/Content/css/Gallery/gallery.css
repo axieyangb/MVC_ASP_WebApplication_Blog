@@ -4,7 +4,7 @@
     }
     .thumbnail :hover {
   transform: scale(1.7,1.7);
-  transition: .8s transform;
+  transition: .3s transform;
 }
 #pagination {
     text-align:center;
