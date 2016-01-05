@@ -8,7 +8,8 @@
 <script>
     $(function () {
         $('#gallery >div> a').fullsizable({
-            detach_id: 'gallery'
+            detach_id: 'gallery',
+            clickBehaviour:'detail'
         })
 
         $(document).on('fullsizable:opened', function () {
@@ -41,8 +42,9 @@
                 @while (j < 4 && i < Model.Count())
                 {
                     var img = Model.ElementAt(i);
-                    <a class="col-lg-3 col-md-4 col-xs-6 thumbnail thumb" href="@img.Url">
-                        <img class="img-responsive" src="@img.Url"/>
+                    <a class="col-lg-3 col-md-4 col-xs-6 thumbnail thumb" data-imageName="@img.FileName" href="@img.Url">
+                        <img data-CameraModel="@img.CameraModel" class="img-responsive" src="@img.Url"/>
+                        
                     </a>
                     i++;
                     j++;

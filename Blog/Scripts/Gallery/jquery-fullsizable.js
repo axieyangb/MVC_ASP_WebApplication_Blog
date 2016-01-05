@@ -93,6 +93,30 @@ Options:
     }
   };
 
+  ShowDetail = function () {
+      if ($("#fullsized_image_info").is(":visible")) {
+          $("#fullsized_image_info").empty();
+          $("#fullsized_image_info").hide();
+          $("#fullsized_image_holder").css('-webkit-filter', 'blur(0)');
+          $("#fullsized_image_holder").css('-moz-filter', 'blur(0)');
+          $("#fullsized_image_holder").css('-o-filter', 'blur(0)');
+          $("#fullsized_image_holder").css('-o-filter', 'blur(0)');
+          $("#fullsized_image_holder").css('filter', 'blur(0)');
+          $("#fullsized_image_holder").css('opacity', '1');
+          $("#fullsized_image_holder").css('-webkit-transform', 'translateZ(0)');
+      }
+      else {
+          $("#fullsized_image_info").show();
+          $("#fullsized_image_info").append('<span class="glyphicon glyphicon-camera"></span>');
+          $("#fullsized_image_holder").css('-webkit-filter', 'blur(5px)');
+          $("#fullsized_image_holder").css('-moz-filter', 'blur(5px)');
+          $("#fullsized_image_holder").css('-o-filter', 'blur(5px)');
+          $("#fullsized_image_holder").css('-o-filter', 'blur(5px)');
+          $("#fullsized_image_holder").css('filter', 'blur(5px)');
+          $("#fullsized_image_holder").css('opacity', '0.4');
+      }
+  }
+
   showImage = function(image, direction, shouldHideChrome) {
     if (direction == null) {
       direction = 1;
@@ -181,6 +205,7 @@ Options:
       var image;
       image = new Image;
       image.buffer_src = $(this).attr('href');
+      image.name = $(this).attr('data-imageName');
       image.index = images.length;
       images.push(image);
       if (options.openOnClick) {
@@ -195,7 +220,8 @@ Options:
     });
   };
 
-  prepareCurtain = function() {
+  prepareCurtain = function () {
+      $image_holder.append('<div id="fullsized_image_info" style="display:none"></div>');
     if (options.navigation) {
       $image_holder.append('<a id="fullsized_go_prev" href="#prev"></a><a id="fullsized_go_next" href="#next"></a>');
       $(document).on('click', '#fullsized_go_prev', function(e) {
@@ -230,8 +256,10 @@ Options:
         return $(document).on('click', container_id, closeViewer);
       case 'next':
         return $(document).on('click', container_id, function() {
-          return nextImage(true);
+            return nextImage(true);
         });
+        case 'detail':
+            return $(document).on('click', container_id, ShowDetail);
       default:
         return $(document).on('click', container_id, options.clickBehaviour);
     }

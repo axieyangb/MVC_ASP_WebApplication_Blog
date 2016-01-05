@@ -1,3 +1,10 @@
+#fullsized_image_info{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
 #fullsized_go_prev, #fullsized_go_next {
   position: absolute;
   top: 40%;
