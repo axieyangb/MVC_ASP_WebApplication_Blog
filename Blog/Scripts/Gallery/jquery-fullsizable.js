@@ -107,7 +107,8 @@ Options:
       }
       else {
           $("#fullsized_image_info").show();
-          $("#fullsized_image_info").append('<span class="glyphicon glyphicon-camera"></span>');
+          $("#fullsized_image_info").append('<li><span class="glyphicon glyphicon-camera fa-2x">'+images[current_image].getAttribute('data-imagename')+'</span></li>');
+          $("#fullsized_image_info").append('<li><span class="glyphicon glyphicon-eye-open fa-2x"></span></li>');
           $("#fullsized_image_holder").css('-webkit-filter', 'blur(5px)');
           $("#fullsized_image_holder").css('-moz-filter', 'blur(5px)');
           $("#fullsized_image_holder").css('-o-filter', 'blur(5px)');
@@ -206,6 +207,7 @@ Options:
       image = new Image;
       image.buffer_src = $(this).attr('href');
       image.name = $(this).attr('data-imageName');
+      image.setAttribute('data-imageName', $(this).attr('data-imageName'));
       image.index = images.length;
       images.push(image);
       if (options.openOnClick) {

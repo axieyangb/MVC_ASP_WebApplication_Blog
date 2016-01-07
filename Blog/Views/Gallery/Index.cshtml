@@ -42,9 +42,23 @@
                 @while (j < 4 && i < Model.Count())
                 {
                     var img = Model.ElementAt(i);
-                    <a class="col-lg-3 col-md-4 col-xs-6 thumbnail thumb" data-imageName="@img.FileName" href="@img.Url">
-                        <img data-CameraModel="@img.CameraModel" class="img-responsive" src="@img.Url"/>
-                        
+                    <a class="col-lg-3 col-md-4 col-xs-6 thumbnail thumb" 
+                        data-imageName="@img.FileName" data-CameraModel="@img.CameraModel" data-imageHeight="@img.ImageHeight" 
+                        data-imageWidth="@img.ImageWidth" data- href="@img.Url">
+                        <img class="img-responsive" src="@img.Url"/>
+    @*                              public string ImageHeight { get; set; }
+                                    public string ImageWidth { get; set; }
+                                    public string CameraModel { get; set; }
+                                    public string Software { get; set; }
+                                    public string Exposure { get; set; }
+                                    public string Aperture { get; set; }
+                                    public string FocusProgram { get; set; }
+                                    public string ISO { get; set; }
+                                    public string CaptureTime { get; set; }
+                                    public string Flash { get; set; }
+                                    public string FocusLength { get; set; }
+                                    public string WhiteBalanceMode { get; set; }
+                                    public string LensModel { get; set; }*@
                     </a>
                     i++;
                     j++;

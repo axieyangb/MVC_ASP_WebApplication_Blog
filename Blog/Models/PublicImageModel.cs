@@ -31,7 +31,6 @@ namespace Blog.Models
         public string ISO { get; set; }
         public string CaptureTime { get; set; }
         public string Flash { get; set; }
-        public string ColorSpace { get; set; }
         public string FocusLength { get; set; }
         public string WhiteBalanceMode { get; set; }
         public string LensModel { get; set; }
