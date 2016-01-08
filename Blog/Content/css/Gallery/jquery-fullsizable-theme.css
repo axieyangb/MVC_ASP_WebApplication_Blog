@@ -2,9 +2,12 @@
   position: absolute;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);    
+    color: #fff;
 }
-
+#fullsized_image_info >ul {
+    list-style:none;
+}
 #fullsized_go_prev, #fullsized_go_next {
   position: absolute;
   top: 40%;

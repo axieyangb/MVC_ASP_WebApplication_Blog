@@ -107,14 +107,67 @@ Options:
       }
       else {
           $("#fullsized_image_info").show();
-          $("#fullsized_image_info").append('<li><span class="glyphicon glyphicon-camera fa-2x">'+images[current_image].getAttribute('data-imagename')+'</span></li>');
-          $("#fullsized_image_info").append('<li><span class="glyphicon glyphicon-eye-open fa-2x"></span></li>');
+          GenDetailList(images[current_image]);
           $("#fullsized_image_holder").css('-webkit-filter', 'blur(5px)');
           $("#fullsized_image_holder").css('-moz-filter', 'blur(5px)');
           $("#fullsized_image_holder").css('-o-filter', 'blur(5px)');
           $("#fullsized_image_holder").css('-o-filter', 'blur(5px)');
           $("#fullsized_image_holder").css('filter', 'blur(5px)');
           $("#fullsized_image_holder").css('opacity', '0.4');
+      }
+  }
+  GenDetailList = function (image) {
+      var CameraModel = (image.getAttribute('data-CameraModel') == '' ? 'N/A' : image.getAttribute('data-CameraModel'));
+      var LensModel = (image.getAttribute('data-LensModel') == '' ? 'N/A' : image.getAttribute('data-LensModel'));
+      var Aperture = (image.getAttribute('data-Aperture') == '' ? 'N/A' : image.getAttribute('data-Aperture'));
+      var CaptureTime = (image.getAttribute('data-CaptureTime') == '' ? 'N/A' : image.getAttribute('data-CaptureTime'));
+      $("#fullsized_image_info").append('<ul class="list-group" id="fullsized_image_info_list"></ul>');
+      $("#fullsized_image_info_list").append('<li><span class="glyphicon glyphicon-camera"></span>&nbsp;&nbsp;<kbd>' + CameraModel+ '</kbd></li>');
+      $("#fullsized_image_info_list").append('<li><span class="glyphicon glyphicon-facetime-video"></span>&nbsp;&nbsp;<kbd>' + LensModel + '</kbd></li>');
+      $("#fullsized_image_info_list").append('<li><span class="glyphicon glyphicon-eye-open"></span>&nbsp;&nbsp;<kbd>' + Aperture+ '</kbd></li>');
+      $("#fullsized_image_info_list").append('<li><span class="glyphicon glyphicon-calendar"></span>&nbsp;&nbsp;<kbd>' + CaptureTime + '</kbd></li>');
+      $("#fullsized_image_info").append('<div id="seeMore" onmouseover="SeeMoreDetail()"><span class="glyphicon glyphicon-arrow-down">&nbsp;&nbsp;More</span></div>');
+  }
+  //  public string ImageHeight { get; set; }
+  //  public string ImageWidth { get; set; }
+  //  public string CameraModel { get; set; }
+  //  public string Software { get; set; }
+  //  public string Exposure { get; set; }
+  //  public string Aperture { get; set; }
+  //  public string FocusProgram { get; set; }
+  //  public string ISO { get; set; }
+  //  public string CaptureTime { get; set; }
+  //  public string Flash { get; set; }
+  //  public string FocusLength { get; set; }
+  //  public string WhiteBalanceMode { get; set; }
+    //  public string LensModel { get; set; }
+  SeeLessDetail = function () {
+      $("#fullsized_image_info_list > li:gt(3)").remove();
+      $('#seeMore > span').attr('class', 'glyphicon glyphicon-arrow-down');
+      $('#seeMore > span').html('&nbsp;&nbsp;More');
+      $('#seeMore').attr('onmouseover', 'SeeMoreDetail()');
+  }
+  SeeMoreDetail = function () {
+      image = images[current_image];
+      $('#seeMore > span').attr('class', 'glyphicon glyphicon-arrow-up');
+      $('#seeMore > span').html('&nbsp;&nbsp;Less');
+      $('#seeMore').attr('onmouseover', 'SeeLessDetail()');
+      var ImageHeight = (image.getAttribute('data-ImageHeight') == '' ? 'N/A' : image.getAttribute('data-ImageHeight'));
+      var ImageWidth = (image.getAttribute('data-ImageWidth') == '' ? 'N/A' : image.getAttribute('data-ImageWidth'));
+      var Exposure = (image.getAttribute('data-Exposure') == '' ? 'N/A' : image.getAttribute('data-Exposure'));
+      var Flash = (image.getAttribute('data-Flash') == '' ? 'N/A' : image.getAttribute('data-Flash'));
+      var FocusLength= (image.getAttribute('data-FocusLength') == '' ? 'N/A' : image.getAttribute('data-FocusLength'));
+      $("#fullsized_image_info_list").append('<li><span class="glyphicon glyphicon-resize-vertical"></span>&nbsp;&nbsp;<kbd>' + ImageHeight + '</kbd></li>');
+      $("#fullsized_image_info_list").append('<li><span class="glyphicon glyphicon-resize-horizontal"></span>&nbsp;&nbsp;<kbd>' + ImageWidth+ '</kbd></li>');
+      $("#fullsized_image_info_list").append('<li><span class="glyphicon glyphicon-time"></span>&nbsp;&nbsp;<kbd>' +Exposure+ '</kbd></li>');
+      $("#fullsized_image_info_list").append('<li><span class="glyphicon glyphicon-flash"></span>&nbsp;&nbsp;<kbd>' + Flash + '</kbd></li>');
+      $("#fullsized_image_info_list").append('<li><span class=" glyphicon glyphicon-screenshot"></span>&nbsp;&nbsp;<kbd>' + FocusLength + '</kbd></li>');
+     
+  }
+  RefreshDetail = function (image) {
+      if ($("#fullsized_image_info").is(":visible")) {
+          $("#fullsized_image_info").empty();
+          GenDetailList(image);
       }
   }
 
@@ -125,6 +178,7 @@ Options:
     if (shouldHideChrome == null) {
       shouldHideChrome = false;
     }
+    RefreshDetail(image);
     current_image = image.index;
     $(image_holder_id).hide();
     $(image_holder_id).html(image);
@@ -206,8 +260,20 @@ Options:
       var image;
       image = new Image;
       image.buffer_src = $(this).attr('href');
-      image.name = $(this).attr('data-imageName');
-      image.setAttribute('data-imageName', $(this).attr('data-imageName'));
+      image.setAttribute('data-ImageName', $(this).attr('data-ImageName'));
+      image.setAttribute('data-CameraModel', $(this).attr('data-CameraModel'));
+      image.setAttribute('data-ImageHeight', $(this).attr('data-ImageHeight'));
+      image.setAttribute('data-ImageWidth', $(this).attr('data-ImageWidth'));
+      image.setAttribute('data-Software', $(this).attr('data-Software'));
+      image.setAttribute('data-Exposure', $(this).attr('data-Exposure'));
+      image.setAttribute('data-Aperture', $(this).attr('data-Aperture'));
+      image.setAttribute('data-FocusProgram', $(this).attr('data-FocusProgram'));
+      image.setAttribute('data-ISO', $(this).attr('data-ISO'));
+      image.setAttribute('data-CaptureTime', $(this).attr('data-CaptureTime'));
+      image.setAttribute('data-Flash', $(this).attr('data-Flash'));
+      image.setAttribute('data-FocusLength', $(this).attr('data-FocusLength'));
+      image.setAttribute('data-WhiteBalanceMode', $(this).attr('data-WhiteBalanceMode'));
+      image.setAttribute('data-LensModel', $(this).attr('data-LensModel'));
       image.index = images.length;
       images.push(image);
       if (options.openOnClick) {
