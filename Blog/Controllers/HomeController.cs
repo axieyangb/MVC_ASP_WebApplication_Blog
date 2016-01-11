@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.Data.Entity;
 using Blog.Models;
+using Simple.ImageResizer;
 namespace Blog.Controllers
 {
     public class HomeController : Controller
@@ -68,6 +69,12 @@ namespace Blog.Controllers
                     string path = System.IO.Path.Combine(Server.MapPath("/Content/users/" + id), ImageName);
                     url = "/Content/users/" + id + "/" + ImageName;
                     upload.SaveAs(path);
+                    ImageResizer resizer = new ImageResizer(@path);
+                    var thumbtailPath = System.IO.Path.Combine(Server.MapPath("~/Content/Users/" + id + "/thumbtail/"), upload.FileName);
+                    var byteArray1 = resizer.Resize(400, 400, ImageEncoding.Jpg90);
+                    if (!System.IO.Directory.Exists(Server.MapPath("~/Content/Users/" + id + "/thumbtail/")))
+                        System.IO.Directory.CreateDirectory(Server.MapPath("~/Content/Users/" + id + "/thumbtail/"));
+                    resizer.SaveToFile(@thumbtailPath);
                     ImageViewModel image = new ImageViewModel();
                     ImageMetaDataModel metadata = new ImageMetaDataModel();
                     ImageMetaData imageMetaDate = new ImageMetaData(Server.MapPath(image.Url));

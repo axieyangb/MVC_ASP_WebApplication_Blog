@@ -3,8 +3,11 @@
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-@Scripts.Render("~/bundles/gallery");
- @Styles.Render("~/Content/css/gallery")
+<script src="~/Scripts/Gallery/fullsizable.js?v=1"></script>
+<script src="~/Scripts/Gallery/jquery.touchSwipe.min.js"></script>
+    <link href="~/Content/css/Gallery/fullsizable-theme.css?v=1" rel="stylesheet" type="text/css">
+    <link href="~/Content/css/Gallery/fullsizable.css?v=1" rel="stylesheet" type="text/css">
+<link href="~/Content/css/Gallery/gallery.css?v=1" rel="stylesheet" type="text/css">
 <script>
     $(function () {
         $('#gallery >div> a').fullsizable({
@@ -48,7 +51,7 @@
                         data-FocusProgram="@img.FocusProgram" data-ISO="@img.ISO" data-CaptureTime="@img.CaptureTime" data-Flash="@img.Flash" 
                         data-FocusLength="@img.FocusLength" data-WhiteBalanceMode="@img.WhiteBalanceMode" data-LensModel="@img.LensModel"
                          href="@img.Url">
-                        <img class="img-responsive" src="@img.Url"/>
+                        <img class="img-responsive" src="@img.Url.Substring(0,img.Url.Length-img.FileName.Length)thumbtail/@img.FileName"/>
 
                     </a>
                     i++;

@@ -60,14 +60,30 @@ Options:
   };
 
   keyPressed = function(e) {
-    if (e.keyCode === 27) {
-      closeViewer();
-    }
+      if (e.keyCode === 27) {
+            closeViewer();
+      }
+      if (e.keyCode === 13) {
+          toggleFullscreen();
+      }
+      if (e.keyCode === 32) {
+          ShowDetail();
+      }
     if (e.keyCode === 37) {
       prevImage(true);
     }
     if (e.keyCode === 39) {
       return nextImage(true);
+    }
+    if (e.keyCode === 40) {
+        if ($('#seeMore > span').html() == 'More') {
+             SeeMoreDetail();
+        }
+    }
+    if (e.keyCode === 38) {
+        if ($('#seeMore > span').html() == 'Hide') {
+            SeeLessDetail();
+        }
     }
   };
 
@@ -126,7 +142,7 @@ Options:
       $("#fullsized_image_info_list").append('<li><span class="glyphicon glyphicon-facetime-video"></span>&nbsp;&nbsp;<kbd>' + LensModel + '</kbd></li>');
       $("#fullsized_image_info_list").append('<li><span class="glyphicon glyphicon-eye-open"></span>&nbsp;&nbsp;<kbd>' + Aperture+ '</kbd></li>');
       $("#fullsized_image_info_list").append('<li><span class="glyphicon glyphicon-calendar"></span>&nbsp;&nbsp;<kbd>' + CaptureTime + '</kbd></li>');
-      $("#fullsized_image_info").append('<div id="seeMore" onmouseover="SeeMoreDetail()"><span class="glyphicon glyphicon-arrow-down">&nbsp;&nbsp;More</span></div>');
+      $("#fullsized_image_info").append('<div id="seeMore" onmouseover="SeeMoreDetail()"><span class="glyphicon glyphicon-arrow-down">More</span></div>');
   }
   //  public string ImageHeight { get; set; }
   //  public string ImageWidth { get; set; }
@@ -144,13 +160,13 @@ Options:
   SeeLessDetail = function () {
       $("#fullsized_image_info_list > li:gt(3)").remove();
       $('#seeMore > span').attr('class', 'glyphicon glyphicon-arrow-down');
-      $('#seeMore > span').html('&nbsp;&nbsp;More');
+      $('#seeMore > span').html('More');
       $('#seeMore').attr('onmouseover', 'SeeMoreDetail()');
   }
   SeeMoreDetail = function () {
       image = images[current_image];
       $('#seeMore > span').attr('class', 'glyphicon glyphicon-arrow-up');
-      $('#seeMore > span').html('&nbsp;&nbsp;Less');
+      $('#seeMore > span').html('Hide');
       $('#seeMore').attr('onmouseover', 'SeeLessDetail()');
       var ImageHeight = (image.getAttribute('data-ImageHeight') == '' ? 'N/A' : image.getAttribute('data-ImageHeight'));
       var ImageWidth = (image.getAttribute('data-ImageWidth') == '' ? 'N/A' : image.getAttribute('data-ImageWidth'));

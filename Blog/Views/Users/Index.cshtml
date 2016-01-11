@@ -1,0 +1,71 @@
+﻿@{
+    ViewBag.Title = "Users";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+    <link href="~/Content/css/Users/index.css?v=1" rel="stylesheet" type="text/css">
+<h2>Users</h2>
+<div class="container">
+    <div class="row">
+        <div class="bg_img col-sm-3 col-md-3 col-lg-3 col-xl-3" style="background-image: url(/Content/Users/1/20160109203443_0_mmexport1399961136383.jpg)"></div>
+        <div class="ProfileCard col-sm-3 col-md-3 col-lg-3 col-xl-3">
+            <div class="profile-info">
+                <div class="profile-userpic">
+                    <img class="img-circle" src="/Content/Users/1/20160109203443_0_mmexport1399961136383.jpg" />
+                </div>
+                <div class="profile-usertitle">
+                    <div class="text-info">
+                        <h3>Jerry Xie</h3>
+                    </div>
+                    <div class="text-info text-uppercase">
+                        Sql Developer
+                    </div>
+                </div>
+                <div class="content ">
+                    <p class="text-success">Web Developer</p>
+                    <a class="btn">More Here</a>
+
+                    <p>
+                        <button type="button" id="contact" class="btn btn-default">Contact</button>
+                    </p>
+                </div>
+            </div>
+            <div class="profile-usermenu bg-info">
+                <ul class="nav">
+                    <li class="active">
+                        <a href="#">
+                            <i class="glyphicon glyphicon-home"></i>
+                            Overview </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <i class="glyphicon glyphicon-user"></i>
+                            Account Settings </a>
+                    </li>
+                    <li>
+                        <a href="#" target="_blank">
+                            <i class="glyphicon glyphicon-ok"></i>
+                            Tasks </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <i class="glyphicon glyphicon-flag"></i>
+                            Help </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+
+    $(window).resize(function () {
+        $(".bg_img").height($(".bg_img").next('.ProfileCard').height());
+        $(".bg_img").width($(".bg_img").next('.ProfileCard').width());
+    });
+    $(document).ready(function () {
+        $(".bg_img").height($(".bg_img").next('.ProfileCard').height());
+        $(".bg_img").width($(".bg_img").next('.ProfileCard').width());
+    });
+
+</script>

@@ -8,6 +8,7 @@ using System.Data.Entity;
 using System.IO;
 using System.Web.Script.Serialization;
 using Newtonsoft.Json.Linq;
+using Simple.ImageResizer;
 namespace Blog.Controllers
 {
     public class DashBoardController : Controller
@@ -49,13 +50,14 @@ namespace Blog.Controllers
                 retJsonModel ret = new retJsonModel();
                 ret.ContentType = file.ContentType;
                 ret.UserID = Session["LoggedUserID"].ToString();
-                if (ret.ContentType.Contains("image/") || ret.ContentType.Contains("video/"))
+                if (ret.ContentType.Contains("image/"))
                 {
                     ret.isAccept = 0;
                     ret.fileTypeAccept = "yes";
                     ret.fileName = DateTime.Now.ToString("yyyyMMddHHmmss") + '_' + i + '_' + file.FileName;
                     if (!String.IsNullOrEmpty(ret.UserID))
                     {
+                       
                         ret.URL = "/Content/Users/" + ret.UserID + "/" + ret.fileName;
                         var path = Path.Combine(Server.MapPath("~/Content/Users/" + ret.UserID + ""), ret.fileName);
                         var stream = file.InputStream;
@@ -63,6 +65,12 @@ namespace Blog.Controllers
                         {
                             stream.CopyTo(fileStream);
                         }
+                         ImageResizer resizer = new ImageResizer(@path);
+                        var thumbtailPath= Path.Combine(Server.MapPath("~/Content/Users/" + ret.UserID + "/thumbtail/"), ret.fileName);
+                        var byteArray1 = resizer.Resize(400, 400, ImageEncoding.Jpg90);
+                        if (!System.IO.Directory.Exists(Server.MapPath("~/Content/Users/" + ret.UserID + "/thumbtail/")))
+                            System.IO.Directory.CreateDirectory(Server.MapPath("~/Content/Users/" + ret.UserID + "/thumbtail/"));
+                        resizer.SaveToFile(@thumbtailPath);
                         ImageViewModel image = new ImageViewModel();
                         ImageMetaDataModel metadata = new ImageMetaDataModel();
                         imageMetaDate = new ImageMetaData(Server.MapPath(ret.URL));

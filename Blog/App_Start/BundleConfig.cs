@@ -36,7 +36,7 @@ namespace Blog
                      ));
 
             bundles.Add(new ScriptBundle("~/bundles/gallery").Include(
-                       "~/Scripts/Gallery/*.js"
+                       "~/Scripts/Gallery/jquery.touchSwipe.min.js"
                      ));
             bundles.Add(new StyleBundle("~/Content/css").Include("~/Content/site.css",
                 "~/Content/css/blog.css",
@@ -56,11 +56,7 @@ namespace Blog
             bundles.Add(new StyleBundle("~/Content/css/admin").Include(
                 "~/Content/css/page/login.css",
                 "~/Content/css/page/signup.css"
-                 
                 ));
-            bundles.Add(new StyleBundle("~/Content/css/gallery").Include(
-    "~/Content/css/Gallery/*.css"
-    ));
 
             bundles.Add(new StyleBundle("~/Content/css/dashboard").Include(
                 "~/Content/css/page/dashboard.css",

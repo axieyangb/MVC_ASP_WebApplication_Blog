@@ -24,8 +24,7 @@
                         }
                         else
                         {
-                            <img src="@image.Url" alt="Hejsan"  data-source="@image.Url" class="img-thumbnail" />
-                          
+                            <img src="@image.Url.Substring(0,image.Url.Length-image.FileName.Length)thumbtail/@image.FileName" alt="Hejsan"  data-source="@image.Url" class="img-thumbnail" />                        
                         }
                     </div>
                     <div class="back">
