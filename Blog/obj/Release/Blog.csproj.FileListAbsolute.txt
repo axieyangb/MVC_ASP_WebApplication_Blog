@@ -132,3 +132,4 @@ C:\Users\axieyangb\Desktop\webApp\MVC_ASP_WebApplication_Blog\Blog\obj\Release\B
 C:\Users\axieyangb\Desktop\webApp\MVC_ASP_WebApplication_Blog\Blog\obj\Release\Blog.dll
 C:\Users\axieyangb\Desktop\webApp\MVC_ASP_WebApplication_Blog\Blog\obj\Release\Blog.pdb
 C:\Users\axieyangb\Desktop\webApp\MVC_ASP_WebApplication_Blog\Blog\bin\Simple.ImageResizer.dll
+C:\Users\Scott2\Desktop\WebApp\MVC_ASP_WebApplication_Blog\Blog\bin\Simple.ImageResizer.dll

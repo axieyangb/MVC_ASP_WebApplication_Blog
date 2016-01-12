@@ -116,5 +116,11 @@ namespace Blog.Controllers
             public string UserID { get; set; }
             public string Error { get; set; }
         }
+        public ActionResult EditProfile()
+        {
+            return View();
+        }
     }
+
+    
 }
