@@ -22,7 +22,8 @@
         var ajax = new XMLHttpRequest();
         ajax.addEventListener("load", completeHandler, false);
         var data = new FormData();
-        data.append('Content', encodeURI($('#articleContent').html()));
+        $('#articleContent').text()
+        data.append('Content', encodeURI($('#articleContent').html()).replace(/\+/g,'%2B'));
         data.append('UserID', '@Session["LoggedUserID"]');
         data.append('ArticleID', '@Model.article.ArticleID');
         ajax.open("POST", "@Url.Action("ArticleUpdate", "Article")");
