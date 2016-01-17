@@ -189,6 +189,7 @@
                             @Html.HiddenFor(a => a.commentArticle.ReplyID, new { id = "ReplyId" })
                             @Html.HiddenFor(a => a.article.ArticleID, new { value = Model.article.ArticleID })
                             @Html.TextAreaFor(a => a.commentArticle.Content, new { @class = "form-control", name = "Content", id = "Content", rows = "3" })
+                            <a class="btn" href="#" data-toggle="popover" data-placement="top" data-img="/Content/Users/1/20160110225029_0_IMG_0847.jpg"> Image</a>
                             @*<textarea class="form-control" ,name="Content", id="Content",rows="3"></textarea>*@
                         </div>
                         <button type="submit" class="btn btn-primary">Submit</button>
@@ -213,6 +214,13 @@
         document.getElementById("TitleEditButton").style.display = "initial";
     }
     $(document).ready(function () {
+        $('[data-toggle="popover"]').popover({
+            html: true,
+            trigger: 'click',
+            content: function () {
+                return '<img src="' + $(this).data('img') + '"  width="200" height="200"/>';
+            }
+        });
         $(".media-body > a").click(function () {
             $("#ReplyId").val($(this).attr("data-value"));
             $("#CommentTitle").html("Reply   " + $(this).attr("data-contentName") + "'s Comment:");

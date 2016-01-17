@@ -5,14 +5,14 @@
 }
 <script src="~/Scripts/Gallery/fullsizable.js?v=1"></script>
 <script src="~/Scripts/Gallery/jquery.touchSwipe.min.js"></script>
-    <link href="~/Content/css/Gallery/fullsizable-theme.css?v=1" rel="stylesheet" type="text/css">
-    <link href="~/Content/css/Gallery/fullsizable.css?v=1" rel="stylesheet" type="text/css">
-<link href="~/Content/css/Gallery/gallery.css?v=1" rel="stylesheet" type="text/css">
+<link href="~/Content/css/Gallery/fullsizable-theme.css?v=1" rel="stylesheet" type="text/css">
+<link href="~/Content/css/Gallery/fullsizable.css?v=1" rel="stylesheet" type="text/css">
+<link href="~/Content/css/Gallery/gallery.css?v=2" rel="stylesheet" type="text/css">
 <script>
     $(function () {
-        $('#gallery >div> a').fullsizable({
+        $('#gallery > a').fullsizable({
             detach_id: 'gallery',
-            clickBehaviour:'detail'
+            clickBehaviour: 'detail'
         })
 
         $(document).on('fullsizable:opened', function () {
@@ -40,24 +40,17 @@
             int i = 0;
             while (i < Model.Count())
             {
-                int j = 0;
-            <div class="row">
-                @while (j < 4 && i < Model.Count())
-                {
-                    var img = Model.ElementAt(i);
-                    <a class="col-lg-3 col-md-4 col-xs-6 thumbnail thumb" 
+                var img = Model.ElementAt(i);
+            <a class="col-lg-3 col-md-4 col-xs-6 thumbnail thumb" 
                         data-ImageName="@img.FileName" data-CameraModel="@img.CameraModel" data-ImageHeight="@img.ImageHeight" 
                         data-ImageWidth="@img.ImageWidth" data-Software="@img.Software" data-Exposure="@img.Exposure" data-Aperture="@img.Aperture"
                         data-FocusProgram="@img.FocusProgram" data-ISO="@img.ISO" data-CaptureTime="@img.CaptureTime" data-Flash="@img.Flash" 
                         data-FocusLength="@img.FocusLength" data-WhiteBalanceMode="@img.WhiteBalanceMode" data-LensModel="@img.LensModel"
                          href="@img.Url">
-                        <img class="img-responsive" src="@img.Url.Substring(0,img.Url.Length-img.FileName.Length)thumbtail/@img.FileName"/>
+                <img class="img-responsive" src="@img.Url.Substring(0, img.Url.Length - img.FileName.Length)thumbtail/@img.FileName"/>
 
-                    </a>
-                    i++;
-                    j++;
-                }
-            </div>
+            </a>
+                i++;
 
             }
         }

@@ -28,7 +28,7 @@ namespace Blog.Controllers
                                    AuthorName = String.IsNullOrEmpty(b.NickName) ? b.UserName : b.NickName,
                                };
             ViewBag.ArticleAmount = Home_Article.Count();
-            Home_Article = Home_Article.OrderBy(i => i.ArticleID).Take(10);
+            Home_Article = Home_Article.OrderByDescending(i => i.PostDate).Take(10);
            
             return View(Home_Article.ToList());
         }
