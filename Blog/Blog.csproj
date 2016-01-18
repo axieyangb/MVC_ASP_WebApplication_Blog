@@ -199,6 +199,7 @@
     <Content Include="Content\img\copy.png" />
     <Content Include="Content\img\home-bg.jpg" />
     <Content Include="Content\img\home-horseBrain.png" />
+    <Content Include="Content\img\loading.gif" />
     <Content Include="Content\img\login-password.png" />
     <Content Include="Content\img\post-bg.jpg" />
     <Content Include="Content\img\post-sample-image.jpg" />
@@ -208,6 +209,7 @@
     <Content Include="Content\img\video-icon.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="Scripts\Article\Article.js" />
     <Content Include="Scripts\FileUpload\bootstrap-filestyle.min.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />

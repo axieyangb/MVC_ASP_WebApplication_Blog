@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using System.Data.Entity;
 using Blog.Models;
 using System.Text.RegularExpressions;
+using System.IO;
 namespace Blog.Controllers
 {
     public class ArticleController : Controller
@@ -40,7 +41,36 @@ namespace Blog.Controllers
                 oneComment.childComments = db.CommentDetailInfo.Where(a => (a.ArticleID == ArticleID && a.ReplyID == rootComment.CommentID)).ToList();
                 oneArticle.rootComments.Add(oneComment);
             }
+            /*fetch the emoji in Content\img\emoji    */
+            string EmojiPath = Server.MapPath("/Content/img/emoji/");
+            DirectoryInfo emojiDir = new System.IO.DirectoryInfo(EmojiPath);
+            try
+            {
+                DirectoryInfo[] categoryList = emojiDir.GetDirectories();
+                ViewBag.emoji= new string[categoryList.Length];
+                for (int i = 0; i < categoryList.Length; i++)
+                    ViewBag.emoji[i] = categoryList[i].Name;
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.ToString());
+            }
             return View(oneArticle);
+        }
+
+
+        [HttpPost]
+        public JsonResult getEmoji()
+        {
+            string categoaryName = Request.Form["categoaryName"];
+            DirectoryInfo Emojis=new DirectoryInfo(Path.Combine(Server.MapPath("/Content/img/emoji/"),categoaryName));
+            FileInfo[] oneCategory = Emojis.GetFiles();
+            string[] urls = new string[oneCategory.Length];
+            for (int i = 0; i < oneCategory.Length; i++)
+            {
+                urls[i] = oneCategory[i].FullName.Replace(Request.ServerVariables["APPL_PHYSICAL_PATH"], String.Empty);
+            }
+            return Json(urls);
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
