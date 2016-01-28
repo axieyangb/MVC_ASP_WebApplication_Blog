@@ -4,8 +4,7 @@
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<link href="/Scripts/TextEditor/plugins/codesnippet/lib/highlight/styles/default.css" rel="stylesheet" />
-<script src="/Scripts/TextEditor/plugins/codesnippet/lib/highlight/highlight.pack.js"></script>
+
 <script>
     function getEmoji(one) {
         var ajax = new XMLHttpRequest();
@@ -232,7 +231,7 @@
         <div class="panel-body">
             <div class="row emoji">
                  <ul class="nav nav-tabs">
-                @for (var i = 0; ViewBag.emoji!=null && i < ViewBag.emoji.Length; i++)
+                @for (var i = 0; i <ViewBag.emoji.Length; i++)
                 {
                     <li role="presentation"><a class="btn" onclick="getEmoji(this);">@ViewBag.emoji[i]</a></li>
                 }
@@ -338,4 +337,3 @@
 <script type="text/javascript"
     src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
 </script>
-<script>hljs.initHighlightingOnLoad();</script>
