@@ -15,5 +15,6 @@ namespace Blog.Models
         public DbSet<PublicImageModel> PublicImages { get; set; }
         public DbSet<PublicImageViewModel> PublicImagesVW { get; set; }
         public DbSet<ImageMetaDataModel> ImageMetaData { get; set; }
+        public DbSet<Tags> Tags { get; set; }
     }
 }

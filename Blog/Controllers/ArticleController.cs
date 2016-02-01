@@ -81,6 +81,7 @@ namespace Blog.Controllers
             article.Title = HttpUtility.HtmlEncode(articlePost.Title);
             article.SubTitle = articlePost.SubTitle;
             article.Content = articlePost.Content;
+            string tags = Request.Form["tags"].ToString();
             if (article.Content != null)
             {
                 article.Content = articlePost.Content.Replace("style=\"height:", "name=\"height:").Replace("\r\n", "<br>");
@@ -94,7 +95,12 @@ namespace Blog.Controllers
             {
                 if (ModelState.IsValid && !String.IsNullOrEmpty(article.Title))
                 {
-                   
+                    long?[] TagsID=getTagID(tags);
+                    article.TagID_1 = TagsID[0];
+                    article.TagID_2 = TagsID[1];
+                    article.TagID_3 = TagsID[2];
+                    article.TagID_4 = TagsID[3];
+                    article.TagID_5 = TagsID[4];
                     db.Articles.Add(article);
                     db.SaveChanges();
                     return View("Index", one);
@@ -107,6 +113,34 @@ namespace Blog.Controllers
                 ViewBag.isPreView = true;
                 return View("Index", one);
             }
+        }
+
+        public long?[] getTagID(string tags)
+        {
+            string [] splitsTags = tags.Split(',');
+            long?[] retID = new long?[5];
+            for (int i = 0; i < splitsTags.Length; i++)
+            {
+                string tag = splitsTags[i];
+                try
+                {
+                    var oneTag = db.Tags.Where(s => s.TagContent.Equals(tag)).First();
+                    retID[i] = oneTag.TagID;
+                    oneTag.TagCount++;
+                    oneTag.LastUsedDate = System.DateTime.Now;
+                    db.SaveChanges();
+                }
+               catch(Exception ex)
+               {
+                   Tags oneTag = new Tags();
+                   oneTag.TagContent = splitsTags[i];
+                   oneTag.TagCount = 1;
+                   db.Tags.Add(oneTag);
+                   db.SaveChanges();
+                   retID[i] = oneTag.TagID;
+               }
+            }
+            return retID;
         }
 
         [HttpPost]
