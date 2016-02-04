@@ -24,7 +24,7 @@ function updateArticle() {
 }
 function completeHandler(event) {
     var feedback = event.currentTarget.response;
-    if (feedback["isAccept"] != null && feedback["isAccept"] == "1") {
+    if (feedback["isAccept"] != null && feedback["isAccept"] === "1") {
         alert("Modified Successfully");
         location.reload();
     }

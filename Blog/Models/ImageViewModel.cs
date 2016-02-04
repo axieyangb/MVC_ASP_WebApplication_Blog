@@ -10,16 +10,16 @@ namespace Blog.Models
     public class ImageViewModel
     {
         [Key]
-        public long ImageID { get; set; }
+        public long ImageId { get; set; }
         [DataType(System.ComponentModel.DataAnnotations.DataType.ImageUrl)]
         public string Url { get; set; }
         [DataType(System.ComponentModel.DataAnnotations.DataType.DateTime)]
         public DateTime UpdateDate { get; set; }
-        public long UserID { get; set; }
+        public long UserId { get; set; }
         [DataType(System.ComponentModel.DataAnnotations.DataType.DateTime)]
         public DateTime? DeleteTime { get; set; }
-        public byte isPublish { get; set; }
-        public byte isBlock { get; set; }
+        public byte IsPublish { get; set; }
+        public byte IsBlock { get; set; }
         public string ContentType { get; set; }
         public string FileName { get; set; }
     }

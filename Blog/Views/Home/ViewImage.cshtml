@@ -41,9 +41,9 @@
                         @using (Html.BeginForm("PicOperation", "Home", FormMethod.Post))
                         {
                             <a class="btn btn-default btn-sm" data-src="@image.Url" data-type="@image.ContentType" data-toggle="modal" data-target="#MediaDetail" >Large</a>
-                            <input type="text" name="ImageID" id="imageID" value="@image.ImageID" hidden />
+                            <input type="text" name="ImageID" id="imageID" value="@image.ImageId" hidden />
 
-                            if (image.isPublish == 1)
+                            if (image.IsPublish == 1)
                             {  
                             <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modalPopMessage" data-operate="BePrivate">Be Private</button>
                             }
@@ -114,32 +114,30 @@
         $('#modalPopMessage').on('show.bs.modal', function (event) {
             var target = $(event.relatedTarget);
             var oper = target.data("operate");
-            if (oper == "BePublic") {
-                $(".modal-title").text('Be Public')
-                $("#pop-up-message").text("Are you sure you want to public your picture?")
+            if (oper === "BePublic") {
+                $(".modal-title").text('Be Public');
+                $("#pop-up-message").text("Are you sure you want to public your picture?");
             }
-            else if (oper == "BePrivate") {
-                $(".modal-title").text('Be Private')
-                $("#pop-up-message").text("Are you sure you want to private your picture?")
+            else if (oper === "BePrivate") {
+                $(".modal-title").text('Be Private');
+                $("#pop-up-message").text("Are you sure you want to private your picture?");
             }
-            else if (oper == "Delete") {
-                $(".modal-title").text('Delete')
-                $("#pop-up-message").text("Are you sure you want to delete your picture?")
+            else if (oper === "Delete") {
+                $(".modal-title").text('Delete');
+                $("#pop-up-message").text("Are you sure you want to delete your picture?");
             }
 
-            $("#pop-up-confirm").click(function () {
+            $("#pop-up-confirm").click(function() {
 
-                if (oper == "Delete") {
+                if (oper === "Delete") {
                     target.after("<input type='text' name='operation' value='2' hidden>");
-                }
-                else if (oper == "BePrivate") {
+                } else if (oper === "BePrivate") {
                     target.after("<input type='text' name='operation' value='0' hidden>");
-                }
-                else if (oper == "BePublic") {
+                } else if (oper === "BePublic") {
                     target.after("<input type='text' name='operation' value='1' hidden>");
                 }
-                target.closest('form').submit()
-            })
+                target.closest('form').submit();
+            });
         });
         $('#MediaDetail').on('show.bs.modal', function (event) {
             var target = $(event.relatedTarget);
@@ -148,8 +146,6 @@
             if (type.indexOf("image/") > -1) {
                 $("#pop-up-media").empty();
                 $("#pop-up-media").append("<img id=\"inner-pop-img\" class =\"col-lg-12 col-md-12 col-xs-12  col-sm-12\" src=" + source + " />");
-                var height = $("#inner-pop-img").height();
-
             }
             else {
                 $("#pop-up-media").empty();

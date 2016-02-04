@@ -22,29 +22,29 @@ Options:
  */
 
 (function() {
-  var $, $image_holder, bindCurtainEvents, closeFullscreen, closeViewer, container_id, current_image, hasFullscreenSupport, hideChrome, image_holder_id, images, keyPressed, makeFullsizable, mouseMovement, mouseStart, nextImage, openViewer, options, preloadImage, prepareCurtain, prevImage, resizeImage, showChrome, showImage, spinner_class, stored_scroll_position, toggleFullscreen, unbindCurtainEvents;
+  var $, $imageHolder, bindCurtainEvents, closeFullscreen, closeViewer, containerId, currentImage, hasFullscreenSupport, hideChrome, imageHolderId, images, keyPressed, makeFullsizable, mouseMovement, mouseStart, nextImage, openViewer, options, preloadImage, prepareCurtain, prevImage, resizeImage, showChrome, showImage, spinnerClass, storedScrollPosition, toggleFullscreen, unbindCurtainEvents;
 
   $ = jQuery;
 
-  container_id = '#jquery-fullsizable';
+  containerId = '#jquery-fullsizable';
 
-  image_holder_id = '#fullsized_image_holder';
+  imageHolderId = '#fullsized_image_holder';
 
-  spinner_class = 'fullsized_spinner';
+  spinnerClass = 'fullsized_spinner';
 
-  $image_holder = $('<div id="jquery-fullsizable"><div id="fullsized_image_holder"></div></div>');
+  $imageHolder = $('<div id="jquery-fullsizable"><div id="fullsized_image_holder"></div></div>');
 
   images = [];
 
-  current_image = 0;
+  currentImage = 0;
 
   options = null;
 
-  stored_scroll_position = null;
+  storedScrollPosition = null;
 
   resizeImage = function() {
     var image;
-    image = images[current_image];
+    image = images[currentImage];
     if (image.ratio == null) {
       image.ratio = (image.naturalHeight / image.naturalWidth).toFixed(2);
     }
@@ -91,8 +91,8 @@ Options:
     if (shouldHideChrome == null) {
       shouldHideChrome = false;
     }
-    if (current_image > 0) {
-      return showImage(images[current_image - 1], -1, shouldHideChrome);
+    if (currentImage > 0) {
+      return showImage(images[currentImage - 1], -1, shouldHideChrome);
     } else if (options.loop) {
       return showImage(images[images.length - 1], -1, shouldHideChrome);
     }
@@ -102,8 +102,8 @@ Options:
     if (shouldHideChrome == null) {
       shouldHideChrome = false;
     }
-    if (current_image < images.length - 1) {
-      return showImage(images[current_image + 1], 1, shouldHideChrome);
+    if (currentImage < images.length - 1) {
+      return showImage(images[currentImage + 1], 1, shouldHideChrome);
     } else if (options.loop) {
       return showImage(images[0], 1, shouldHideChrome);
     }
@@ -123,7 +123,7 @@ Options:
       }
       else {
           $("#fullsized_image_info").show();
-          GenDetailList(images[current_image]);
+          GenDetailList(images[currentImage]);
           $("#fullsized_image_holder").css('-webkit-filter', 'blur(5px)');
           $("#fullsized_image_holder").css('-moz-filter', 'blur(5px)');
           $("#fullsized_image_holder").css('-o-filter', 'blur(5px)');
@@ -133,15 +133,15 @@ Options:
       }
   }
   GenDetailList = function (image) {
-      var CameraModel = (image.getAttribute('data-CameraModel') == '' ? 'N/A' : image.getAttribute('data-CameraModel'));
-      var LensModel = (image.getAttribute('data-LensModel') == '' ? 'N/A' : image.getAttribute('data-LensModel'));
-      var Aperture = (image.getAttribute('data-Aperture') == '' ? 'N/A' : image.getAttribute('data-Aperture'));
-      var CaptureTime = (image.getAttribute('data-CaptureTime') == '' ? 'N/A' : image.getAttribute('data-CaptureTime'));
+      var cameraModel = (image.getAttribute('data-CameraModel') == '' ? 'N/A' : image.getAttribute('data-CameraModel'));
+      var lensModel = (image.getAttribute('data-LensModel') == '' ? 'N/A' : image.getAttribute('data-LensModel'));
+      var aperture = (image.getAttribute('data-Aperture') == '' ? 'N/A' : image.getAttribute('data-Aperture'));
+      var captureTime = (image.getAttribute('data-CaptureTime') == '' ? 'N/A' : image.getAttribute('data-CaptureTime'));
       $("#fullsized_image_info").append('<ul class="list-group" id="fullsized_image_info_list"></ul>');
-      $("#fullsized_image_info_list").append('<li><span class="glyphicon glyphicon-camera"></span>&nbsp;&nbsp;<kbd>' + CameraModel+ '</kbd></li>');
-      $("#fullsized_image_info_list").append('<li><span class="glyphicon glyphicon-facetime-video"></span>&nbsp;&nbsp;<kbd>' + LensModel + '</kbd></li>');
-      $("#fullsized_image_info_list").append('<li><span class="glyphicon glyphicon-eye-open"></span>&nbsp;&nbsp;<kbd>' + Aperture+ '</kbd></li>');
-      $("#fullsized_image_info_list").append('<li><span class="glyphicon glyphicon-calendar"></span>&nbsp;&nbsp;<kbd>' + CaptureTime + '</kbd></li>');
+      $("#fullsized_image_info_list").append('<li><span class="glyphicon glyphicon-camera"></span>&nbsp;&nbsp;<kbd>' + cameraModel+ '</kbd></li>');
+      $("#fullsized_image_info_list").append('<li><span class="glyphicon glyphicon-facetime-video"></span>&nbsp;&nbsp;<kbd>' + lensModel + '</kbd></li>');
+      $("#fullsized_image_info_list").append('<li><span class="glyphicon glyphicon-eye-open"></span>&nbsp;&nbsp;<kbd>' + aperture+ '</kbd></li>');
+      $("#fullsized_image_info_list").append('<li><span class="glyphicon glyphicon-calendar"></span>&nbsp;&nbsp;<kbd>' + captureTime + '</kbd></li>');
       $("#fullsized_image_info").append('<div id="seeMore" onmouseover="SeeMoreDetail()"><span class="glyphicon glyphicon-arrow-down">More</span></div>');
   }
   //  public string ImageHeight { get; set; }
@@ -164,20 +164,20 @@ Options:
       $('#seeMore').attr('onmouseover', 'SeeMoreDetail()');
   }
   SeeMoreDetail = function () {
-      image = images[current_image];
+      image = images[currentImage];
       $('#seeMore > span').attr('class', 'glyphicon glyphicon-arrow-up');
       $('#seeMore > span').html('Hide');
       $('#seeMore').attr('onmouseover', 'SeeLessDetail()');
-      var ImageHeight = (image.getAttribute('data-ImageHeight') == '' ? 'N/A' : image.getAttribute('data-ImageHeight'));
-      var ImageWidth = (image.getAttribute('data-ImageWidth') == '' ? 'N/A' : image.getAttribute('data-ImageWidth'));
-      var Exposure = (image.getAttribute('data-Exposure') == '' ? 'N/A' : image.getAttribute('data-Exposure'));
-      var Flash = (image.getAttribute('data-Flash') == '' ? 'N/A' : image.getAttribute('data-Flash'));
-      var FocusLength= (image.getAttribute('data-FocusLength') == '' ? 'N/A' : image.getAttribute('data-FocusLength'));
-      $("#fullsized_image_info_list").append('<li><span class="glyphicon glyphicon-resize-vertical"></span>&nbsp;&nbsp;<kbd>' + ImageHeight + '</kbd></li>');
-      $("#fullsized_image_info_list").append('<li><span class="glyphicon glyphicon-resize-horizontal"></span>&nbsp;&nbsp;<kbd>' + ImageWidth+ '</kbd></li>');
-      $("#fullsized_image_info_list").append('<li><span class="glyphicon glyphicon-time"></span>&nbsp;&nbsp;<kbd>' +Exposure+ '</kbd></li>');
-      $("#fullsized_image_info_list").append('<li><span class="glyphicon glyphicon-flash"></span>&nbsp;&nbsp;<kbd>' + Flash + '</kbd></li>');
-      $("#fullsized_image_info_list").append('<li><span class=" glyphicon glyphicon-screenshot"></span>&nbsp;&nbsp;<kbd>' + FocusLength + '</kbd></li>');
+      var imageHeight = (image.getAttribute('data-ImageHeight') == '' ? 'N/A' : image.getAttribute('data-ImageHeight'));
+      var imageWidth = (image.getAttribute('data-ImageWidth') == '' ? 'N/A' : image.getAttribute('data-ImageWidth'));
+      var exposure = (image.getAttribute('data-Exposure') == '' ? 'N/A' : image.getAttribute('data-Exposure'));
+      var flash = (image.getAttribute('data-Flash') == '' ? 'N/A' : image.getAttribute('data-Flash'));
+      var focusLength= (image.getAttribute('data-FocusLength') == '' ? 'N/A' : image.getAttribute('data-FocusLength'));
+      $("#fullsized_image_info_list").append('<li><span class="glyphicon glyphicon-resize-vertical"></span>&nbsp;&nbsp;<kbd>' + imageHeight + '</kbd></li>');
+      $("#fullsized_image_info_list").append('<li><span class="glyphicon glyphicon-resize-horizontal"></span>&nbsp;&nbsp;<kbd>' + imageWidth+ '</kbd></li>');
+      $("#fullsized_image_info_list").append('<li><span class="glyphicon glyphicon-time"></span>&nbsp;&nbsp;<kbd>' +exposure+ '</kbd></li>');
+      $("#fullsized_image_info_list").append('<li><span class="glyphicon glyphicon-flash"></span>&nbsp;&nbsp;<kbd>' + flash + '</kbd></li>');
+      $("#fullsized_image_info_list").append('<li><span class=" glyphicon glyphicon-screenshot"></span>&nbsp;&nbsp;<kbd>' + focusLength + '</kbd></li>');
      
   }
   RefreshDetail = function (image) {
@@ -195,9 +195,9 @@ Options:
       shouldHideChrome = false;
     }
     RefreshDetail(image);
-    current_image = image.index;
-    $(image_holder_id).hide();
-    $(image_holder_id).html(image);
+    currentImage = image.index;
+    $(imageHolderId).hide();
+    $(imageHolderId).html(image);
     if (options.navigation) {
       if (shouldHideChrome === true) {
         hideChrome();
@@ -206,16 +206,16 @@ Options:
       }
     }
     if (image.loaded != null) {
-      $(container_id).removeClass(spinner_class);
+      $(containerId).removeClass(spinnerClass);
       resizeImage();
-      $(image_holder_id).fadeIn('fast');
+      $(imageHolderId).fadeIn('fast');
       return preloadImage(direction);
     } else {
-      $(container_id).addClass(spinner_class);
+      $(containerId).addClass(spinnerClass);
       image.onload = function() {
         resizeImage();
-        $(image_holder_id).fadeIn('slow', function() {
-          return $(container_id).removeClass(spinner_class);
+        $(imageHolderId).fadeIn('slow', function() {
+          return $(containerId).removeClass(spinnerClass);
         });
         this.loaded = true;
         return preloadImage(direction);
@@ -226,10 +226,10 @@ Options:
 
   preloadImage = function(direction) {
     var preload_image;
-    if (direction === 1 && current_image < images.length - 1) {
-      preload_image = images[current_image + 1];
-    } else if ((direction === -1 || current_image === (images.length - 1)) && current_image > 0) {
-      preload_image = images[current_image - 1];
+    if (direction === 1 && currentImage < images.length - 1) {
+      preload_image = images[currentImage + 1];
+    } else if ((direction === -1 || currentImage === (images.length - 1)) && currentImage > 0) {
+      preload_image = images[currentImage - 1];
     } else {
       return;
     }
@@ -241,31 +241,31 @@ Options:
     }
   };
 
-  openViewer = function(image, opening_selector) {
-    $('body').append($image_holder);
+  openViewer = function(image, openingSelector) {
+    $('body').append($imageHolder);
     $(window).bind('resize', resizeImage);
     showImage(image);
-    return $(container_id).hide().fadeIn(function() {
+    return $(containerId).hide().fadeIn(function() {
       if (options.detach_id != null) {
-        stored_scroll_position = $(window).scrollTop();
+        storedScrollPosition = $(window).scrollTop();
         $('#' + options.detach_id).css('display', 'none');
         resizeImage();
       }
       bindCurtainEvents();
-      return $(document).trigger('fullsizable:opened', opening_selector);
+      return $(document).trigger('fullsizable:opened', openingSelector);
     });
   };
 
   closeViewer = function() {
     if (options.detach_id != null) {
       $('#' + options.detach_id).css('display', 'block');
-      $(window).scrollTop(stored_scroll_position);
+      $(window).scrollTop(storedScrollPosition);
     }
-    $(container_id).fadeOut(function() {
-      return $image_holder.remove();
+    $(containerId).fadeOut(function() {
+      return $imageHolder.remove();
     });
     closeFullscreen();
-    $(container_id).removeClass(spinner_class);
+    $(containerId).removeClass(spinnerClass);
     unbindCurtainEvents();
     return $(window).unbind('resize', resizeImage);
   };
@@ -305,9 +305,9 @@ Options:
   };
 
   prepareCurtain = function () {
-      $image_holder.append('<div id="fullsized_image_info" style="display:none"></div>');
+      $imageHolder.append('<div id="fullsized_image_info" style="display:none"></div>');
     if (options.navigation) {
-      $image_holder.append('<a id="fullsized_go_prev" href="#prev"></a><a id="fullsized_go_next" href="#next"></a>');
+      $imageHolder.append('<a id="fullsized_go_prev" href="#prev"></a><a id="fullsized_go_next" href="#next"></a>');
       $(document).on('click', '#fullsized_go_prev', function(e) {
         e.preventDefault();
         e.stopPropagation();
@@ -320,7 +320,7 @@ Options:
       });
     }
     if (options.closeButton) {
-      $image_holder.append('<a id="fullsized_close" href="#close"></a>');
+      $imageHolder.append('<a id="fullsized_close" href="#close"></a>');
       $(document).on('click', '#fullsized_close', function(e) {
         e.preventDefault();
         e.stopPropagation();
@@ -328,7 +328,7 @@ Options:
       });
     }
     if (options.fullscreenButton && hasFullscreenSupport()) {
-      $image_holder.append('<a id="fullsized_fullscreen" href="#fullscreen"></a>');
+      $imageHolder.append('<a id="fullsized_fullscreen" href="#fullscreen"></a>');
       $(document).on('click', '#fullsized_fullscreen', function(e) {
         e.preventDefault();
         e.stopPropagation();
@@ -337,15 +337,15 @@ Options:
     }
     switch (options.clickBehaviour) {
       case 'close':
-        return $(document).on('click', container_id, closeViewer);
+        return $(document).on('click', containerId, closeViewer);
       case 'next':
-        return $(document).on('click', container_id, function() {
+        return $(document).on('click', containerId, function() {
             return nextImage(true);
         });
         case 'detail':
-            return $(document).on('click', container_id, ShowDetail);
+            return $(document).on('click', containerId, ShowDetail);
       default:
-        return $(document).on('click', container_id, options.clickBehaviour);
+        return $(document).on('click', containerId, options.clickBehaviour);
     }
   };
 
@@ -369,10 +369,10 @@ Options:
 
   hideChrome = function() {
     var $chrome;
-    $chrome = $image_holder.find('a');
+    $chrome = $imageHolder.find('a');
     if ($chrome.is(':visible') === true) {
       $chrome.toggle(false);
-      return $image_holder.bind('mousemove', mouseMovement);
+      return $imageHolder.bind('mousemove', mouseMovement);
     }
   };
 
@@ -385,7 +385,7 @@ Options:
     }
     distance = Math.round(Math.sqrt(Math.pow(mouseStart[1] - event.clientY, 2) + Math.pow(mouseStart[0] - event.clientX, 2)));
     if (distance >= 10) {
-      $image_holder.unbind('mousemove', mouseMovement);
+      $imageHolder.unbind('mousemove', mouseMovement);
       mouseStart = null;
       return showChrome();
     }
@@ -397,8 +397,8 @@ Options:
       $('#fullsized_go_prev').show();
       return $('#fullsized_go_next').show();
     } else {
-      $('#fullsized_go_prev').toggle(current_image !== 0);
-      return $('#fullsized_go_next').toggle(current_image !== images.length - 1);
+      $('#fullsized_go_prev').toggle(currentImage !== 0);
+      return $('#fullsized_go_next').toggle(currentImage !== images.length - 1);
     }
   };
 
@@ -421,28 +421,28 @@ Options:
     }
     $(document).bind('fullsizable:reload', makeFullsizable);
     $(document).bind('fullsizable:open', function(e, target) {
-      var image, _i, _len, _results;
+      var image, i, len, results;
       if (options.reloadOnOpen) {
         makeFullsizable();
       }
-      _results = [];
-      for (_i = 0, _len = images.length; _i < _len; _i++) {
-        image = images[_i];
+      results = [];
+      for (i = 0, len = images.length; i < len; i++) {
+        image = images[i];
         if (image.buffer_src === $(target).attr('href')) {
-          _results.push(openViewer(image, target));
+          results.push(openViewer(image, target));
         } else {
-          _results.push(void 0);
+          results.push(void 0);
         }
       }
-      return _results;
+      return results;
     });
     return this;
   };
 
   hasFullscreenSupport = function() {
-    var fs_dom;
-    fs_dom = $image_holder.get(0);
-    if (fs_dom.requestFullScreen || fs_dom.webkitRequestFullScreen || fs_dom.mozRequestFullScreen) {
+    var fsDom;
+    fsDom = $imageHolder.get(0);
+    if (fsDom.requestFullScreen || fsDom.webkitRequestFullScreen || fsDom.mozRequestFullScreen) {
       return true;
     } else {
       return false;
@@ -453,26 +453,26 @@ Options:
     return toggleFullscreen(true);
   };
 
-  toggleFullscreen = function(force_close) {
-    var fs_dom;
-    fs_dom = $image_holder.get(0);
-    if (fs_dom.requestFullScreen) {
-      if (document.fullScreen || force_close) {
+  toggleFullscreen = function(forceClose) {
+    var fsDom;
+    fsDom = $imageHolder.get(0);
+    if (fsDom.requestFullScreen) {
+      if (document.fullScreen || forceClose) {
         return document.exitFullScreen();
       } else {
-        return fs_dom.requestFullScreen();
+        return fsDom.requestFullScreen();
       }
-    } else if (fs_dom.webkitRequestFullScreen) {
-      if (document.webkitIsFullScreen || force_close) {
+    } else if (fsDom.webkitRequestFullScreen) {
+      if (document.webkitIsFullScreen || forceClose) {
         return document.webkitCancelFullScreen();
       } else {
-        return fs_dom.webkitRequestFullScreen();
+        return fsDom.webkitRequestFullScreen();
       }
-    } else if (fs_dom.mozRequestFullScreen) {
-      if (document.mozFullScreen || force_close) {
+    } else if (fsDom.mozRequestFullScreen) {
+      if (document.mozFullScreen || forceClose) {
         return document.mozCancelFullScreen();
       } else {
-        return fs_dom.mozRequestFullScreen();
+        return fsDom.mozRequestFullScreen();
       }
     }
   };

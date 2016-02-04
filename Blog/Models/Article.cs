@@ -11,9 +11,9 @@ namespace Blog.Models
     public class Article
     {
          [Key]
-         public long ArticleID { get; set; }
+         public long ArticleId { get; set; }
          [Required]
-         public long AuthorID { get; set; }
+         public long AuthorId { get; set; }
          [DataType(DataType.Text)]
          [Required(ErrorMessage = "Please provide Title", AllowEmptyStrings = false)]
         public string Title { get; set; }
@@ -22,11 +22,11 @@ namespace Blog.Models
         [AllowHtml]
         [DataType(DataType.Text)]
         public string Content { get; set; }
-        public long? TagID_1 { get; set; }
-        public long? TagID_2 { get; set; }
-        public long? TagID_3 { get; set; }
-        public long? TagID_4 { get; set; }
-        public long? TagID_5 { get; set; }
+        public long? TagId1 { get; set; }
+        public long? TagId2 { get; set; }
+        public long? TagId3 { get; set; }
+        public long? TagId4 { get; set; }
+        public long? TagId5 { get; set; }
         public DateTime PostDate { get; set; }
         public DateTime? ModifyDate { get; set; }
 

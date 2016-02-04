@@ -13,18 +13,18 @@
         $('#gallery > a').fullsizable({
             detach_id: 'gallery',
             clickBehaviour: 'detail'
-        })
+        });
 
         $(document).on('fullsizable:opened', function () {
             $("#jquery-fullsizable").swipe({
                 swipeLeft: function () {
-                    $(document).trigger('fullsizable:next')
+                    $(document).trigger('fullsizable:next');
                 },
                 swipeRight: function () {
-                    $(document).trigger('fullsizable:prev')
+                    $(document).trigger('fullsizable:prev');
                 },
                 swipeUp: function () {
-                    $(document).trigger('fullsizable:close')
+                    $(document).trigger('fullsizable:close');
                 }
             });
         });
@@ -41,15 +41,15 @@
             while (i < Model.Count())
             {
                 var img = Model.ElementAt(i);
-            <a class="col-lg-3 col-md-4 col-xs-6 thumbnail thumb" 
-                        data-ImageName="@img.FileName" data-CameraModel="@img.CameraModel" data-ImageHeight="@img.ImageHeight" 
-                        data-ImageWidth="@img.ImageWidth" data-Software="@img.Software" data-Exposure="@img.Exposure" data-Aperture="@img.Aperture"
-                        data-FocusProgram="@img.FocusProgram" data-ISO="@img.ISO" data-CaptureTime="@img.CaptureTime" data-Flash="@img.Flash" 
-                        data-FocusLength="@img.FocusLength" data-WhiteBalanceMode="@img.WhiteBalanceMode" data-LensModel="@img.LensModel"
-                         href="@img.Url">
-                <img class="img-responsive" src="@img.Url.Substring(0, img.Url.Length - img.FileName.Length)thumbtail/@img.FileName"/>
+                <a class="col-lg-3 col-md-4 col-xs-6 thumbnail thumb"
+                   data-ImageName="@img.FileName" data-CameraModel="@img.CameraModel" data-ImageHeight="@img.ImageHeight"
+                   data-ImageWidth="@img.ImageWidth" data-Software="@img.Software" data-Exposure="@img.Exposure" data-Aperture="@img.Aperture"
+                   data-FocusProgram="@img.FocusProgram" data-ISO="@img.Iso" data-CaptureTime="@img.CaptureTime" data-Flash="@img.Flash"
+                   data-FocusLength="@img.FocusLength" data-WhiteBalanceMode="@img.WhiteBalanceMode" data-LensModel="@img.LensModel"
+                   href="@img.Url">
+                    <img class="img-responsive" src="@img.Url.Substring(0, img.Url.Length - img.FileName.Length)thumbtail/@img.FileName" />
 
-            </a>
+                </a>
                 i++;
 
             }
@@ -63,36 +63,37 @@
                     <li>
                         <a href="/Gallery/@(ViewBag.pageIndex - 1)/12">
                             <span aria-hidden="true">&lsaquo;</span>
-                            Previous                        
+                            Previous
                         </a>
-                    </li>    
+                    </li>
                 }
                 @for (int i = (((int)ViewBag.pageIndex - 4) < 0) ? 0 : ((int)ViewBag.pageIndex - 4); i < ViewBag.pageCount && i < (int)ViewBag.pageIndex + 5; i++)
                 {
                     if (i == ViewBag.pageIndex)
                     {
-                    <li class="active">
-                        <span>@(i + 1)</span>
-                    </li>
+                        <li class="active">
+                            <span>@(i + 1)</span>
+                        </li>
                     }
                     else
                     {
-                   
-                    <li>
-                        <a href="/Gallery/@i/12">
-                            <span>@(i + 1)</span>
-                        </a>
-                    </li>
-                    
+
+                        <li>
+                            <a href="/Gallery/@i/12">
+                                <span>@(i + 1)</span>
+                            </a>
+                        </li>
+
                     }
                 }
                 @if ((int)ViewBag.pageCount > (int)ViewBag.pageIndex + 1)
                 {
                     <li>
-                        <a href="/Gallery/@(ViewBag.pageIndex + 1)/12">Next
-                                <span aria-hidden="true">&rsaquo;</span>
+                        <a href="/Gallery/@(ViewBag.pageIndex + 1)/12">
+                            Next
+                            <span aria-hidden="true">&rsaquo;</span>
                         </a>
-                    </li>   
+                    </li>
                 }
 
             </ul>
