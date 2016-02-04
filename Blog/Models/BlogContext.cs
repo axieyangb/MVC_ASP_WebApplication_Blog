@@ -1,4 +1,8 @@
-﻿using System.Data.Entity;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Data.Entity;
 namespace Blog.Models
 {
     public class BlogContext :DbContext
@@ -9,7 +13,8 @@ namespace Blog.Models
         public DbSet<ArticleComment> ArticleComments { get; set; }
         public DbSet<CommentDetailInfoView> CommentDetailInfo { get; set; }
         public DbSet<PublicImageModel> PublicImages { get; set; }
-        public DbSet<PublicImageViewModel> PublicImagesVw { get; set; }
+        public DbSet<PublicImageViewModel> PublicImagesVW { get; set; }
         public DbSet<ImageMetaDataModel> ImageMetaData { get; set; }
+        public DbSet<Tags> Tags { get; set; }
     }
 }

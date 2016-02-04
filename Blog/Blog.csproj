@@ -166,6 +166,7 @@
     <Compile Include="Models\ImageViewModel.cs" />
     <Compile Include="Models\Member.cs" />
     <Compile Include="Models\PublicImageModel.cs" />
+    <Compile Include="Models\Tags.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -191,9 +192,9 @@
     <Content Include="Content\css\page\postArticle.css" />
     <Content Include="Content\css\page\signup.css" />
     <Content Include="Content\css\page\error.css" />
+    <Content Include="Content\css\Tags\bootstrap-tag.css" />
     <Content Include="Content\css\Users\index.css" />
     <Content Include="Content\fonts\glyphicons-halflings-regular.svg" />
-    <Content Include="Content\img\favicon.ico" />
     <Content Include="Content\img\about-bg.jpg" />
     <Content Include="Content\img\article-bg.jpg" />
     <Content Include="Content\img\contact-bg.jpg" />
@@ -222,6 +223,8 @@
     <Content Include="Scripts\jquery-ui.min.js" />
     <Content Include="Scripts\jquery.js" />
     <Content Include="Scripts\jquery.min.js" />
+    <Content Include="Scripts\Tags\bootstrap-tag.js" />
+    <Content Include="Scripts\Tags\typeahead.bundle.js" />
     <Content Include="Scripts\TextEditor\ckeditor.js" />
     <Content Include="Scripts\TextEditor\config.js" />
     <Content Include="Scripts\TextEditor\lang\en.js" />

@@ -1,8 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Web;
 using System.Web.Mvc;
 using Blog.Models;
 using System.Text;
+using System.Data.Entity;
 using System.IO;
 using System.Security.Cryptography;
 namespace Blog.Controllers
@@ -11,12 +14,12 @@ namespace Blog.Controllers
     {
         //
         // GET: /Admin/
-        private static readonly string _passPhrase = "helloworld";
+        private static string passPhrase = "helloworld";
         // This size of the IV (in bytes) must = (keysize / 8).  Default keysize is 256, so the IV must be
         // 32 bytes long.  Using a 16 character string here gives us 32 bytes when converted to a byte array.
-        private  const string InitVector = "jerryyu1xyelul88";
+        private  const string initVector = "jerryyu1xyelul88";
         // This constant is used to determine the keysize of the encryption algorithm
-        private   const int Keysize = 256;
+        private   const int keysize = 256;
         [HttpGet]
         public ActionResult Login()
         {
@@ -31,11 +34,11 @@ namespace Blog.Controllers
             {
                 using (BlogContext db = new BlogContext())
                 {
-                    string hashPass=EncryptString(member.Password,_passPhrase);
+                    string hashPass=EncryptString(member.Password,passPhrase);
                     var v = db.Members.Where(a => a.UserName.Equals(member.UserName) && a.Password.Equals(hashPass)).FirstOrDefault();
                     if (v != null)
                     {
-                        Session["LoggedUserID"] = v.UserId.ToString();
+                        Session["LoggedUserID"] = v.UserID.ToString();
                         Session["LoggedUserName"] = String.IsNullOrEmpty(v.NickName) ? v.UserName : v.NickName;
                         return RedirectToAction("Index", "Dashboard");
                     }
@@ -58,9 +61,9 @@ namespace Blog.Controllers
             {
                 using (BlogContext db = new BlogContext())
                 {
-                    member.UserId = null;
-                    member.IsActive = 1;
-                    member.Password=EncryptString(member.Password, _passPhrase);
+                    member.UserID = null;
+                    member.isActive = 1;
+                    member.Password=EncryptString(member.Password, passPhrase);
                     db.Members.Add(member);
                     db.SaveChanges();
                 }
@@ -79,10 +82,10 @@ namespace Blog.Controllers
         //Encrypt
         public  string EncryptString(string plainText, string passPhrase)
         {
-            byte[] initVectorBytes = Encoding.UTF8.GetBytes(InitVector);
+            byte[] initVectorBytes = Encoding.UTF8.GetBytes(initVector);
             byte[] plainTextBytes = Encoding.UTF8.GetBytes(plainText);
             PasswordDeriveBytes password = new PasswordDeriveBytes(passPhrase, null);
-            byte[] keyBytes = password.GetBytes(Keysize / 8);
+            byte[] keyBytes = password.GetBytes(keysize / 8);
             RijndaelManaged symmetricKey = new RijndaelManaged();
             symmetricKey.Mode = CipherMode.CBC;
             ICryptoTransform encryptor = symmetricKey.CreateEncryptor(keyBytes, initVectorBytes);
@@ -98,10 +101,10 @@ namespace Blog.Controllers
         //Decrypt
         public  string DecryptString(string cipherText, string passPhrase)
         {
-            byte[] initVectorBytes = Encoding.ASCII.GetBytes(InitVector);
+            byte[] initVectorBytes = Encoding.ASCII.GetBytes(initVector);
             byte[] cipherTextBytes = Convert.FromBase64String(cipherText);
             PasswordDeriveBytes password = new PasswordDeriveBytes(passPhrase, null);
-            byte[] keyBytes = password.GetBytes(Keysize / 8);
+            byte[] keyBytes = password.GetBytes(keysize / 8);
             RijndaelManaged symmetricKey = new RijndaelManaged();
             symmetricKey.Mode = CipherMode.CBC;
             ICryptoTransform decryptor = symmetricKey.CreateDecryptor(keyBytes, initVectorBytes);

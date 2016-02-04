@@ -1,4 +1,8 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 namespace Blog.Models
 {
@@ -6,17 +10,17 @@ namespace Blog.Models
     public class Member
     {
          [Key]
-         public long? UserId { set; get; }
+         public long? UserID { set; get; }
          [Required(ErrorMessage="Please provide username",AllowEmptyStrings=false)]
          public string UserName { set; get; }
          [Required(ErrorMessage="Please provide password",AllowEmptyStrings=false)]
-         [DataType(DataType.Password)]
+         [DataType(System.ComponentModel.DataAnnotations.DataType.Password)]
          public string Password { set; get; }
-         [DataType(DataType.MultilineText)]
+         [DataType(System.ComponentModel.DataAnnotations.DataType.MultilineText)]
          public string Description { set; get; }
-          [DataType(DataType.EmailAddress)]
+          [DataType(System.ComponentModel.DataAnnotations.DataType.EmailAddress)]
          public string Email { set; get; }
          public string NickName { set; get; }
-         public byte IsActive { set; get; }
+         public byte isActive { set; get; }
     }
 }

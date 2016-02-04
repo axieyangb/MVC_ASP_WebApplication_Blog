@@ -1,4 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 using System.Web.Mvc;
 namespace Blog.Models
@@ -6,7 +10,7 @@ namespace Blog.Models
     public class ArticleSubmitView
     {
         [Required]
-        public long AuthorId { get; set; }
+        public long AuthorID { get; set; }
         [DataType(DataType.Text)]
         public string Title { get; set; }
         [DataType(DataType.Text)]
@@ -16,11 +20,11 @@ namespace Blog.Models
         [AllowHtml]
         [DataType(DataType.Text)]
         public string Content { get; set; }
-        public long? TagId1 { get; set; }
-        public long? TagId2 { get; set; }
-        public long? TagId3 { get; set; }
-        public long? TagId4 { get; set; }
-        public long? TagId5 { get; set; }
+        public long? TagID_1 { get; set; }
+        public long? TagID_2 { get; set; }
+        public long? TagID_3 { get; set; }
+        public long? TagID_4 { get; set; }
+        public long? TagID_5 { get; set; }
         public DateTime PostDate { get; set; }
         public DateTime? ModifyDate { get; set; }
 

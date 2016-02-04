@@ -151,7 +151,7 @@
             noop: function () { }
         };
     }();
-    var version = "0.11.1";
+    var VERSION = "0.11.1";
     var tokenizers = function () {
         "use strict";
         return {
@@ -183,16 +183,16 @@
             };
         }
     }();
-    var lruCache = function () {
+    var LruCache = function () {
         "use strict";
-        function lruCache(maxSize) {
+        function LruCache(maxSize) {
             this.maxSize = _.isNumber(maxSize) ? maxSize : 100;
             this.reset();
             if (this.maxSize <= 0) {
                 this.set = this.get = $.noop;
             }
         }
-        _.mixin(lruCache.prototype, {
+        _.mixin(LruCache.prototype, {
             set: function set(key, val) {
                 var tailItem = this.list.tail, node;
                 if (this.size >= this.maxSize) {
@@ -220,13 +220,13 @@
             reset: function reset() {
                 this.size = 0;
                 this.hash = {};
-                this.list = new list();
+                this.list = new List();
             }
         });
-        function list() {
+        function List() {
             this.head = this.tail = null;
         }
-        _.mixin(list.prototype, {
+        _.mixin(List.prototype, {
             add: function add(node) {
                 if (this.head) {
                     node.next = this.head;
@@ -244,31 +244,31 @@
                 this.add(node);
             }
         });
-        function node(key, val) {
+        function Node(key, val) {
             this.key = key;
             this.val = val;
             this.prev = this.next = null;
         }
-        return lruCache;
+        return LruCache;
     }();
-    var persistentStorage = function () {
+    var PersistentStorage = function () {
         "use strict";
-        var localStorage;
+        var LOCAL_STORAGE;
         try {
-            localStorage = window.localStorage;
-            localStorage.setItem("~~~", "!");
-            localStorage.removeItem("~~~");
+            LOCAL_STORAGE = window.localStorage;
+            LOCAL_STORAGE.setItem("~~~", "!");
+            LOCAL_STORAGE.removeItem("~~~");
         } catch (err) {
-            localStorage = null;
+            LOCAL_STORAGE = null;
         }
-        function persistentStorage(namespace, override) {
+        function PersistentStorage(namespace, override) {
             this.prefix = ["__", namespace, "__"].join("");
             this.ttlKey = "__ttl__";
             this.keyMatcher = new RegExp("^" + _.escapeRegExChars(this.prefix));
-            this.ls = override || localStorage;
+            this.ls = override || LOCAL_STORAGE;
             !this.ls && this._noop();
         }
-        _.mixin(persistentStorage.prototype, {
+        _.mixin(PersistentStorage.prototype, {
             _prefix: function (key) {
                 return this.prefix + key;
             },
@@ -319,7 +319,7 @@
                 return _.isNumber(ttl) && now() > ttl ? true : false;
             }
         });
-        return persistentStorage;
+        return PersistentStorage;
         function now() {
             return new Date().getTime();
         }
@@ -330,33 +330,33 @@
             return $.parseJSON(val);
         }
         function gatherMatchingKeys(keyMatcher) {
-            var i, key, keys = [], len = localStorage.length;
+            var i, key, keys = [], len = LOCAL_STORAGE.length;
             for (i = 0; i < len; i++) {
-                if ((key = localStorage.key(i)).match(keyMatcher)) {
+                if ((key = LOCAL_STORAGE.key(i)).match(keyMatcher)) {
                     keys.push(key.replace(keyMatcher, ""));
                 }
             }
             return keys;
         }
     }();
-    var transport = function () {
+    var Transport = function () {
         "use strict";
-        var pendingRequestsCount = 0, pendingRequests = {}, maxPendingRequests = 6, sharedCache = new lruCache(10);
-        function transport(o) {
+        var pendingRequestsCount = 0, pendingRequests = {}, maxPendingRequests = 6, sharedCache = new LruCache(10);
+        function Transport(o) {
             o = o || {};
             this.cancelled = false;
             this.lastReq = null;
             this._send = o.transport;
             this._get = o.limiter ? o.limiter(this._get) : this._get;
-            this._cache = o.cache === false ? new lruCache(0) : sharedCache;
+            this._cache = o.cache === false ? new LruCache(0) : sharedCache;
         }
-        transport.setMaxPendingRequests = function setMaxPendingRequests(num) {
+        Transport.setMaxPendingRequests = function setMaxPendingRequests(num) {
             maxPendingRequests = num;
         };
-        transport.resetCache = function resetCache() {
+        Transport.resetCache = function resetCache() {
             sharedCache.reset();
         };
-        _.mixin(transport.prototype, {
+        _.mixin(Transport.prototype, {
             _fingerprint: function fingerprint(o) {
                 o = o || {};
                 return o.url + o.type + $.param(o.data || {});
@@ -410,12 +410,12 @@
                 this.cancelled = true;
             }
         });
-        return transport;
+        return Transport;
     }();
-    var searchIndex = window.SearchIndex = function () {
+    var SearchIndex = window.SearchIndex = function () {
         "use strict";
-        var children = "c", IDS = "i";
-        function searchIndex(o) {
+        var CHILDREN = "c", IDS = "i";
+        function SearchIndex(o) {
             o = o || {};
             if (!o.datumTokenizer || !o.queryTokenizer) {
                 $.error("datumTokenizer and queryTokenizer are both required");
@@ -425,7 +425,7 @@
             this.queryTokenizer = o.queryTokenizer;
             this.reset();
         }
-        _.mixin(searchIndex.prototype, {
+        _.mixin(SearchIndex.prototype, {
             bootstrap: function bootstrap(o) {
                 this.datums = o.datums;
                 this.trie = o.trie;
@@ -442,7 +442,7 @@
                         node = that.trie;
                         chars = token.split("");
                         while (ch = chars.shift()) {
-                            node = node[children][ch] || (node[children][ch] = newNode());
+                            node = node[CHILDREN][ch] || (node[CHILDREN][ch] = newNode());
                             node[IDS].push(id);
                         }
                     });
@@ -465,7 +465,7 @@
                     node = that.trie;
                     chars = token.split("");
                     while (node && (ch = chars.shift())) {
-                        node = node[children][ch];
+                        node = node[CHILDREN][ch];
                     }
                     if (node && chars.length === 0) {
                         ids = node[IDS].slice(0);
@@ -497,7 +497,7 @@
                 };
             }
         });
-        return searchIndex;
+        return SearchIndex;
         function normalizeTokens(tokens) {
             tokens = _.filter(tokens, function (token) {
                 return !!token;
@@ -510,7 +510,7 @@
         function newNode() {
             var node = {};
             node[IDS] = [];
-            node[children] = {};
+            node[CHILDREN] = {};
             return node;
         }
         function unique(array) {
@@ -542,7 +542,7 @@
             return intersection;
         }
     }();
-    var prefetch = function () {
+    var Prefetch = function () {
         "use strict";
         var keys;
         keys = {
@@ -550,7 +550,7 @@
             protocol: "protocol",
             thumbprint: "thumbprint"
         };
-        function prefetch(o) {
+        function Prefetch(o) {
             this.url = o.url;
             this.ttl = o.ttl;
             this.cache = o.cache;
@@ -558,9 +558,9 @@
             this.transform = o.transform;
             this.transport = o.transport;
             this.thumbprint = o.thumbprint;
-            this.storage = new persistentStorage(o.cacheKey);
+            this.storage = new PersistentStorage(o.cacheKey);
         }
-        _.mixin(prefetch.prototype, {
+        _.mixin(Prefetch.prototype, {
             _settings: function settings() {
                 return {
                     url: this.url,
@@ -606,21 +606,21 @@
                 return this;
             }
         });
-        return prefetch;
+        return Prefetch;
     }();
     var Remote = function () {
         "use strict";
-        function remote(o) {
+        function Remote(o) {
             this.url = o.url;
             this.prepare = o.prepare;
             this.transform = o.transform;
-            this.transport = new transport({
+            this.transport = new Transport({
                 cache: o.cache,
                 limiter: o.limiter,
                 transport: o.transport
             });
         }
-        _.mixin(remote.prototype, {
+        _.mixin(Remote.prototype, {
             _settings: function settings() {
                 return {
                     url: this.url,
@@ -644,7 +644,7 @@
                 this.transport.cancel();
             }
         });
-        return remote;
+        return Remote;
     }();
     var oParser = function () {
         "use strict";
@@ -695,7 +695,7 @@
             !o.url && $.error("prefetch requires url to be set");
             o.transform = o.filter || o.transform;
             o.cacheKey = o.cacheKey || o.url;
-            o.thumbprint = version + o.thumbprint;
+            o.thumbprint = VERSION + o.thumbprint;
             o.transport = o.transport ? callbackToDeferred(o.transport) : $.ajax;
             return o;
         }
@@ -797,31 +797,31 @@
             };
         }
     }();
-    var bloodhound = function () {
+    var Bloodhound = function () {
         "use strict";
         var old;
         old = window && window.Bloodhound;
-        function bloodhound(o) {
+        function Bloodhound(o) {
             o = oParser(o);
             this.sorter = o.sorter;
             this.identify = o.identify;
             this.sufficient = o.sufficient;
             this.local = o.local;
             this.remote = o.remote ? new Remote(o.remote) : null;
-            this.prefetch = o.prefetch ? new prefetch(o.prefetch) : null;
-            this.index = new searchIndex({
+            this.prefetch = o.prefetch ? new Prefetch(o.prefetch) : null;
+            this.index = new SearchIndex({
                 identify: this.identify,
                 datumTokenizer: o.datumTokenizer,
                 queryTokenizer: o.queryTokenizer
             });
             o.initialize !== false && this.initialize();
         }
-        bloodhound.noConflict = function noConflict() {
+        Bloodhound.noConflict = function noConflict() {
             window && (window.Bloodhound = old);
-            return bloodhound;
+            return Bloodhound;
         };
-        bloodhound.tokenizers = tokenizers;
-        _.mixin(bloodhound.prototype, {
+        Bloodhound.tokenizers = tokenizers;
+        _.mixin(Bloodhound.prototype, {
             __ttAdapter: function ttAdapter() {
                 var that = this;
                 return this.remote ? withAsync : withoutAsync;
@@ -905,16 +905,16 @@
                 return this;
             },
             clearRemoteCache: function clearRemoteCache() {
-                transport.resetCache();
+                Transport.resetCache();
                 return this;
             },
             ttAdapter: function ttAdapter() {
                 return this.__ttAdapter();
             }
         });
-        return bloodhound;
+        return Bloodhound;
     }();
-    return bloodhound;
+    return Bloodhound;
 });
 
 (function (root, factory) {
@@ -1169,13 +1169,13 @@
             select: "selected",
             autocomplete: "autocompleted"
         };
-        function eventBus(o) {
+        function EventBus(o) {
             if (!o || !o.el) {
                 $.error("EventBus initialized without el");
             }
             this.$el = $(o.el);
         }
-        _.mixin(eventBus.prototype, {
+        _.mixin(EventBus.prototype, {
             _trigger: function (type, args) {
                 var $e;
                 $e = $.Event(namespace + type);
@@ -1197,9 +1197,9 @@
                 }
             }
         });
-        return eventBus;
+        return EventBus;
     }();
-    var eventEmitter = function () {
+    var EventEmitter = function () {
         "use strict";
         var splitter = /\s+/, nextTick = getNextTick();
         return {
@@ -1321,10 +1321,10 @@
                 return !!match;
             }
             function traverse(el, hightlightTextNode) {
-                var childNode, textNodeType = 3;
+                var childNode, TEXT_NODE_TYPE = 3;
                 for (var i = 0; i < el.childNodes.length; i++) {
                     childNode = el.childNodes[i];
-                    if (childNode.nodeType === textNodeType) {
+                    if (childNode.nodeType === TEXT_NODE_TYPE) {
                         i += hightlightTextNode(childNode) ? 1 : 0;
                     } else {
                         traverse(childNode, hightlightTextNode);
@@ -1353,7 +1353,7 @@
             38: "up",
             40: "down"
         };
-        function input(o, www) {
+        function Input(o, www) {
             o = o || {};
             if (!o.input) {
                 $.error("input is missing");
@@ -1369,10 +1369,10 @@
                 this.setHint = this.getHint = this.clearHint = this.clearHintIfInvalid = _.noop;
             }
         }
-        input.normalizeQuery = function (str) {
+        Input.normalizeQuery = function (str) {
             return _.toStr(str).replace(/^\s*/g, "").replace(/\s{2,}/g, " ");
         };
-        _.mixin(input.prototype, eventEmitter, {
+        _.mixin(Input.prototype, EventEmitter, {
             _onBlur: function onBlur() {
                 this.resetInputValue();
                 this.trigger("blurred");
@@ -1531,7 +1531,7 @@
                 this.$hint = this.$input = this.$overflowHelper = $("<div>");
             }
         });
-        return input;
+        return Input;
         function buildOverflowHelper($input) {
             return $('<pre aria-hidden="true"></pre>').css({
                 position: "absolute",
@@ -1550,7 +1550,7 @@
             }).insertAfter($input);
         }
         function areQueriesEquivalent(a, b) {
-            return input.normalizeQuery(a) === input.normalizeQuery(b);
+            return Input.normalizeQuery(a) === Input.normalizeQuery(b);
         }
         function withModifier($e) {
             return $e.altKey || $e.ctrlKey || $e.metaKey || $e.shiftKey;
@@ -1564,7 +1564,7 @@
             obj: "tt-selectable-object"
         };
         nameGenerator = _.getIdGenerator();
-        function dataset(o, www) {
+        function Dataset(o, www) {
             o = o || {};
             o.templates = o.templates || {};
             o.templates.notFound = o.templates.notFound || o.templates.empty;
@@ -1588,7 +1588,7 @@
             this._resetLastSuggestion();
             this.$el = $(o.node).addClass(this.classes.dataset).addClass(this.classes.dataset + "-" + this.name);
         }
-        dataset.extractData = function extractData(el) {
+        Dataset.extractData = function extractData(el) {
             var $el = $(el);
             if ($el.data(keys.obj)) {
                 return {
@@ -1598,7 +1598,7 @@
             }
             return null;
         };
-        _.mixin(dataset.prototype, eventEmitter, {
+        _.mixin(Dataset.prototype, EventEmitter, {
             _overwrite: function overwrite(query, suggestions) {
                 suggestions = suggestions || [];
                 if (suggestions.length) {
@@ -1739,7 +1739,7 @@
                 this.$el = $("<div>");
             }
         });
-        return dataset;
+        return Dataset;
         function getDisplayFn(display) {
             display = display || _.stringify;
             return _.isFunction(display) ? display : displayFn;
@@ -1765,7 +1765,7 @@
     }();
     var Menu = function () {
         "use strict";
-        function menu(o, www) {
+        function Menu(o, www) {
             var that = this;
             o = o || {};
             if (!o.node) {
@@ -1781,7 +1781,7 @@
                 return new Dataset(oDataset, www);
             }
         }
-        _.mixin(menu.prototype, eventEmitter, {
+        _.mixin(Menu.prototype, EventEmitter, {
             _onSelectableClick: function onSelectableClick($e) {
                 this.trigger("selectableClicked", $($e.currentTarget));
             },
@@ -1805,7 +1805,7 @@
             _getSelectables: function getSelectables() {
                 return this.$node.find(this.selectors.selectable);
             },
-            _removeCursor: function removeCursor() {
+            _removeCursor: function _removeCursor() {
                 var $selectable = this.getActiveSelectable();
                 $selectable && $selectable.removeClass(this.classes.cursor);
             },
@@ -1899,15 +1899,15 @@
                 }
             }
         });
-        return menu;
+        return Menu;
     }();
     var DefaultMenu = function () {
         "use strict";
         var s = Menu.prototype;
-        function defaultMenu() {
+        function DefaultMenu() {
             Menu.apply(this, [].slice.call(arguments, 0));
         }
-        _.mixin(defaultMenu.prototype, Menu.prototype, {
+        _.mixin(DefaultMenu.prototype, Menu.prototype, {
             open: function open() {
                 !this._allDatasetsEmpty() && this._show();
                 return s.open.apply(this, [].slice.call(arguments, 0));
@@ -1943,11 +1943,11 @@
                 this.$node.css("display", "block");
             }
         });
-        return defaultMenu;
+        return DefaultMenu;
     }();
     var Typeahead = function () {
         "use strict";
-        function typeahead(o, www) {
+        function Typeahead(o, www) {
             var onFocused, onBlurred, onEnterKeyed, onTabKeyed, onEscKeyed, onUpKeyed, onDownKeyed, onLeftKeyed, onRightKeyed, onQueryChanged, onWhitespaceChanged;
             o = o || {};
             if (!o.input) {
@@ -1983,7 +1983,7 @@
             onWhitespaceChanged = c(this, "_openIfActive", "_onWhitespaceChanged");
             this.input.bind().onSync("focused", onFocused, this).onSync("blurred", onBlurred, this).onSync("enterKeyed", onEnterKeyed, this).onSync("tabKeyed", onTabKeyed, this).onSync("escKeyed", onEscKeyed, this).onSync("upKeyed", onUpKeyed, this).onSync("downKeyed", onDownKeyed, this).onSync("leftKeyed", onLeftKeyed, this).onSync("rightKeyed", onRightKeyed, this).onSync("queryChanged", onQueryChanged, this).onSync("whitespaceChanged", onWhitespaceChanged, this).onSync("langDirChanged", this._onLangDirChanged, this);
         }
-        _.mixin(typeahead.prototype, {
+        _.mixin(Typeahead.prototype, {
             _hacks: function hacks() {
                 var $input, $menu;
                 $input = this.input.$input || $("<div>");
@@ -2207,7 +2207,7 @@
                 this.menu.destroy();
             }
         });
-        return typeahead;
+        return Typeahead;
         function c(ctx) {
             var methods = [].slice.call(arguments, 1);
             return function () {
@@ -2235,7 +2235,7 @@
                 www = WWW(o.classNames);
                 return this.each(attach);
                 function attach() {
-                    var $input, $wrapper, $hint, $menu, defaultHint, defaultMenu, eventBus, input, menu, typeahead, menuConstructor;
+                    var $input, $wrapper, $hint, $menu, defaultHint, defaultMenu, eventBus, input, menu, typeahead, MenuConstructor;
                     _.each(datasets, function (d) {
                         d.highlight = !!o.highlight;
                     });
@@ -2254,7 +2254,7 @@
                         $input.css(defaultHint ? www.css.input : www.css.inputWithNoHint);
                         $input.wrap($wrapper).parent().prepend(defaultHint ? $hint : null).append(defaultMenu ? $menu : null);
                     }
-                    menuConstructor = defaultMenu ? DefaultMenu : Menu;
+                    MenuConstructor = defaultMenu ? DefaultMenu : Menu;
                     eventBus = new EventBus({
                         el: $input
                     });
@@ -2262,7 +2262,7 @@
                         hint: $hint,
                         input: $input
                     }, www);
-                    menu = new menuConstructor({
+                    menu = new MenuConstructor({
                         node: $menu,
                         datasets: datasets
                     }, www);

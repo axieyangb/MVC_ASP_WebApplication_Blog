@@ -12,7 +12,7 @@ namespace Blog.Models
     public class Tags
     {
         [Key]
-        public long? TagId { get; set; }
+        public long? TagID { get; set; }
         [DataType(DataType.Text)]
         public string TagContent { get; set; }
         public int TagCount { get; set; }

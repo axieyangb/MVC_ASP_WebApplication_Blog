@@ -13,7 +13,7 @@ function time_ago(time) {
         case 'object': if (time.constructor === Date) time = time.getTime(); break;
         default: time = +new Date();
     }
-    var timeFormats = [
+    var time_formats = [
         [60, 'seconds', 1], // 60
         [120, '1 minute ago', '1 minute from now'], // 60*2
         [3600, 'minutes', 60], // 60*60, 60
@@ -31,7 +31,7 @@ function time_ago(time) {
         [58060800000, 'centuries', 2903040000] // 60*60*24*7*4*12*100*20, 60*60*24*7*4*12*100
     ];
     var seconds = (+new Date() - time) / 1000,
-        token = 'ago', listChoice = 1;
+        token = 'ago', list_choice = 1;
 
     if (seconds == 0) {
         return 'Just now'
@@ -39,13 +39,13 @@ function time_ago(time) {
     if (seconds < 0) {
         seconds = Math.abs(seconds);
         token = 'from now';
-        listChoice = 2;
+        list_choice = 2;
     }
     var i = 0, format;
-    while (format = timeFormats[i++])
+    while (format = time_formats[i++])
         if (seconds < format[0]) {
             if (typeof format[2] == 'string')
-                return format[listChoice];
+                return format[list_choice];
             else
                 return Math.floor(seconds / format[2]) + ' ' + format[1] + ' ' + token;
         }

@@ -41,9 +41,9 @@
                         @using (Html.BeginForm("PicOperation", "Home", FormMethod.Post))
                         {
                             <a class="btn btn-default btn-sm" data-src="@image.Url" data-type="@image.ContentType" data-toggle="modal" data-target="#MediaDetail" >Large</a>
-                            <input type="text" name="ImageID" id="imageID" value="@image.ImageId" hidden />
+                            <input type="text" name="ImageID" id="imageID" value="@image.ImageID" hidden />
 
-                            if (image.IsPublish == 1)
+                            if (image.isPublish == 1)
                             {  
                             <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modalPopMessage" data-operate="BePrivate">Be Private</button>
                             }

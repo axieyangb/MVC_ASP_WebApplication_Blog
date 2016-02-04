@@ -1,16 +1,19 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
-
+using System.Web.Mvc;
 namespace Blog.Models
 {
     [Table("VW_PublicImage")]
     public class PublicImageViewModel
     {
         [Key]
-        public long? PublicId { get; set; }
-        public long? PictureId { get; set; }
-        public long? UserId { get; set; }
+        public long? PublicID { get; set; }
+        public long? PictureID { get; set; }
+        public long? UserID { get; set; }
         public string Url  { get; set; }
         public string Description { get; set; }
         public string FileName { get; set; }
@@ -25,7 +28,7 @@ namespace Blog.Models
         public string Exposure { get; set; }
         public string Aperture { get; set; }
         public string FocusProgram { get; set; }
-        public string Iso { get; set; }
+        public string ISO { get; set; }
         public string CaptureTime { get; set; }
         public string Flash { get; set; }
         public string FocusLength { get; set; }
@@ -37,11 +40,11 @@ namespace Blog.Models
     public class PublicImageModel
     {
         [Key]
-        public long? PublicId { get; set; }
-        public long PictureId { get; set; }
-        public long UserId { get; set; }
+        public long? PublicID { get; set; }
+        public long PictureID { get; set; }
+        public long UserID { get; set; }
         public string Description { get; set; }
-        public byte IsBlock { get; set; }
+        public byte isBlock { get; set; }
         public DateTime RecentBePublicDate { get; set; }
         public DateTime? RecentBePrivateDate { get; set; }
         public double? Rate { get; set; }

@@ -1,94 +1,99 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Web;
 using MetadataExtractor;
+using System.Collections;
+using System.Data.Entity;
 using Blog.Models;
 namespace Blog.Controllers
 {
     public class ImageMetaData
     {
-        private IEnumerable<Directory> _directories;
-        private readonly ImageMetaDataModel _oneImage;
+        private IEnumerable<Directory> directories;
+        private BlogContext db;
+        private ImageMetaDataModel oneImage;
 
-        public  ImageMetaData(string imageFilePath)
+        public  ImageMetaData(string ImageFilePath)
         {
-            _directories = ImageMetadataReader.ReadMetadata(imageFilePath);
-            _oneImage = new ImageMetaDataModel();
-            _oneImage.Url = imageFilePath;
-            string [] splits = imageFilePath.Split('\\');
-            _oneImage.FileName = splits[splits.Length - 1];
+            directories = ImageMetadataReader.ReadMetadata(ImageFilePath);
+            oneImage = new ImageMetaDataModel();
+            oneImage.URL = ImageFilePath;
+            string [] splits = ImageFilePath.Split('\\');
+            oneImage.FileName = splits[splits.Length - 1];
         }
-        public  ImageMetaData(long imageId)
+        public  ImageMetaData(long ImageID)
         {
-            var db = new BlogContext();
+            db = new BlogContext();
             var query = from image in db.Images
-                        where image.ImageId == imageId
+                        where image.ImageID == ImageID
                         select image;
-            _directories =ImageMetadataReader.ReadMetadata(query.ElementAt(0).Url);
-            _oneImage = new ImageMetaDataModel();
-            _oneImage.Url = query.ElementAt(0).Url;
+            directories =ImageMetadataReader.ReadMetadata(query.ElementAt(0).Url.ToString());
+            oneImage = new ImageMetaDataModel();
+            oneImage.URL = query.ElementAt(0).Url.ToString();
         }
-        public void SetImagePath(string imageFilePath)
+        public void SetImagePath(string ImageFilePath)
         {
-            _directories = ImageMetadataReader.ReadMetadata(imageFilePath);
+            directories = ImageMetadataReader.ReadMetadata(ImageFilePath);
         }
 
-        public void FetchData()
+        public void fetchData()
         {
 
-                foreach (var directory in _directories)
+                foreach (var directory in directories)
                 foreach (var tag in directory.Tags)
                 {
                     if (directory.Name.Equals("JPEG"))
                     {
                         if (tag.TagName.Equals("Image Height"))
-                            _oneImage.ImageHeight = tag.Description;
+                            oneImage.ImageHeight = tag.Description;
                         else if (tag.TagName.Equals("Image Width"))
-                            _oneImage.ImageWidth = tag.Description;
+                            oneImage.ImageWidth = tag.Description;
                     }
                     else if (directory.Name.Equals("Exif IFD0"))
                     {
                         if (tag.TagName.Equals("Make"))
-                            _oneImage.CameraBrand = tag.Description;
+                            oneImage.CameraBrand = tag.Description;
                         else if (tag.TagName.Equals("Model"))
-                            _oneImage.CameraModel = tag.Description;
+                            oneImage.CameraModel = tag.Description;
                         else if (tag.TagName.Equals("Software"))
-                            _oneImage.Software = tag.Description;
+                            oneImage.Software = tag.Description;
                         else if (tag.TagName.Equals("Date/Time"))
-                            _oneImage.HandleTime = tag.Description;
+                            oneImage.HandleTime = tag.Description;
                     }
                     else if (directory.Name.Equals("Exif SubIFD"))
                     {
                         if (tag.TagName.Equals("Exposure Time"))
-                            _oneImage.Exposure = tag.Description;
+                            oneImage.Exposure = tag.Description;
                         else if (tag.TagName.Equals("Date/Time"))
-                            _oneImage.HandleTime = tag.Description;
+                            oneImage.HandleTime = tag.Description;
                         else if (tag.TagName.Equals("Aperture Value"))
-                            _oneImage.Aperture =tag.Description;
+                            oneImage.Aperture =tag.Description;
                         else if (tag.TagName.Equals("Exposure Program"))
-                            _oneImage.FocusProgram=tag.Description;
+                            oneImage.FocusProgram=tag.Description;
                         else if (tag.TagName.Equals("ISO Speed Ratings"))
-                            _oneImage.Iso=tag.Description;
+                            oneImage.ISO=tag.Description;
                         else if (tag.TagName.Equals("Date/Time Original"))
-                            _oneImage.CaptureTime = tag.Description;
+                            oneImage.CaptureTime = tag.Description;
                         else if (tag.TagName.Equals("Flash"))
-                            _oneImage.Flash = tag.Description;
+                            oneImage.Flash = tag.Description;
                         else if (tag.TagName.Equals("Color Space"))
-                            _oneImage.ColorSpace = tag.Description;
+                            oneImage.ColorSpace = tag.Description;
                         else if (tag.TagName.Equals("Focal Length"))
-                            _oneImage.FocusLength = tag.Description;
+                            oneImage.FocusLength = tag.Description;
                         else if (tag.TagName.Equals("Exposure Mode"))
-                            _oneImage.ExposureMode = tag.Description;
+                            oneImage.ExposureMode = tag.Description;
                         else if (tag.TagName.Equals("White Balance Mode"))
-                            _oneImage.WhiteBalanceMode = tag.Description;
+                            oneImage.WhiteBalanceMode = tag.Description;
                         else if (tag.TagName.Equals("Lens Model"))
-                            _oneImage.LensModel = tag.Description;
+                            oneImage.LensModel = tag.Description;
                     }
                 }
 
         }
-        public ImageMetaDataModel GetMetaData()
+        public ImageMetaDataModel getMetaData()
         {
-            return _oneImage;
+            return oneImage;
         }
     }
 }
