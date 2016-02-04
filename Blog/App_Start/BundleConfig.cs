@@ -1,4 +1,5 @@
-﻿using System.Web.Optimization;
+﻿using System.Web;
+using System.Web.Optimization;
 using System;
 namespace Blog
 {
@@ -6,10 +7,9 @@ namespace Blog
     {
         public static void AddDefaultIgnorePatterns(IgnoreList ignoreList)
         {
-            if (ignoreList == null) throw new ArgumentNullException(nameof(ignoreList));
             ignoreList = new IgnoreList();
             if (ignoreList == null)
-                throw new ArgumentNullException(nameof(ignoreList));
+                throw new ArgumentNullException("ignoreList");
             ignoreList.Ignore("*.intellisense.js");
             ignoreList.Ignore("*-vsdoc.js");
             ignoreList.Ignore("*.debug.js", OptimizationMode.WhenEnabled);

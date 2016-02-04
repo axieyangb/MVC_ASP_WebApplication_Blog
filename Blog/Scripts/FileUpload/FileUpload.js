@@ -1,11 +1,10 @@
 ﻿
 var UploadQueue = [];
-// ReSharper disable once NativeTypePrototypeExtending
 Array.prototype.contains = function (obj) {
     var i = this.length;
     while (i--) {
         var file = this[i];
-        if (file != null && file.name === obj.name && file.lastModified === obj.lastModified && file.size === obj.size && file.type === obj.type) {
+        if (file != null && file.name == obj.name && file.lastModified == obj.lastModified && file.size == obj.size && file.type == obj.type) {
             return i;
         }
     }
@@ -60,11 +59,10 @@ function completeHandler(event) {
     }
     for (var i = 0 ; feedback != null && i < feedback.length; i++) {
         var oneRecord = document.createElement("a");
-        var innerLink;
-        if (feedback[i]["isAccept"] === 0) {
+        if (feedback[i]["isAccept"] == 0) {
             oneRecord.href = "/Home/ViewImage/" + feedback[i]["UserID"];
             oneRecord.className = "list-group-item list-group-item-success";
-            innerLink = document.createElement("span");
+            var innerLink = document.createElement("span");
             innerLink.className = "badge alert-success pull-right";
             innerLink.innerText = "Success";
             oneRecord.appendChild(innerLink);
@@ -72,7 +70,7 @@ function completeHandler(event) {
         }
         else {
             oneRecord.className = "list-group-item list-group-item-danger";
-            innerLink = document.createElement("span");
+            var innerLink = document.createElement("span");
             innerLink.className = "badge alert-danger pull-right";
             innerLink.innerText = "Failed";
             oneRecord.appendChild(innerLink);
@@ -81,15 +79,15 @@ function completeHandler(event) {
         _("resultList").appendChild(oneRecord);
     }
 }
-function errorHandler() {
+function errorHandler(event) {
     _("status").className = "alert alert-danger";
     _("status").innerHTML = "Upload Failed";
-    if (ajax.readyState === 1) {
+    if (ajax.readyState == 1) {
         ajax.abort();
     }
     _("upload-cancel").style.display = "none";
 }
-function abortHandler() {
+function abortHandler(event) {
     _("progressBar").style.width = "0%";
     _("loaded_n_total").innerHTML = "";
     _("status").className = "alert alert-warning";
@@ -129,7 +127,7 @@ function htmlListGen() {
             str.push('<li>', '<strong>', escape(f.name), '</strong> (', f.type || 'n/a', ') - ', f.size, ' bytes, last modified: ', f.lastModifiedDate ? f.lastModifiedDate.toLocaleDateString() : 'n/a', '<span class="glyphicon glyphicon-remove btn btn-danger btn-xs " style="position:none; margin-right:10%;margin-left:90%" onclick="cancelFile(' + i + ')">', '</span>', '</li>');
         retHtml += str.join('');
     }
-    if (UploadQueue.length > 0 && errorNum===0) {
+    if (UploadQueue.length > 0 && errorNum==0) {
         _("upload-submit").style.display = "initial";
     }
     else

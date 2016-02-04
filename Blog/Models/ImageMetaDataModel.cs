@@ -10,7 +10,7 @@ namespace Blog.Models
     public class ImageMetaDataModel
     {
         [Key]
-        public long? ListId { get; set; }
+        public long? ListID { get; set; }
         public string ImageHeight { get; set; }
         public string ImageWidth { get; set; }
         public string CameraBrand { get; set; }
@@ -20,7 +20,7 @@ namespace Blog.Models
         public string Exposure { get; set; }
         public string Aperture  { get; set; }
         public string  FocusProgram { get; set; }
-        public string Iso { get; set; }
+        public string ISO { get; set; }
         public string CaptureTime { get; set; }
         public string Flash { get; set; }
         public string  ColorSpace { get; set; }
@@ -28,7 +28,7 @@ namespace Blog.Models
         public string ExposureMode { get; set; }
         public string  WhiteBalanceMode { get; set; }
         public string LensModel { get; set; }
-        public string Url { get; set; }
+        public string URL { get; set; }
         public string FileName { get; set; }
     }
 }
