@@ -1,13 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Blog.Models;
-using System.Data.Entity;
 using System.IO;
 using System.Web.Script.Serialization;
-using Newtonsoft.Json.Linq;
 using Simple.ImageResizer;
 namespace Blog.Controllers
 {
@@ -15,7 +12,7 @@ namespace Blog.Controllers
     {
         //
         // GET: /DashBoard/
-        private BlogContext db = new BlogContext();
+        private readonly BlogContext _db = new BlogContext();
         public ActionResult Index()
         {
             if (Session["LoggedUserID"] != null)
@@ -42,61 +39,62 @@ namespace Blog.Controllers
         [HttpPost]
         public JsonResult FileUpload()
         {
-            LinkedList<retJsonModel> retList = new LinkedList<retJsonModel>();
-            ImageMetaData imageMetaDate;
+            LinkedList<RetJsonModel> retList = new LinkedList<RetJsonModel>();
             for (int i = 0; i < Request.Files.Count; i++)
             {
                 HttpPostedFileBase file = Request.Files[i];
-                retJsonModel ret = new retJsonModel();
-                ret.ContentType = file.ContentType;
-                ret.UserID = Session["LoggedUserID"].ToString();
-                if (ret.ContentType.Contains("image/"))
+                RetJsonModel ret = new RetJsonModel();
+                if (file != null)
                 {
-                    ret.isAccept = 0;
-                    ret.fileTypeAccept = "yes";
-                    ret.fileName = DateTime.Now.ToString("yyyyMMddHHmmss") + '_' + i + '_' + file.FileName;
-                    if (!String.IsNullOrEmpty(ret.UserID))
+                    ret.ContentType = file.ContentType;
+                    ret.UserId = Session["LoggedUserID"].ToString();
+                    if (ret.ContentType.Contains("image/"))
                     {
-                       
-                        ret.URL = "/Content/Users/" + ret.UserID + "/" + ret.fileName;
-                        var path = Path.Combine(Server.MapPath("~/Content/Users/" + ret.UserID + ""), ret.fileName);
-                        var stream = file.InputStream;
-                        using (var fileStream = System.IO.File.Create(path))
+                        ret.IsAccept = 0;
+                        ret.FileTypeAccept = "yes";
+                        ret.FileName = DateTime.Now.ToString("yyyyMMddHHmmss") + '_' + i + '_' + file.FileName;
+                        if (!String.IsNullOrEmpty(ret.UserId))
                         {
-                            stream.CopyTo(fileStream);
+                       
+                            ret.URL = "/Content/Users/" + ret.UserId + "/" + ret.FileName;
+                            var path = Path.Combine(Server.MapPath("~/Content/Users/" + ret.UserId + ""), ret.FileName);
+                            var stream = file.InputStream;
+                            using (var fileStream = System.IO.File.Create(path))
+                            {
+                                stream.CopyTo(fileStream);
+                            }
+                            ImageResizer resizer = new ImageResizer(@path);
+                            var thumbtailPath= Path.Combine(Server.MapPath("~/Content/Users/" + ret.UserId + "/thumbtail/"), ret.FileName);
+                            resizer.Resize(400, 400, ImageEncoding.Jpg90);
+                            if (!Directory.Exists(Server.MapPath("~/Content/Users/" + ret.UserId + "/thumbtail/")))
+                                Directory.CreateDirectory(Server.MapPath("~/Content/Users/" + ret.UserId + "/thumbtail/"));
+                            resizer.SaveToFile(@thumbtailPath);
+                            ImageViewModel image = new ImageViewModel();
+                            var imageMetaDate = new ImageMetaData(Server.MapPath(ret.URL));
+                            image.FileName = ret.FileName;
+                            image.UpdateDate = DateTime.Now;
+                            image.UserId = long.Parse(ret.UserId);
+                            image.Url = ret.URL;
+                            image.ContentType = file.ContentType;
+                            _db.Images.Add(image);
+                            imageMetaDate.FetchData();
+                            var metadata = imageMetaDate.GetMetaData();
+                            _db.ImageMetaData.Add(metadata);
+                            _db.SaveChanges();
                         }
-                         ImageResizer resizer = new ImageResizer(@path);
-                        var thumbtailPath= Path.Combine(Server.MapPath("~/Content/Users/" + ret.UserID + "/thumbtail/"), ret.fileName);
-                        var byteArray1 = resizer.Resize(400, 400, ImageEncoding.Jpg90);
-                        if (!System.IO.Directory.Exists(Server.MapPath("~/Content/Users/" + ret.UserID + "/thumbtail/")))
-                            System.IO.Directory.CreateDirectory(Server.MapPath("~/Content/Users/" + ret.UserID + "/thumbtail/"));
-                        resizer.SaveToFile(@thumbtailPath);
-                        ImageViewModel image = new ImageViewModel();
-                        ImageMetaDataModel metadata = new ImageMetaDataModel();
-                        imageMetaDate = new ImageMetaData(Server.MapPath(ret.URL));
-                        image.FileName = ret.fileName;
-                        image.UpdateDate = System.DateTime.Now;
-                        image.UserID = long.Parse(ret.UserID);
-                        image.Url = ret.URL;
-                        image.ContentType = file.ContentType;
-                        db.Images.Add(image);
-                        imageMetaDate.fetchData();
-                        metadata = imageMetaDate.getMetaData();
-                        db.ImageMetaData.Add(metadata);
-                        db.SaveChanges();
+                        else
+                        {
+                            ret.IsAccept = 1;
+                            ret.Error = "Member Session Expired";
+                        }
+
                     }
                     else
                     {
-                        ret.isAccept = 1;
-                        ret.Error = "Member Session Expired";
+                        ret.IsAccept = 1;
+                        ret.FileName = file.FileName;
+                        ret.Error = "Content Type Deny";
                     }
-
-                }
-                else
-                {
-                    ret.isAccept = 1;
-                    ret.fileName = file.FileName;
-                    ret.Error = "Content Type Deny";
                 }
                 retList.AddLast(ret);
 
@@ -106,14 +104,15 @@ namespace Blog.Controllers
             return Json(jsonString);
         }
 
-        private class retJsonModel
+        public class RetJsonModel
         {
-            public int isAccept { get; set; }
-            public string fileTypeAccept { get; set; }
-            public string fileName { get; set; }
+            public int IsAccept { get; set; }
+            public string FileTypeAccept { get; set; }
+            public string FileName { get; set; }
             public string ContentType { get; set; }
+            // ReSharper disable once InconsistentNaming
             public string URL { get; set; }
-            public string UserID { get; set; }
+            public string UserId { get; set; }
             public string Error { get; set; }
         }
         public ActionResult EditProfile()

@@ -15,7 +15,7 @@
         list.innerHTML = "<img class=\"col-xl-12 col-lg-12 col-md-12 col-sm-12\" src=\"/Content/img/loading.gif\"/>";
         var data = new FormData();
         data.append('categoaryName', one.innerHTML);
-        ajax.open("POST", "@Url.Action("getEmoji", "Article")");
+        ajax.open("POST", "@Url.Action("GetEmoji", "Article")");
         ajax.responseType = "json";
         ajax.send(data);
 
@@ -39,7 +39,7 @@
         data.append('Title', encodeURI($('#titleModified').val()));
         data.append('SubTitle', encodeURI($('#subTitleModified').val()));
         data.append('UserID', '@Session["LoggedUserID"]');
-        data.append('ArticleID', '@Model.article.ArticleID');
+        data.append('ArticleID', '@Model.Article.ArticleId');
         ajax.open("POST", "@Url.Action("TitleUpdate", "Article")");
         ajax.responseType = "json";
         ajax.send(data);
@@ -51,7 +51,7 @@
         $('#articleContent').text()
         data.append('Content', encodeURI($('#articleContent').html()).replace(/\+/g, '%2B'));
         data.append('UserID', '@Session["LoggedUserID"]');
-        data.append('ArticleID', '@Model.article.ArticleID');
+        data.append('ArticleID', '@Model.Article.ArticleId');
         ajax.open("POST", "@Url.Action("ArticleUpdate", "Article")");
         ajax.responseType = "json";
         ajax.send(data);
@@ -78,9 +78,9 @@
                 <div class="col-xl-12 col-lg-12 col-md-12  col-sm-12  col-xs-12 ">
                     <div class="post-heading">
                         <a class="pull-right btn" id="TitleEditButton" style="display: none" data-toggle="modal" data-target="#modalEditTitle" data-operation="edit"><span class="glyphicon glyphicon-pencil"></span></a>
-                        <h1>@Html.DisplayFor(item => Model.article.Title)</h1>
-                        <h2 class="subheading">@Html.DisplayFor(item => Model.article.SubTitle)</h2>
-                        <span class="meta">Posted by <a href="#">@ViewBag.AuthorName</a> <span class="postdate">@Html.DisplayFor(item => Model.article.PostDate)</span> </span>
+                        <h1>@Html.DisplayFor(item => Model.Article.Title)</h1>
+                        <h2 class="subheading">@Html.DisplayFor(item => Model.Article.SubTitle)</h2>
+                        <span class="meta">Posted by <a href="#">@ViewBag.AuthorName</a> <span class="postdate">@Html.DisplayFor(item => Model.Article.PostDate)</span> </span>
                     </div>
                 </div>
             </div>
@@ -95,7 +95,7 @@
         <br />
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2 col-md-12">
-                <div id="articleContent">@Html.Raw(HttpUtility.HtmlDecode(Model.article.Content))</div>
+                <div id="articleContent">@Html.Raw(HttpUtility.HtmlDecode(Model.Article.Content))</div>
                 <br>
                 <hr>
 
@@ -104,35 +104,35 @@
                 @if (ViewBag.isPreView != true)
                 {
                     <button class="btn btn-primary btn-block" data-toggle="modal" data-target="#Comment" id="LeaveCommend">Leave Comment</button>
-                    <a class="btn btn-primary btn-block" data-toggle="collapse" href="#comments">Comments <span class="badge">@Model.rootComments.Count</span></a>
+                    <a class="btn btn-primary btn-block" data-toggle="collapse" href="#comments">Comments <span class="badge">@Model.RootComments.Count</span></a>
                 }
                 <hr>
                 <!-- Comment -->
                 <div class="collapse" id="comments">
-                    @if (Model.rootComments != null)
+                    @if (Model.RootComments != null)
                     {
-                        for (int i = 0; i < Model.rootComments.Count; i++)
+                        for (int i = 0; i < Model.RootComments.Count; i++)
                         {
-                            var item = Model.rootComments.ElementAt(i);
+                            var item = Model.RootComments.ElementAt(i);
                         <!-- Comment -->
                         <div class="media">
                             <a class="pull-left btn">
                                 <img class="media-object" src="http://placehold.it/64x64" alt="">
                             </a><span class="badge pull-right">@(i + 1)@if ((i + 1) % 10 == 2) { WriteLiteral("nd"); } else if ((i + 1) % 10 == 3) { WriteLiteral("rd"); } else if ((i + 1) % 10 == 1) { WriteLiteral("st"); } else { WriteLiteral("th"); } Floor</span>
                             <div class="media-body">
-                                <h4 class="media-heading">@item.parentComment.CommentName
+                                <h4 class="media-heading">@item.ParentComment.CommentName
 
-                                    <small><em>From @item.parentComment.Country</em><p class="postdate">@item.parentComment.CreateDate</p>
+                                    <small><em>From @item.ParentComment.Country</em><p class="postdate">@item.ParentComment.CreateDate</p>
                                     </small>
                                 </h4>
 
-                                <a class="pull-right btn"  data-value="@item.parentComment.CommentID" data-content="@HttpUtility.HtmlDecode(item.parentComment.Content)" data-contentName="@item.parentComment.CommentName" data-toggle="modal" data-target="#Comment"><span class="glyphicon glyphicon-comment"></span></a>
-                                @Html.Raw(HttpUtility.HtmlDecode(@item.parentComment.Content))
+                                <a class="pull-right btn"  data-value="@item.ParentComment.CommentId" data-content="@HttpUtility.HtmlDecode(item.ParentComment.Content)" data-contentName="@item.ParentComment.CommentName" data-toggle="modal" data-target="#Comment"><span class="glyphicon glyphicon-comment"></span></a>
+                                @Html.Raw(HttpUtility.HtmlDecode(@item.ParentComment.Content))
 
                                 <!-- Nested Comment -->
-                                @if (item.childComments != null)
+                                @if (item.ChildComments != null)
                                 {
-                                    foreach (var subitem in item.childComments)
+                                    foreach (var subitem in item.ChildComments)
                                     {
                                     <div class="media">
                                         <a class="pull-left" href="#">
@@ -176,12 +176,12 @@
             <div class="modal-body">
                 <div class="input-group  input-group-sm">
                     <span class="input-group-addon">Title</span>
-                    <input type="text" class="form-control" id="titleModified" value="@Model.article.Title">
+                    <input type="text" class="form-control" id="titleModified" value="@Model.Article.Title">
                 </div>
                 <br />
                 <div class="input-group  input-group-sm">
                     <span class="input-group-addon">SubTitle</span>
-                    <input type="text" class="form-control" id="subTitleModified" value="@Model.article.SubTitle">
+                    <input type="text" class="form-control" id="subTitleModified" value="@Model.Article.SubTitle">
                 </div>
             </div>
             <div class="modal-footer">
@@ -201,7 +201,7 @@
 
             <div class="modal-header">
                 <button type="button" class="close pull-right" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">@Model.article.Title</h4>
+                <h4 class="modal-title">@Model.Article.Title</h4>
             </div>
             <div class="modal-body">
                 <!-- Comments Form -->
@@ -213,9 +213,9 @@
                         <div class="form-group">
                             @Html.AntiForgeryToken()
                             @Html.ValidationSummary(true)
-                            @Html.HiddenFor(a => a.commentArticle.ReplyID, new { id = "ReplyId" })
-                            @Html.HiddenFor(a => a.article.ArticleID, new { value = Model.article.ArticleID })
-                            @Html.TextAreaFor(a => a.commentArticle.Content, new { @class = "form-control", name = "Content", id = "Content", rows = "3" })
+                            @Html.HiddenFor(a => a.CommentArticle.ReplyId, new { id = "ReplyId" })
+                            @Html.HiddenFor(a => a.Article.ArticleId, new { value = Model.Article.ArticleId })
+                            @Html.TextAreaFor(a => a.CommentArticle.Content, new { @class = "form-control", name = "Content", id = "Content", rows = "3" })
                             <a class="btn" href="#" data-toggle="popover" data-placement="buttom" data-img="/Content/Users/1/20160110225029_0_IMG_0847.jpg">Image</a>
                             @*<textarea class="form-control" ,name="Content", id="Content",rows="3"></textarea>*@
                         </div>
@@ -255,7 +255,7 @@
         customConfig: '/Scripts/TextEditor/config.js'
     });*@
     var sessionID = "@Session["LoggedUserID"]";
-    var author = "@Model.article.AuthorID";
+    var author = "@Model.Article.AuthorId";
     if (sessionID != null && sessionID == author) {
         document.getElementById("ContentEditButton").style.display = "initial";
         document.getElementById("TitleEditButton").style.display = "initial";
@@ -317,16 +317,16 @@
                 this.setAttribute("data-operation", "edit");
             }
         });
-        var win_width = $("#articleContent").width();
+        var winWidth = $("#articleContent").width();
         $("img").each(function () {
-            if ($(this).width() > win_width) {
+            if ($(this).width() > winWidth) {
                 $(this).css("width", "");
                 $(this).css("height", "");
                 $(this).addClass("col-lg-12  col-md-12  col-sm-12  col-xs-12");
             }
         });
         $("table").each(function () {
-            if ($(this).width() > win_width) {
+            if ($(this).width() > winWidth) {
                 $(this).css("width", "");
                 $(this).css("height", "");
                 $(this).addClass("col-lg-12  col-md-12  col-sm-12  col-xs-12");

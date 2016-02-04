@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using System.Data.Entity;
 using Blog.Models;
 using System.Text.RegularExpressions;
 using System.IO;
@@ -13,37 +12,42 @@ namespace Blog.Controllers
     {
         //
         // GET: /Article/
-        private BlogContext db = new BlogContext();
+        private readonly BlogContext _db = new BlogContext();
         [HttpGet]
-        public ActionResult Index(long ArticleID=0)
+        public ActionResult Index(long articleId=0)
         {
-            Article article = db.Articles.Find(ArticleID);
+            var article = _db.Articles.Find(articleId);
             if (article == null)
                 return HttpNotFound();
             article.Content = article.Content.Replace("\r\n", "<br>");
-            if (ArticleID > 0)
+            if (articleId > 0)
             {
-                var query = from a in db.Members
-                            where a.UserID == article.AuthorID
+                var query = from a in _db.Members
+                            where a.UserId == article.AuthorId
                             select String.IsNullOrEmpty(a.NickName) ? a.UserName : a.NickName;
-                ViewBag.AuthorName = query.ToList().ElementAt(0).ToString();
+                ViewBag.AuthorName = query.ToList().ElementAt(0);
             }
 
-            List<CommentDetailInfoView> comments = db.CommentDetailInfo.Where(a => (a.ArticleID == ArticleID && ( a.ReplyID ==-1))).ToList();
-            ArticleStruct oneArticle = new ArticleStruct();
-            oneArticle.article = article;
-            oneArticle.rootComments = new List<CommentLevel>();
-            CommentLevel oneComment;
+            List<CommentDetailInfoView> comments = _db.CommentDetailInfo.Where(a => (a.ArticleId == articleId && ( a.ReplyId ==-1))).ToList();
+            ArticleStruct oneArticle = new ArticleStruct
+            {
+                Article = article,
+                RootComments = new List<CommentLevel>()
+            };
             foreach (CommentDetailInfoView rootComment in comments)
             {
-                oneComment = new CommentLevel();
-                oneComment.parentComment = rootComment;
-                oneComment.childComments = db.CommentDetailInfo.Where(a => (a.ArticleID == ArticleID && a.ReplyID == rootComment.CommentID)).ToList();
-                oneArticle.rootComments.Add(oneComment);
+                var oneComment = new CommentLevel
+                {
+                    ParentComment = rootComment,
+                    ChildComments =
+                        _db.CommentDetailInfo.Where(
+                            a => (a.ArticleId == articleId && a.ReplyId == rootComment.CommentId)).ToList()
+                };
+                oneArticle.RootComments.Add(oneComment);
             }
             /*fetch the emoji in Content\img\emoji    */
-            string EmojiPath = Server.MapPath("/Content/img/emoji/");
-            DirectoryInfo emojiDir = new System.IO.DirectoryInfo(EmojiPath);
+            string emojiPath = Server.MapPath("/Content/img/emoji/");
+            DirectoryInfo emojiDir = new DirectoryInfo(emojiPath);
             try
             {
                 DirectoryInfo[] categoryList = emojiDir.GetDirectories();
@@ -60,11 +64,11 @@ namespace Blog.Controllers
 
 
         [HttpPost]
-        public JsonResult getEmoji()
+        public JsonResult GetEmoji()
         {
             string categoaryName = Request.Form["categoaryName"];
-            DirectoryInfo Emojis=new DirectoryInfo(Path.Combine(Server.MapPath("/Content/img/emoji/"),categoaryName));
-            FileInfo[] oneCategory = Emojis.GetFiles();
+            DirectoryInfo emojis=new DirectoryInfo(Path.Combine(Server.MapPath("/Content/img/emoji/"),categoaryName));
+            FileInfo[] oneCategory = emojis.GetFiles();
             string[] urls = new string[oneCategory.Length];
             for (int i = 0; i < oneCategory.Length; i++)
             {
@@ -77,7 +81,7 @@ namespace Blog.Controllers
         public ActionResult ArticleReview(ArticleSubmitView articlePost)
         {
             Article article = new Article();
-            article.AuthorID = articlePost.AuthorID;
+            article.AuthorId = articlePost.AuthorId;
             article.Title = HttpUtility.HtmlEncode(articlePost.Title);
             article.SubTitle = articlePost.SubTitle;
             article.Content = articlePost.Content;
@@ -86,17 +90,17 @@ namespace Blog.Controllers
                 article.Content = articlePost.Content.Replace("style=\"height:", "name=\"height:").Replace("\r\n", "<br>");
                 article.Content = HttpUtility.HtmlEncode(article.Content);
             }
-            article.PostDate = System.DateTime.Now;
+            article.PostDate = DateTime.Now;
             ArticleStruct one = new ArticleStruct();
-            one.article = article;
-            one.rootComments = new List<CommentLevel>();
+            one.Article = article;
+            one.RootComments = new List<CommentLevel>();
             if (articlePost.Action.Equals("post"))
             {
                 if (ModelState.IsValid && !String.IsNullOrEmpty(article.Title))
                 {
                    
-                    db.Articles.Add(article);
-                    db.SaveChanges();
+                    _db.Articles.Add(article);
+                    _db.SaveChanges();
                     return View("Index", one);
                 }
                 else return View();
@@ -113,55 +117,56 @@ namespace Blog.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult CommentPost(ArticleStruct articlePost)
         {
-            if (!String.IsNullOrEmpty(articlePost.commentArticle.Content))
+            if (!String.IsNullOrEmpty(articlePost.CommentArticle.Content))
             {
-                articlePost.commentArticle.CommentID = null;
-                articlePost.commentArticle.isValid = 1;
+                articlePost.CommentArticle.CommentId = null;
+                articlePost.CommentArticle.IsValid = 1;
                 if (Session["LoggedUserID"] !=null)
-                articlePost.commentArticle.CommenterID =Int64.Parse(Session["LoggedUserID"].ToString());
-                if (articlePost.commentArticle.ReplyID == null)
-                    articlePost.commentArticle.ReplyID = -1;
+                articlePost.CommentArticle.CommenterId =Int64.Parse(Session["LoggedUserID"].ToString());
+                if (articlePost.CommentArticle.ReplyId == null)
+                    articlePost.CommentArticle.ReplyId = -1;
                 string address = Request.ServerVariables["REMOTE_ADDR"];
-                articlePost.commentArticle.IPAddress = address;
-                articlePost.commentArticle.ArticleID = articlePost.article.ArticleID;
-                articlePost.commentArticle.CreateDate = System.DateTime.Now;
-                articlePost.commentArticle.Content = HttpUtility.HtmlEncode(articlePost.commentArticle.Content.Replace("\r\n", "<br>"));
-                db.ArticleComments.Add(articlePost.commentArticle);
-                db.SaveChanges();
+                articlePost.CommentArticle.IpAddress = address;
+                articlePost.CommentArticle.ArticleId = articlePost.Article.ArticleId;
+                articlePost.CommentArticle.CreateDate = DateTime.Now;
+                articlePost.CommentArticle.Content = HttpUtility.HtmlEncode(articlePost.CommentArticle.Content.Replace("\r\n", "<br>"));
+                _db.ArticleComments.Add(articlePost.CommentArticle);
+                _db.SaveChanges();
             }
-            return RedirectToAction("Index", "Article", new{ArticleID=articlePost.article.ArticleID});
+            return RedirectToAction("Index", "Article", new{ArticleID=articlePost.Article.ArticleId});
         }
 
 
         [HttpPost]
         public JsonResult ArticleUpdate()
         {
-            retJsonModel ret = new retJsonModel();
-            string ArticleContent  =HttpUtility.UrlDecode(Request.Form["Content"]);
-            string userID_str = Request.Form["UserID"];
-            string ArticeID_str = Request.Form["ArticleID"];
+            RetJsonModel ret = new RetJsonModel();
+            string articleContent  =HttpUtility.UrlDecode(Request.Form["Content"]);
+            string userIdStr = Request.Form["UserID"];
+            string articeIdStr = Request.Form["ArticleID"];
             try
             {
-                long ArticleID = long.Parse(ArticeID_str);
-                long userID = long.Parse(userID_str);
-                Article article = db.Articles.Find(ArticleID);
-                if (Session["LoggedUserID"].Equals(userID_str) && article.AuthorID == userID)
+                long articleId = long.Parse(articeIdStr);
+                long userId = long.Parse(userIdStr);
+                Article article = _db.Articles.Find(articleId);
+                if (Session["LoggedUserID"].Equals(userIdStr) && article.AuthorId == userId)
                 {
-                    article.Content = HttpUtility.HtmlEncode(ArticleContent.Replace("style=\"height:", "style=\"name:"));
+                    if (articleContent != null)
+                        article.Content = HttpUtility.HtmlEncode(articleContent.Replace("style=\"height:", "style=\"name:"));
                     article.ModifyDate = DateTime.Now;
-                    db.SaveChanges();
-                    ret.isAccept = 1;
-                    ret.UserID = article.AuthorID.ToString();
+                    _db.SaveChanges();
+                    ret.IsAccept = 1;
+                    ret.UserId = article.AuthorId.ToString();
                 }
                 else
                 {
-                    ret.isAccept = 0;
+                    ret.IsAccept = 0;
                     ret.Error = "Update Failed";
                 }
             }
             catch (Exception ex)
             {
-                ret.isAccept = 0;
+                ret.IsAccept = 0;
                 ret.Error = ex.ToString();
             }
             return Json(ret);
@@ -169,42 +174,43 @@ namespace Blog.Controllers
          [HttpPost]
         public JsonResult TitleUpdate()
         {
-            retJsonModel ret = new retJsonModel();
-            string Title_str  =HttpUtility.UrlDecode(Request.Form["Title"]);
-            string SubTitle_str = HttpUtility.UrlDecode(Request.Form["SubTitle"]);
-            string userID_str = Request.Form["UserID"];
-            string ArticeID_str = Request.Form["ArticleID"];
+            RetJsonModel ret = new RetJsonModel();
+            string titleStr  =HttpUtility.UrlDecode(Request.Form["Title"]);
+            string subTitleStr = HttpUtility.UrlDecode(Request.Form["SubTitle"]);
+            string userIdStr = Request.Form["UserID"];
+            string articeIdStr = Request.Form["ArticleID"];
             try
             {
-                long ArticleID = long.Parse(ArticeID_str);
-                long userID = long.Parse(userID_str);
-                Article article = db.Articles.Find(ArticleID);
-                if (Session["LoggedUserID"].Equals(userID_str) && article.AuthorID == userID)
+                long articleId = long.Parse(articeIdStr);
+                long userId = long.Parse(userIdStr);
+                Article article = _db.Articles.Find(articleId);
+                if (Session["LoggedUserID"].Equals(userIdStr) && article.AuthorId == userId)
                 {
-                    article.Title = Regex.Replace(Title_str, "[^0-9a-zA-Z \u4E00-\u9FFF]+", "");
-                    article.SubTitle = Regex.Replace(SubTitle_str, "[^0-9a-zA-Z \u4E00-\u9FFF]+", ""); 
+                    if (titleStr != null) article.Title = Regex.Replace(titleStr, "[^0-9a-zA-Z \u4E00-\u9FFF]+", "");
+                    if (subTitleStr != null)
+                        article.SubTitle = Regex.Replace(subTitleStr, "[^0-9a-zA-Z \u4E00-\u9FFF]+", "");
                     article.ModifyDate = DateTime.Now;
-                    db.SaveChanges();
-                    ret.isAccept = 1;
-                    ret.UserID = article.AuthorID.ToString();
+                    _db.SaveChanges();
+                    ret.IsAccept = 1;
+                    ret.UserId = article.AuthorId.ToString();
                 }
                 else
                 {
-                    ret.isAccept = 0;
+                    ret.IsAccept = 0;
                     ret.Error = "Update Failed";
                 }
             }
             catch (Exception ex)
             {
-                ret.isAccept = 0;
+                ret.IsAccept = 0;
                 ret.Error = ex.ToString();
             }
             return Json(ret);
         }
-        private class retJsonModel
+         public class RetJsonModel
         {
-            public int isAccept { get; set; }
-            public string UserID { get; set; }
+            public int IsAccept { get; set; }
+            public string UserId { get; set; }
             public string Error { get; set; }
         }
 

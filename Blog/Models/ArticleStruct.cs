@@ -1,19 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using System.Collections.Generic;
 
 namespace Blog.Models
 {
     public class CommentLevel
     {
-        public CommentDetailInfoView parentComment { get; set; }
-      public  List<CommentDetailInfoView> childComments{get;set;}
+        public CommentDetailInfoView ParentComment { get; set; }
+      public  List<CommentDetailInfoView> ChildComments{get;set;}
     }
     public class ArticleStruct
     {
-        public Article article { set; get; }
-        public ArticleComment commentArticle { set; get; }
-        public List<CommentLevel> rootComments { get; set; }
+        public Article Article { set; get; }
+        public ArticleComment CommentArticle { set; get; }
+        public List<CommentLevel> RootComments { get; set; }
     }
 }

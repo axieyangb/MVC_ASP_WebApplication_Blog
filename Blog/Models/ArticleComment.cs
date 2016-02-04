@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 using System.Web.Mvc;
@@ -11,16 +8,16 @@ namespace Blog.Models
     public class ArticleComment
     {
         [Key]
-        public long? CommentID { set; get; }
-        public long CommenterID { get; set; }
-        public long ArticleID { get; set; }
-        public long? ReplyID { set; get;}
+        public long? CommentId { set; get; }
+        public long CommenterId { get; set; }
+        public long ArticleId { get; set; }
+        public long? ReplyId { set; get;}
         public DateTime CreateDate { set; get;}
-        public int isValid { set; get; }
+        public int IsValid { set; get; }
         [AllowHtml]
         [DataType(DataType.Text)]
         public string Content { set; get; }
-        public string IPAddress { set; get; }
+        public string IpAddress { set; get; }
     }
 
 }
