@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -10,84 +11,91 @@ namespace Blog.Controllers
 {
     public class HomeController : Controller
     {
+        public BlogContext Db;
+
+        public HomeController()
+        {
+            Db = new BlogContext(ConfigurationManager.ConnectionStrings["BlogContext"].ConnectionString);
+        }
+        public HomeController(string connectionString)
+        {
+            Db = new BlogContext(connectionString);
+        }
         //
         // GET: /Home/
-        private BlogContext db = new BlogContext();
         [HttpGet]
         public ActionResult Index()
         {
-            var Home_Article = from a in db.Articles
-                               join b in db.Members on a.AuthorID equals b.UserID
-                               select new ArticleAbstract
-                               {
-                                   ArticleID = a.ArticleID,
-                                   AuthorID = b.UserID,
-                                   Title = a.Title,
-                                   SubTitle = a.SubTitle,
-                                   PostDate = a.PostDate,
-                                   AuthorName = String.IsNullOrEmpty(b.NickName) ? b.UserName : b.NickName,
-                               };
-            ViewBag.ArticleAmount = Home_Article.Count();
-            Home_Article = Home_Article.OrderByDescending(i => i.PostDate).Take(10);
-           
-            return View(Home_Article.ToList());
+            var homeArticle = from a in Db.Articles
+                              join b in Db.Members on a.AuthorId equals b.UserId
+                              select new ArticleAbstract
+                              {
+                                  ArticleId = a.ArticleId,
+                                  AuthorId = b.UserId,
+                                  Title = a.Title,
+                                  SubTitle = a.SubTitle,
+                                  PostDate = a.PostDate,
+                                  AuthorName = string.IsNullOrEmpty(b.NickName) ? b.UserName : b.NickName,
+                              };
+            ViewBag.ArticleAmount = homeArticle.Count();
+            homeArticle = homeArticle.OrderByDescending(i => i.PostDate).Take(10);
+
+            return View(homeArticle.ToList());
         }
 
         [HttpGet]
         public ActionResult IndexPrev(int num)
         {
-            var Home_Article = from a in db.Articles
-                               join b in db.Members on a.AuthorID equals b.UserID
-                               select new ArticleAbstract
-                               {
-                                   ArticleID = a.ArticleID,
-                                   AuthorID = b.UserID,
-                                   Title = a.Title,
-                                   SubTitle = a.SubTitle,
-                                   PostDate = a.PostDate,
-                                   AuthorName = String.IsNullOrEmpty(b.NickName) ? b.UserName : b.NickName
-                               };
-            ViewBag.ArticleAmount = Home_Article.Count();
-            Home_Article = Home_Article.OrderBy(i => i.ArticleID).Take(num + 10);
-            return View("Index", Home_Article.ToList());
+            var homeArticle = from a in Db.Articles
+                              join b in Db.Members on a.AuthorId equals b.UserId
+                              select new ArticleAbstract
+                              {
+                                  ArticleId = a.ArticleId,
+                                  AuthorId = b.UserId,
+                                  Title = a.Title,
+                                  SubTitle = a.SubTitle,
+                                  PostDate = a.PostDate,
+                                  AuthorName = string.IsNullOrEmpty(b.NickName) ? b.UserName : b.NickName
+                              };
+            ViewBag.ArticleAmount = homeArticle.Count();
+            homeArticle = homeArticle.OrderBy(i => i.ArticleId).Take(num + 10);
+            return View("Index", homeArticle.ToList());
         }
 
         [HttpPost]
         public ActionResult UploadImage(int id, HttpPostedFileWrapper upload)
         {
-            string ret = "";
+            string ret;
             if (upload != null)
             {
                 if (upload.ContentLength <= 1024 * 1024 * 5)
                 {
-                    string url = "";
-                    string ImageName = DateTime.Now.ToString("yyyyMMddHHmmss") + '_' + upload.FileName;
+                    var imageName = DateTime.Now.ToString("yyyyMMddHHmmss") + '_' + upload.FileName;
                     if (!System.IO.Directory.Exists(Server.MapPath("/Content/Users/" + id)))
                     {
                         System.IO.Directory.CreateDirectory(Server.MapPath("/Content/users/" + id));
                     }
-                    string path = System.IO.Path.Combine(Server.MapPath("/Content/users/" + id), ImageName);
-                    url = "/Content/users/" + id + "/" + ImageName;
+                    var path = System.IO.Path.Combine(Server.MapPath("/Content/users/" + id), imageName);
+                    var url = "/Content/users/" + id + "/" + imageName;
                     upload.SaveAs(path);
-                    ImageResizer resizer = new ImageResizer(@path);
+                    var resizer = new ImageResizer(@path);
                     var thumbtailPath = System.IO.Path.Combine(Server.MapPath("~/Content/Users/" + id + "/thumbtail/"), upload.FileName);
-                    var byteArray1 = resizer.Resize(400, 400, ImageEncoding.Jpg90);
+                    resizer.Resize(400, 400, ImageEncoding.Jpg90);
                     if (!System.IO.Directory.Exists(Server.MapPath("~/Content/Users/" + id + "/thumbtail/")))
                         System.IO.Directory.CreateDirectory(Server.MapPath("~/Content/Users/" + id + "/thumbtail/"));
                     resizer.SaveToFile(@thumbtailPath);
-                    ImageViewModel image = new ImageViewModel();
-                    ImageMetaDataModel metadata = new ImageMetaDataModel();
-                    ImageMetaData imageMetaDate = new ImageMetaData(Server.MapPath(image.Url));
-                    imageMetaDate.fetchData();
-                    metadata = imageMetaDate.getMetaData();
-                    image.ContentType=upload.ContentType;
-                    image.UpdateDate = System.DateTime.Now;
+                    var image = new ImageViewModel();
+                    var imageMetaDate = new ImageMetaData(Server.MapPath(image.Url));
+                    imageMetaDate.FetchData();
+                    var metadata = imageMetaDate.GetMetaData();
+                    image.ContentType = upload.ContentType;
+                    image.UpdateDate = DateTime.Now;
                     image.UserID = long.Parse(Session["LoggedUserID"].ToString());
                     image.Url = url;
-                    image.FileName = ImageName;
-                    db.Images.Add(image);
-                    db.ImageMetaData.Add(metadata);
-                    db.SaveChanges();
+                    image.FileName = imageName;
+                    Db.Images.Add(image);
+                    Db.ImageMetaData.Add(metadata);
+                    Db.SaveChanges();
                     ret = url;
                 }
                 else
@@ -109,7 +117,7 @@ namespace Blog.Controllers
             {
                 return Content("Sorry ! please login first <a href='/Admin/Login'>Click Here to Login</a>");
             }
-            var images = db.Images.Where(a => a.UserID == id && a.isBlock == 0 && a.DeleteTime == null);
+            var images = Db.Images.Where(a => a.UserID == id && a.isBlock == 0 && a.DeleteTime == null);
             return View(images);
         }
         [HttpGet]
@@ -119,15 +127,16 @@ namespace Blog.Controllers
         }
 
         [HttpPost]
+        // ReSharper disable once InconsistentNaming
         public ActionResult PicOperation(string ImageID, string operation)
         {
-            long imageId = long.Parse(ImageID);
-            int oper = int.Parse(operation);
-            long id = long.Parse(Session["LoggedUserID"].ToString());
-            var query = from image in db.Images
-                        where image.ImageID == imageId && image.UserID == id 
+            var imageId = long.Parse(ImageID);
+            var oper = int.Parse(operation);
+            var id = long.Parse(Session["LoggedUserID"].ToString());
+            var query = from image in Db.Images
+                        where image.ImageID == imageId && image.UserID == id
                         select image;
-            foreach (ImageViewModel one in query)
+            foreach (var one in query)
             {
                 if (oper == 1)
                     one.isPublish = 1;
@@ -135,25 +144,25 @@ namespace Blog.Controllers
                     one.isPublish = 0;
                 else
                 {
-                    string archivePath = Server.MapPath("/Content/Users/" + id + "/DelArchive");
+                    var archivePath = Server.MapPath("/Content/Users/" + id + "/DelArchive");
                     if (!System.IO.Directory.Exists(archivePath))
                     {
                         System.IO.Directory.CreateDirectory(archivePath);
                     }
-                    string [] splits = one.Url.Split('/');
-                    System.IO.File.Move( Server.MapPath(one.Url), System.IO.Path.Combine(archivePath,splits[splits.Length-1]));
-                    one.DeleteTime = System.DateTime.Now;
+                    var splits = one.Url.Split('/');
+                    System.IO.File.Move(Server.MapPath(one.Url), System.IO.Path.Combine(archivePath, splits[splits.Length - 1]));
+                    one.DeleteTime = DateTime.Now;
                 }
             }
             try
             {
-                db.SaveChanges();
+                Db.SaveChanges();
             }
             catch (Exception e)
             {
                 Console.WriteLine(e);
             }
-            var images = db.Images.Where(a => a.UserID == id && a.isBlock == 0 && a.DeleteTime == null);
+            var images = Db.Images.Where(a => a.UserID == id && a.isBlock == 0 && a.DeleteTime == null);
             return View("ViewImage", images);
         }
 

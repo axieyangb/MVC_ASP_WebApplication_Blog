@@ -11,16 +11,24 @@ namespace Blog.Models
     public class ArticleComment
     {
         [Key]
-        public long? CommentID { set; get; }
-        public long CommenterID { get; set; }
-        public long ArticleID { get; set; }
-        public long? ReplyID { set; get;}
+        [Column("CommentID")]
+        public long? CommentId { set; get; }
+        [Column("CommenterID")]
+        public long CommenterId { get; set; }
+        [Column("ArticleID")]
+        public long ArticleId { get; set; }
+        [Column("ReplyID")]
+        public long? ReplyId { set; get;}
+        [Column("CreateDate")]
         public DateTime CreateDate { set; get;}
-        public int isValid { set; get; }
+        [Column("isValid")]
+        public int IsValid { set; get; }
         [AllowHtml]
         [DataType(DataType.Text)]
+        [Column("Content")]
         public string Content { set; get; }
-        public string IPAddress { set; get; }
+        [Column("IPAddress")]
+        public string IpAddress { set; get; }
     }
 
 }

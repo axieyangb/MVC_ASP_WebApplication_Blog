@@ -10,17 +10,24 @@ namespace Blog.Models
     public class Member
     {
          [Key]
-         public long? UserID { set; get; }
+        [Column("UserID")]
+        public long? UserId { set; get; }
          [Required(ErrorMessage="Please provide username",AllowEmptyStrings=false)]
-         public string UserName { set; get; }
+        [Column("UserName")]
+        public string UserName { set; get; }
          [Required(ErrorMessage="Please provide password",AllowEmptyStrings=false)]
          [DataType(System.ComponentModel.DataAnnotations.DataType.Password)]
-         public string Password { set; get; }
+        [Column("Password")]
+        public string Password { set; get; }
          [DataType(System.ComponentModel.DataAnnotations.DataType.MultilineText)]
-         public string Description { set; get; }
+        [Column("Description")]
+        public string Description { set; get; }
           [DataType(System.ComponentModel.DataAnnotations.DataType.EmailAddress)]
-         public string Email { set; get; }
-         public string NickName { set; get; }
-         public byte isActive { set; get; }
+        [Column("Email")]
+        public string Email { set; get; }
+        [Column("NickName")]
+        public string NickName { set; get; }
+        [Column("isActive")]
+        public byte IsActive { set; get; }
     }
 }

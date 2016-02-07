@@ -12,10 +12,15 @@ namespace Blog.Models
     public class Tags
     {
         [Key]
-        public long? TagID { get; set; }
+        [Column("TagID")]
+
+        public long? TagId { get; set; }
         [DataType(DataType.Text)]
+        [Column("TagContent")]
         public string TagContent { get; set; }
+        [Column("TagCount")]
         public int TagCount { get; set; }
+        [Column("LastUsedDate")]
         public DateTime? LastUsedDate { get; set; }
     }
 }

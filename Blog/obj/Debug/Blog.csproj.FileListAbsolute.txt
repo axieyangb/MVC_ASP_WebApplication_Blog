@@ -146,4 +146,6 @@ C:\Users\axieyangb\Desktop\webApp\MVC_ASP_WebApplication_Blog\Blog\bin\System.We
 C:\Users\axieyangb\Desktop\webApp\MVC_ASP_WebApplication_Blog\Blog\bin\XmpCore.xml
 C:\Users\axieyangb\Desktop\webApp\MVC_ASP_WebApplication_Blog\Blog\obj\Debug\Blog.dll
 C:\Users\axieyangb\Desktop\webApp\MVC_ASP_WebApplication_Blog\Blog\obj\Debug\Blog.pdb
-C:\Users\axieyangb\Desktop\webApp\MVC_ASP_WebApplication_Blog\Blog\obj\Debug\Blog.csprojResolveAssemblyReference.cache
+C:\Users\axieyangb\Desktop\webApp\MVC_ASP_WebApplication_Blog\Blog\bin\Blog.dll.config
+C:\Users\axieyangb\Desktop\webApp\MVC_ASP_WebApplication_Blog\Blog\bin\System.Web.Helpers.dll
+C:\Users\axieyangb\Desktop\webApp\MVC_ASP_WebApplication_Blog\Blog\bin\System.Web.Helpers.xml

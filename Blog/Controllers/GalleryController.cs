@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -11,14 +12,14 @@ namespace Blog.Controllers
     {
         //
         // GET: /Gallery/
-        private BlogContext db = new BlogContext();
+        private readonly BlogContext _db = new BlogContext(ConfigurationManager.ConnectionStrings["BlogContext"].ConnectionString);
         public ActionResult Index(int pageIndex =0, int pageSize=12)
         {
-            var publicImg = from x in db.PublicImagesVW
-                            orderby x.PublicID descending
+            var publicImg = from x in _db.PublicImagesVw
+                            orderby x.PublicId descending
                             select x;
             ViewBag.pageIndex = pageIndex;
-            int count = (int)Math.Ceiling(publicImg.Count() / (double)pageSize);
+            var count = (int)Math.Ceiling(publicImg.Count() / (double)pageSize);
             ViewBag.pageCount = count;
             return View(publicImg.Skip(pageIndex * pageSize).Take(pageSize));
         }

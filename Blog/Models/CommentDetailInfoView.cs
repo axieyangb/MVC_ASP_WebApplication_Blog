@@ -10,13 +10,21 @@ namespace Blog.Models
     public class CommentDetailInfoView
     {
         [Key]
-        public long CommentID { set; get; }
-        public long CommenterID { get; set; }
-        public long ArticleID { get; set; }
-        public long ReplyID { set; get; }
+        [Column("CommentID")]
+        public long CommentId { set; get; }
+        [Column("CommenterID")]
+        public long CommenterId { get; set; }
+        [Column("ArticleID")]
+        public long ArticleId { get; set; }
+        [Column("ReplyID")]
+        public long ReplyId { set; get; }
+        [Column("CreateDate")]
         public DateTime CreateDate { set; get; }
+        [Column("CommentName")]
         public string CommentName {set;get;}
+        [Column("Country")]
         public string Country { set; get; }
+        [Column("Content")]
         public string Content { set; get; }
     }
 }

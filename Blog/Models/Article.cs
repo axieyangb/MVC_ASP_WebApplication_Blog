@@ -7,27 +7,39 @@ using System.ComponentModel.DataAnnotations;
 using System.Web.Mvc;
 namespace Blog.Models
 {
-     [Table("Article")]
+    [Table("Article")]
     public class Article
     {
-         [Key]
-         public long ArticleID { get; set; }
-         [Required]
-         public long AuthorID { get; set; }
-         [DataType(DataType.Text)]
-         [Required(ErrorMessage = "Please provide Title", AllowEmptyStrings = false)]
+        [Key]
+        [Column("ArticleID")]
+        public long ArticleId { get; set; }
+        [Required]
+        [Column("AuthorID")]
+        public long AuthorId { get; set; }
+        [DataType(DataType.Text)]
+        [Required(ErrorMessage = "Please provide Title", AllowEmptyStrings = false)]
+        [Column("Title")]
         public string Title { get; set; }
-         [DataType(DataType.Text)]
+        [DataType(DataType.Text)]
+        [Column("SubTitle")]
         public string SubTitle { get; set; }
         [AllowHtml]
+        [Column("Content")]
         [DataType(DataType.Text)]
         public string Content { get; set; }
-        public long? TagID_1 { get; set; }
-        public long? TagID_2 { get; set; }
-        public long? TagID_3 { get; set; }
-        public long? TagID_4 { get; set; }
-        public long? TagID_5 { get; set; }
+        [Column("TagID_1")]
+        public long? TagId1 { get; set; }
+        [Column("TagID_2")]
+        public long? TagId2 { get; set; }
+        [Column("TagID_3")]
+        public long? TagId3 { get; set; }
+        [Column("TagID_4")]
+        public long? TagId4 { get; set; }
+        [Column("TagID_5")]
+        public long? TagId5 { get; set; }
+        [Column("PostDate")]
         public DateTime PostDate { get; set; }
+        [Column("ModifyDate")]
         public DateTime? ModifyDate { get; set; }
 
     }

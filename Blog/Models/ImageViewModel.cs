@@ -10,17 +10,26 @@ namespace Blog.Models
     public class ImageViewModel
     {
         [Key]
+        [Column("ImageID")]
         public long ImageID { get; set; }
         [DataType(System.ComponentModel.DataAnnotations.DataType.ImageUrl)]
+        [Column("Url")]
         public string Url { get; set; }
         [DataType(System.ComponentModel.DataAnnotations.DataType.DateTime)]
+        [Column("UpdateDate")]
         public DateTime UpdateDate { get; set; }
+        [Column("UserID")]
         public long UserID { get; set; }
         [DataType(System.ComponentModel.DataAnnotations.DataType.DateTime)]
+        [Column("DeleteTime")]
         public DateTime? DeleteTime { get; set; }
+        [Column("isPublish")]
         public byte isPublish { get; set; }
+        [Column("isBlock")]
         public byte isBlock { get; set; }
+        [Column("ContentType")]
         public string ContentType { get; set; }
+        [Column("FileName")]
         public string FileName { get; set; }
     }
 }

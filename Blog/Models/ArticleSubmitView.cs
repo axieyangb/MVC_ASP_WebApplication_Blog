@@ -10,22 +10,34 @@ namespace Blog.Models
     public class ArticleSubmitView
     {
         [Required]
-        public long AuthorID { get; set; }
+        [Column("AuthorID")]
+        public long AuthorId { get; set; }
         [DataType(DataType.Text)]
+        [Column("Title")]
         public string Title { get; set; }
         [DataType(DataType.Text)]
+        [Column("SubTitle")]
         public string SubTitle { get; set; }
         [Required]
+        [Column("Action")]
         public string Action { get; set; }
         [AllowHtml]
         [DataType(DataType.Text)]
+        [Column("Content")]
         public string Content { get; set; }
-        public long? TagID_1 { get; set; }
-        public long? TagID_2 { get; set; }
-        public long? TagID_3 { get; set; }
-        public long? TagID_4 { get; set; }
-        public long? TagID_5 { get; set; }
+        [Column("TagID_1")]
+        public long? TagId1 { get; set; }
+        [Column("TagID_2")]
+        public long? TagId2 { get; set; }
+        [Column("TagID_3")]
+        public long? TagId3 { get; set; }
+        [Column("TagID_4")]
+        public long? TagId4 { get; set; }
+        [Column("TagID_5")]
+        public long? TagId5 { get; set; }
+        [Column("PostDate")]
         public DateTime PostDate { get; set; }
+        [Column("ModifyDate")]
         public DateTime? ModifyDate { get; set; }
 
     }

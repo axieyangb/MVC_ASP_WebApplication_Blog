@@ -9,7 +9,7 @@ namespace Blog
         {
             ignoreList = new IgnoreList();
             if (ignoreList == null)
-                throw new ArgumentNullException("ignoreList");
+                throw new ArgumentNullException(nameof(ignoreList));
             ignoreList.Ignore("*.intellisense.js");
             ignoreList.Ignore("*-vsdoc.js");
             ignoreList.Ignore("*.debug.js", OptimizationMode.WhenEnabled);
@@ -24,9 +24,8 @@ namespace Blog
             bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
                        
                          "~/Scripts/bootstrap.min.js",
-                         "~/Scripts/jquery.js",
-                         "~/Scripts/jquery-ui.js",
-                          "~/Scripts/jquery-ui.min.js",
+                         "~/Scripts/jquery-2.2.0.min.js",
+                          "~/Scripts/jquery-ui-1.11.4.min.js",
                           "~/Scripts/timetransfer.js"
 
                        ));
@@ -39,17 +38,13 @@ namespace Blog
                        "~/Scripts/Gallery/jquery.touchSwipe.min.js"
                      ));
             bundles.Add(new StyleBundle("~/Content/css").Include("~/Content/site.css",
-                "~/Content/css/blog.css",
+              "~/Content/css/blog.css",
                 "~/Content/css/blog.min.css",
-                "~/Content/css/bootstrap.css",
                 "~/Content/css/bootstrap.min.css",
                  "~/Content/css/Home-half-slider.css",
                   "~/Content/css/fonts.css",
                   "~/Content/css/jquery-ui.min.css",
-                  "~/Content/css/jquery-ui.css",
-                  "~/Content/css/jquery-ui.structure.css",
                   "~/Content/css/jquery-ui.structure.min.css",
-                  "~/Content/css/jquery-ui.theme.css",
                   "~/Content/css/jquery-ui.theme.min.css"
 
                 ));
@@ -60,7 +55,7 @@ namespace Blog
 
             bundles.Add(new StyleBundle("~/Content/css/dashboard").Include(
                 "~/Content/css/page/dashboard.css",
-              "~/Content/css/bootstrap.css",
+           
               "~/Content/css/bootstrap.min.css",
                 "~/Content/css/fonts.css"
                 ));
