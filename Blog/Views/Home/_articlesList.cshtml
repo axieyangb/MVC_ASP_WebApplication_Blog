@@ -1,0 +1,17 @@
+﻿@model IEnumerable<Blog.Models.ArticleAbstract> 
+@foreach (var item in Model)
+    {
+        <a href="@Url.Action("Index","Article",new {@item.ArticleId})">
+            <div class="post-preview">
+
+                <h2 class="post-title">
+                    @Html.DisplayFor(modelItem => item.Title)
+                </h2>
+                <h3 class="post-subtitle">
+                    @Html.DisplayFor(modelItem => item.SubTitle)
+                </h3>
+                <p class="post-meta">Posted by <a href="#">@Html.DisplayFor(modelItem => item.AuthorName)</a> <span class="postdate"> @Html.DisplayFor(modelItem => item.PostDate)</span></p>
+            </div>
+        </a>
+        <hr>
+    }

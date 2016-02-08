@@ -21,32 +21,35 @@ namespace Blog.Controllers
         {
             Db = new BlogContext(connectionString);
         }
+
         //
         // GET: /Home/
         [HttpGet]
         public ActionResult Index()
         {
-            var homeArticle = from a in Db.Articles
-                              join b in Db.Members on a.AuthorId equals b.UserId
-                              select new ArticleAbstract
-                              {
-                                  ArticleId = a.ArticleId,
-                                  AuthorId = b.UserId,
-                                  Title = a.Title,
-                                  SubTitle = a.SubTitle,
-                                  PostDate = a.PostDate,
-                                  AuthorName = string.IsNullOrEmpty(b.NickName) ? b.UserName : b.NickName,
-                              };
-            ViewBag.ArticleAmount = homeArticle.Count();
-            homeArticle = homeArticle.OrderByDescending(i => i.PostDate).Take(10);
-
+            ViewBag.currentPage = 1;
+            ViewBag.lastPage = Math.Ceiling(Convert.ToDouble(Db.Articles.ToList().Count)/10);
+            var homeArticle = (from a in Db.Articles
+                join b in Db.Members on a.AuthorId equals b.UserId
+                select new ArticleAbstract
+                {
+                    ArticleId = a.ArticleId,
+                    AuthorId = b.UserId,
+                    Title = a.Title,
+                    SubTitle = a.SubTitle,
+                    PostDate = a.PostDate,
+                    AuthorName = string.IsNullOrEmpty(b.NickName) ? b.UserName : b.NickName,
+                }).OrderByDescending(a => a.PostDate).Take(10);
+           
             return View(homeArticle.ToList());
         }
 
-        [HttpGet]
-        public ActionResult IndexPrev(int num)
+        [HttpPost]
+        public ActionResult Index(int currentPage, int lastPage)
         {
-            var homeArticle = from a in Db.Articles
+            ViewBag.currentPage = currentPage ;
+            ViewBag.lastPage = lastPage;
+            var homeArticle = (from a in Db.Articles
                               join b in Db.Members on a.AuthorId equals b.UserId
                               select new ArticleAbstract
                               {
@@ -56,10 +59,8 @@ namespace Blog.Controllers
                                   SubTitle = a.SubTitle,
                                   PostDate = a.PostDate,
                                   AuthorName = string.IsNullOrEmpty(b.NickName) ? b.UserName : b.NickName
-                              };
-            ViewBag.ArticleAmount = homeArticle.Count();
-            homeArticle = homeArticle.OrderBy(i => i.ArticleId).Take(num + 10);
-            return View("Index", homeArticle.ToList());
+                              }).OrderByDescending(a => a.PostDate).Skip((currentPage-1) * 10).Take(10);  
+            return PartialView("_articlesList", homeArticle.ToList());
         }
 
         [HttpPost]
