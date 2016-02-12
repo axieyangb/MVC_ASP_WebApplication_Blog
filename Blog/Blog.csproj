@@ -989,10 +989,7 @@
     <Content Include="Scripts\TextEditor\plugins\wsc\README.md" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Home\ViewImage.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Home\ImageDetail.cshtml" />
+    <Content Include="Views\Dashboard\ViewImage.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Gallery\Index.cshtml" />

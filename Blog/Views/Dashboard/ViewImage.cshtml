@@ -38,7 +38,7 @@
                         <span class="btn-default btn-sm input-group-addon copyIcon" id="toolTipSpan" data-toggle="tooltip" data-original-title="Copy to ClipBoard"></span>
                     </div>
                     <span>
-                        @using (Html.BeginForm("PicOperation", "Home", FormMethod.Post))
+                        @using (Html.BeginForm("PicOperation", "DashBoard", FormMethod.Post))
                         {
                             <a class="btn btn-default btn-sm" data-src="@image.Url" data-type="@image.ContentType" data-toggle="modal" data-target="#MediaDetail" >Large</a>
                             <input type="text" name="ImageID" id="imageID" value="@image.ImageID" hidden />

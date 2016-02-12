@@ -3,6 +3,7 @@
 	<s:String x:Key="/Default/CodeInspection/WebPathMapping/IgnoredPaths/=SCRIPTS_005CARTICLE_005CINDEX/@EntryIndexedValue">Scripts\Article\Index</s:String>
 	<s:String x:Key="/Default/CodeInspection/WebPathMapping/IgnoredPaths/=VIEWIMAGE/@EntryIndexedValue">ViewImage</s:String>
 	<s:String x:Key="/Default/CodeInspection/WebPathMapping/IgnoredPaths/=VIEWS_005CADMIN_005CDASHBOARD/@EntryIndexedValue">Views\Admin\Dashboard</s:String>
+	<s:String x:Key="/Default/CodeInspection/WebPathMapping/IgnoredPaths/=VIEWS_005CDASHBOARD_005CVIEWIMAGE/@EntryIndexedValue">Views\Dashboard\ViewImage</s:String>
 	<s:String x:Key="/Default/CodeInspection/WebPathMapping/IgnoredPaths/=VIEWS_005CHOME_005CCONTENT/@EntryIndexedValue">Views\Home\Content</s:String>
 	<s:String x:Key="/Default/CodeInspection/WebPathMapping/IgnoredPaths/=VIEWS_005CHOME_005CTHUMBTAIL/@EntryIndexedValue">Views\Home\thumbtail</s:String>
 	<s:String x:Key="/Default/CodeInspection/WebPathMapping/MappedPaths/=ADMIN/@EntryIndexedValue"></s:String>
@@ -13,5 +14,6 @@
 	<s:String x:Key="/Default/CodeInspection/WebPathMapping/PathsInCorrectCasing/=SCRIPTS_005CARTICLE_005CINDEX/@EntryIndexedValue">Scripts\Article\Index</s:String>
 	<s:String x:Key="/Default/CodeInspection/WebPathMapping/PathsInCorrectCasing/=VIEWIMAGE/@EntryIndexedValue">ViewImage</s:String>
 	<s:String x:Key="/Default/CodeInspection/WebPathMapping/PathsInCorrectCasing/=VIEWS_005CADMIN_005CDASHBOARD/@EntryIndexedValue">Views\Admin\Dashboard</s:String>
+	<s:String x:Key="/Default/CodeInspection/WebPathMapping/PathsInCorrectCasing/=VIEWS_005CDASHBOARD_005CVIEWIMAGE/@EntryIndexedValue">Views\Dashboard\ViewImage</s:String>
 	<s:String x:Key="/Default/CodeInspection/WebPathMapping/PathsInCorrectCasing/=VIEWS_005CHOME_005CCONTENT/@EntryIndexedValue">Views\Home\Content</s:String>
 	<s:String x:Key="/Default/CodeInspection/WebPathMapping/PathsInCorrectCasing/=VIEWS_005CHOME_005CTHUMBTAIL/@EntryIndexedValue">Views\Home\thumbtail</s:String></wpf:ResourceDictionary>

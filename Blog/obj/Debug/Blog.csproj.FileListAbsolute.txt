@@ -149,4 +149,3 @@ C:\Users\axieyangb\Desktop\webApp\MVC_ASP_WebApplication_Blog\Blog\obj\Debug\Blo
 C:\Users\axieyangb\Desktop\webApp\MVC_ASP_WebApplication_Blog\Blog\bin\Blog.dll.config
 C:\Users\axieyangb\Desktop\webApp\MVC_ASP_WebApplication_Blog\Blog\bin\System.Web.Helpers.dll
 C:\Users\axieyangb\Desktop\webApp\MVC_ASP_WebApplication_Blog\Blog\bin\System.Web.Helpers.xml
-C:\Users\axieyangb\Desktop\webApp\MVC_ASP_WebApplication_Blog\Blog\obj\Debug\Blog.csprojResolveAssemblyReference.cache

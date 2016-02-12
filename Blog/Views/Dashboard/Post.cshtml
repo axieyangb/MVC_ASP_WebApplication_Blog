@@ -40,8 +40,8 @@
                  
     <script>
         CKEDITOR.replace('Content', {
-            filebrowserImageBrowseUrl: '/home/ViewImage/' +@Session["LoggedUserID"] +'',
-                    filebrowserImageUploadUrl: '/home/UploadImage/' +@Session["LoggedUserID"] +'',
+            filebrowserImageBrowseUrl: '/Dashboard/ViewImage/' +@Session["LoggedUserID"] +'',
+            filebrowserImageUploadUrl: '/Dashboard/UploadImage/' +@Session["LoggedUserID"] +'',
                     customConfig: '/Scripts/TextEditor/config.js'
                 });
     </script>
