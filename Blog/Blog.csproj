@@ -920,7 +920,8 @@
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Home\index.cshtml" />
-    <Content Include="Views\Home\_articlesList.cshtml" />
+    <Content Include="Views\Home\_ArticlesList.cshtml" />
+    <Content Include="Views\Dashboard\_OneImage.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

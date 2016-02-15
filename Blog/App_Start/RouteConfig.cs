@@ -24,7 +24,7 @@ namespace Blog
             );
             routes.MapRoute(
                 name: "DashBoard",
-                url: "Admin/Dashboard/{action}/{parameters}",
+                url: "Dashboard/{action}/{parameters}",
                 defaults: new { controller = "DashBoard", action = "Index", parameters = UrlParameter.Optional }
                 );
             routes.MapRoute(

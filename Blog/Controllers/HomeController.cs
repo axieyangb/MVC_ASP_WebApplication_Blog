@@ -5,6 +5,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Data.Entity;
+using System.Net.Http.Headers;
 using Blog.Models;
 using Simple.ImageResizer;
 namespace Blog.Controllers
@@ -25,6 +26,7 @@ namespace Blog.Controllers
         //
         // GET: /Home/
         [HttpGet]
+        [OutputCache(CacheProfile = "CacheFor300Seconds",VaryByParam ="*")]
         public ActionResult Index()
         {
             ViewBag.currentPage = 1;
@@ -45,9 +47,10 @@ namespace Blog.Controllers
         }
 
         [HttpPost]
+        [OutputCache(CacheProfile = "CacheFor300Seconds")]
         public ActionResult Index(int currentPage, int lastPage)
         {
-            ViewBag.currentPage = currentPage ;
+            ViewBag.currentPage = currentPage;
             ViewBag.lastPage = lastPage;
             var homeArticle = (from a in Db.Articles
                               join b in Db.Members on a.AuthorId equals b.UserId
@@ -60,7 +63,7 @@ namespace Blog.Controllers
                                   PostDate = a.PostDate,
                                   AuthorName = string.IsNullOrEmpty(b.NickName) ? b.UserName : b.NickName
                               }).OrderByDescending(a => a.PostDate).Skip((currentPage-1) * 10).Take(10);  
-            return PartialView("_articlesList", homeArticle.ToList());
+            return PartialView("_ArticlesList", homeArticle.ToList());
         }
     }
 }

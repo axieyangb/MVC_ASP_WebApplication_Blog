@@ -11,7 +11,7 @@ namespace Blog.Models
     {
         [Key]
         [Column("ImageID")]
-        public long ImageID { get; set; }
+        public long ImageId { get; set; }
         [DataType(System.ComponentModel.DataAnnotations.DataType.ImageUrl)]
         [Column("Url")]
         public string Url { get; set; }
@@ -19,14 +19,14 @@ namespace Blog.Models
         [Column("UpdateDate")]
         public DateTime UpdateDate { get; set; }
         [Column("UserID")]
-        public long UserID { get; set; }
+        public long UserId { get; set; }
         [DataType(System.ComponentModel.DataAnnotations.DataType.DateTime)]
         [Column("DeleteTime")]
         public DateTime? DeleteTime { get; set; }
         [Column("isPublish")]
-        public byte isPublish { get; set; }
+        public byte IsPublish { get; set; }
         [Column("isBlock")]
-        public byte isBlock { get; set; }
+        public byte IsBlock { get; set; }
         [Column("ContentType")]
         public string ContentType { get; set; }
         [Column("FileName")]

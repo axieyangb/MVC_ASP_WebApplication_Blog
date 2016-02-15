@@ -5,7 +5,6 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <link href="~/Content/css/page/home.css" rel="stylesheet" type="text/css">
-<script src="/Scripts/cardFlip.js"></script>
 
 <div class="container">
     <div class="row">
@@ -15,47 +14,7 @@
     <div class="row">
         @foreach (var image in Model)
         {
-            <div class="col-lg-3 col-md-4 col-xs-6 unit">
-                <div class="thumb">
-                    <div class="front">
-                        @if (image.ContentType.Contains("video"))
-                        {
-                            <img src="~/Content/img/video-icon.svg" alt="Hejsan" id="#image" data-source="@image.Url" class="img-thumbnail" />
-                        }
-                        else
-                        {
-                            <img src="@image.Url.Substring(0,image.Url.Length-image.FileName.Length)thumbtail/@image.FileName" alt="Hejsan"  data-source="@image.Url" class="img-thumbnail" />                        
-                        }
-                    </div>
-                    <div class="back">
-                        <p class="alert alert-success">Post at @image.UpdateDate</p>
-                    </div>
-                </div>
-                <div class="detail">
-                    <div class="input-group  input-group-sm">
-                        <span class="input-group-addon">URL</span>
-                        <input type="text" class="form-control" value="@image.Url">
-                        <span class="btn-default btn-sm input-group-addon copyIcon" id="toolTipSpan" data-toggle="tooltip" data-original-title="Copy to ClipBoard"></span>
-                    </div>
-                    <span>
-                        @using (Html.BeginForm("PicOperation", "DashBoard", FormMethod.Post))
-                        {
-                            <a class="btn btn-default btn-sm" data-src="@image.Url" data-type="@image.ContentType" data-toggle="modal" data-target="#MediaDetail" >Large</a>
-                            <input type="text" name="ImageID" id="imageID" value="@image.ImageID" hidden />
-
-                            if (image.isPublish == 1)
-                            {  
-                            <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modalPopMessage" data-operate="BePrivate">Be Private</button>
-                            }
-                            else
-                            {
-                            <button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#modalPopMessage" data-operate="BePublic">Be Public</button>
-                            }
-                            <button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#modalPopMessage" data-operate="Delete">Delete</button>
-                        }
-                    </span>
-                </div>
-            </div>
+            Html.RenderPartial(@"_OneImage",image);
         }
     </div>
 
@@ -75,7 +34,7 @@
                 <p id="pop-up-message"></p>
             </div>
             <div class="modal-footer">
-                <button type="submit" id="pop-up-confirm" class="btn btn-primary btn-sm">Comfirm</button>
+                <button type="button" id="pop-up-confirm" class="btn btn-primary btn-sm">Comfirm</button>
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
             </div>
         </div>
@@ -106,40 +65,55 @@
 
 <hr>
 <script type="text/javascript">
+    function loadScript() {
+        $.getScript('/Scripts/cardFlip.js', function() {
+            $(".thumb").flip({
+                axis: 'y',
+                trigger: 'click'
+            });
+        });
+    }
     $(document).ready(function () {
+        var operator = "";
+        loadScript();
         $('.copyIcon').click(function () { // IE 11, Chrome, Firefox 42
             $(this).prev('input').focus().select();
             document.execCommand('copy');
         });
         $('#modalPopMessage').on('show.bs.modal', function (event) {
             var target = $(event.relatedTarget);
-            var oper = target.data("operate");
-            if (oper === "BePublic") {
+            var operator = target.attr("name");
+            var value = target.val();
+            if (operator === "PublishOrPrivate" && value === "0") {
+                operator = "PublicPicture";
                 $(".modal-title").text('Be Public');
                 $("#pop-up-message").text("Are you sure you want to public your picture?");
             }
-            else if (oper === "BePrivate") {
+            else if (operator === "PublishOrPrivate" && value === "1") {
+                operator = "PrivatePicture";
                 $(".modal-title").text('Be Private');
                 $("#pop-up-message").text("Are you sure you want to private your picture?");
             }
-            else if (oper === "Delete") {
+            else if (operator === "DeletePicture") {
+                operator = "DeletePicture";
                 $(".modal-title").text('Delete');
                 $("#pop-up-message").text("Are you sure you want to delete your picture?");
             }
-
-            $("#pop-up-confirm").click(function () {
-
-                if (oper === "Delete") {
-                    target.after("<input type='text' name='operation' value='2' hidden>");
-                }
-                else if (oper === "BePrivate") {
-                    target.after("<input type='text' name='operation' value='0' hidden>");
-                }
-                else if (oper === "BePublic") {
-                    target.after("<input type='text' name='operation' value='1' hidden>");
-                }
-                target.closest('form').submit();
+            $('#pop-up-confirm').click(function () {
+                var frm = target.closest('form');
+                $.ajax({
+                    type: frm.prop('method'),
+                    url: frm.prop('action'),
+                    data: frm.serialize() + "&operation=" + operator,
+                    datatype: "json",
+                    success: function (res) {
+                        target.closest('.unit').replaceWith(res);
+                        $('#modalPopMessage').modal('hide');
+                        loadScript();
+                    }
+                });
             });
+      
         });
         $('#MediaDetail').on('show.bs.modal', function (event) {
             var target = $(event.relatedTarget);
@@ -155,13 +129,4 @@
             }
         });
     });
-    $(".thumb").flip({
-        axis: 'y',
-        trigger: 'click'
-    });
-
-
-
-
-
 </script>

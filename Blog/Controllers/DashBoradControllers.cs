@@ -16,7 +16,17 @@ namespace Blog.Controllers
     {
         //
         // GET: /DashBoard/
-        private readonly BlogContext _db = new BlogContext(ConfigurationManager.ConnectionStrings["BlogContext"].ConnectionString);
+        private readonly BlogContext _db;
+
+        public DashBoardController()
+        {
+            _db = new BlogContext(ConfigurationManager.ConnectionStrings["BlogContext"].ConnectionString);
+        }
+
+        public DashBoardController(BlogContext db)
+        {
+            _db = db;
+        }
         public ActionResult Index()
         {
             if (Session["LoggedUserID"] != null)
@@ -37,39 +47,44 @@ namespace Blog.Controllers
                 return View();
             return RedirectToAction("Login", "Admin");
         }
-      [HttpGet]
-        public ActionResult ViewImage(int id)
+        [HttpGet]
+        public ActionResult ViewImage(int? id)
         {
             if (Session["LoggedUserID"] == null)
             {
                 return Content("Sorry ! please login first <a href='/Admin/Login'>Click Here to Login</a>");
             }
-            var images = _db.Images.Where(a => a.UserID == id && a.isBlock == 0 && a.DeleteTime == null);
+            if (id == null)
+                id = int.Parse(Session["LoggedUserID"].ToString());
+            var images = _db.Images.Where(a => a.UserId == id && a.IsBlock == 0 && a.DeleteTime == null);
             return View(images);
         }
 
 
         [HttpPost]
         // ReSharper disable once InconsistentNaming
-        public ActionResult PicOperation(string ImageID, string operation)
+        public PartialViewResult PicOperation(string ImageID, string operation)
         {
-            var imageId = long.Parse(ImageID);
-            var oper = int.Parse(operation);
+            if (Session["LoggedUserID"] == null)
+                return new PartialViewResult();
             var id = long.Parse(Session["LoggedUserID"].ToString());
-            var query = from image in _db.Images
-                        where image.ImageID == imageId && image.UserID == id
-                        select image;
-            foreach (var one in query)
+            var imageId = long.Parse(ImageID);
+            var one = (from image in _db.Images
+                       where image.ImageId == imageId && image.UserId == id
+                       select image).First();
+            try
             {
-                switch (oper)
+                switch (operation)
                 {
-                    case 1:
-                        one.isPublish = 1;
+                    case "PublicPicture":
+                        one.IsPublish = 1;
+                        _db.SaveChanges();
                         break;
-                    case 0:
-                        one.isPublish = 0;
+                    case "PrivatePicture":
+                        one.IsPublish = 0;
+                        _db.SaveChanges();
                         break;
-                    default:
+                    case "DeletePicture":
                         var archivePath = Server.MapPath("/Content/Users/" + id + "/DelArchive");
                         if (!Directory.Exists(archivePath))
                         {
@@ -78,19 +93,18 @@ namespace Blog.Controllers
                         var splits = one.Url.Split('/');
                         System.IO.File.Move(Server.MapPath(one.Url), Path.Combine(archivePath, splits[splits.Length - 1]));
                         one.DeleteTime = DateTime.Now;
+                        _db.SaveChanges();
+                        one = null;
+                        break;
+                    default:
                         break;
                 }
-            }
-            try
-            {
-                _db.SaveChanges();
             }
             catch (Exception e)
             {
                 Console.WriteLine(e);
             }
-            var images = _db.Images.Where(a => a.UserID == id && a.isBlock == 0 && a.DeleteTime == null);
-            return View("ViewImage", images);
+            return PartialView("_OneImage", one);
         }
 
         [HttpPost]
@@ -131,7 +145,7 @@ namespace Blog.Controllers
                         var imageMetaDate = new ImageMetaData(Server.MapPath(ret.Url));
                         image.FileName = ret.FileName;
                         image.UpdateDate = DateTime.Now;
-                        image.UserID = long.Parse(ret.UserId);
+                        image.UserId = long.Parse(ret.UserId);
                         image.Url = ret.Url;
                         image.ContentType = file.ContentType;
                         _db.Images.Add(image);
@@ -188,7 +202,7 @@ namespace Blog.Controllers
                     var metadata = imageMetaDate.GetMetaData();
                     image.ContentType = upload.ContentType;
                     image.UpdateDate = DateTime.Now;
-                    image.UserID = long.Parse(Session["LoggedUserID"].ToString());
+                    image.UserId = long.Parse(Session["LoggedUserID"].ToString());
                     image.Url = url;
                     image.FileName = imageName;
                     _db.Images.Add(image);

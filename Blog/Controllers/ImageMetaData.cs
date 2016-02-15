@@ -25,7 +25,7 @@ namespace Blog.Controllers
         public  ImageMetaData(long imageId)
         {
             var query = from image in _db.Images
-                        where image.ImageID == imageId
+                        where image.ImageId == imageId
                         select image;
             _directories =ImageMetadataReader.ReadMetadata(query.ElementAt(0).Url);
             _oneImage = new ImageMetaDataModel {Url = query.ElementAt(0).Url};

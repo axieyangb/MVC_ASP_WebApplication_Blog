@@ -64,14 +64,14 @@
                             <a href="#" data-toggle="collapse"  data-target="#menu"> @Session["LoggedUserName"].ToString()<span class="caret"></span></a>
                              <ul id="menu" class="collapse">
                                   <li>
-                                    <a href ="/Admin/Dashboard"><p class="profile">面板 Dashboard</p></a>
+                                    <a href ="/Dashboard"><p class="profile">面板 Dashboard</p></a>
                                  </li>
                                    <li>
-                                    <a href ="/Home/ViewImage/@Session["LoggedUserID"]"><p class="profile">私人图库 Personal Gallery</p></a>
+                                    <a href ="/Dashboard/ViewImage/@Session["LoggedUserID"]"><p class="profile">私人图库 Personal Gallery</p></a>
                                  </li>
 
                                  <li>
-                                    <a href ="/Admin/Logout"><p class="profile">登出 Logout</p></a>
+                                    <a href ="/Dashboard/Logout"><p class="profile">登出 Logout</p></a>
                                  </li>
                              </ul>
                         }
