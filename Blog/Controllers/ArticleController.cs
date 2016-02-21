@@ -16,21 +16,21 @@ namespace Blog.Controllers
         // GET: /Article/
         private readonly BlogContext _db = new BlogContext(ConfigurationManager.ConnectionStrings["BlogContext"].ConnectionString);
         [HttpGet]
-        public ActionResult Index(long articleId=0)
+        public ActionResult Index(long articleId = 0)
         {
             var article = _db.Articles.Find(articleId);
             if (article == null)
                 return HttpNotFound();
-            article.Content = article.Content.Replace("\r\n", "<br>");
+            // article.Content = article.Content.Replace("\r\n", "<br>");
             if (articleId > 0)
             {
-                var query = from a in _db.Members
-                            where a.UserId == article.AuthorId
-                            select string.IsNullOrEmpty(a.NickName) ? a.UserName : a.NickName;
-                ViewBag.AuthorName = query.ToList().ElementAt(0);
+
+                ViewBag.AuthorName = (from a in _db.Members
+                                      where a.UserId == article.AuthorId
+                                      select string.IsNullOrEmpty(a.NickName) ? a.UserName : a.NickName).FirstOrDefault();
             }
 
-            var comments = _db.CommentDetailInfo.Where(a => (a.ArticleId == articleId && ( a.ReplyId ==-1))).ToList();
+            var comments = _db.CommentDetailInfo.Where(a => (a.ArticleId == articleId && (a.ReplyId == -1))).ToList();
             var oneArticle = new ArticleStruct
             {
                 Article = article,
@@ -52,7 +52,7 @@ namespace Blog.Controllers
             try
             {
                 var categoryList = emojiDir.GetDirectories();
-                ViewBag.emoji= new string[categoryList.Length];
+                ViewBag.emoji = new string[categoryList.Length];
                 for (var i = 0; i < categoryList.Length; i++)
                     ViewBag.emoji[i] = categoryList[i].Name;
             }
@@ -68,7 +68,7 @@ namespace Blog.Controllers
         public JsonResult GetEmoji()
         {
             var categoaryName = Request.Form["categoaryName"];
-            var emojis=new DirectoryInfo(Path.Combine(Server.MapPath("/Content/img/emoji/"),categoaryName));
+            var emojis = new DirectoryInfo(Path.Combine(Server.MapPath("/Content/img/emoji/"), categoaryName));
             var oneCategory = emojis.GetFiles();
             var urls = new string[oneCategory.Length];
             for (var i = 0; i < oneCategory.Length; i++)
@@ -79,7 +79,7 @@ namespace Blog.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult ArticleReview(ArticleSubmitView articlePost)
+        public ActionResult ArticlePost(ArticleSubmitView articlePost)
         {
             var article = new Article
             {
@@ -91,7 +91,7 @@ namespace Blog.Controllers
             var tags = Request.Form["tags"];
             if (article.Content != null)
             {
-                article.Content = articlePost.Content.Replace("style=\"height:", "name=\"height:").Replace("\r\n", "<br>");
+                article.Content = articlePost.Content.Replace("style=\"height:", "name=\"height:");
                 article.Content = HttpUtility.HtmlEncode(article.Content);
             }
             article.PostDate = DateTime.Now;
@@ -100,28 +100,49 @@ namespace Blog.Controllers
                 Article = article,
                 RootComments = new List<CommentLevel>()
             };
-            if (articlePost.Action.Equals("post"))
+
+            if (ModelState.IsValid && !string.IsNullOrEmpty(article.Title))
             {
-                if (ModelState.IsValid && !string.IsNullOrEmpty(article.Title))
-                {
-                    var tagsId=GetTagId(tags);
-                    article.TagId1 = tagsId[0];
-                    article.TagId2 = tagsId[1];
-                    article.TagId3 = tagsId[2];
-                    article.TagId4 = tagsId[3];
-                    article.TagId5 = tagsId[4];
-                    _db.Articles.Add(article);
-                    _db.SaveChanges();
-                    return View("Index", one);
-                }
-                else return View("Index", one);
-            }
-              
-            else
-            {
-                ViewBag.isPreView = true;
+                var tagsId = GetTagId(tags);
+                article.TagId1 = tagsId[0];
+                article.TagId2 = tagsId[1];
+                article.TagId3 = tagsId[2];
+                article.TagId4 = tagsId[3];
+                article.TagId5 = tagsId[4];
+                _db.Articles.Add(article);
+                _db.SaveChanges();
                 return View("Index", one);
             }
+            ViewBag.isPreView = true;
+            return View("Index", one);
+        }
+
+        [HttpGet]
+        public ActionResult ArticlePreview(ArticleSubmitView articlePreview)
+        {
+            var article = new Article
+            {
+                AuthorId = articlePreview.AuthorId,
+                Title = HttpUtility.HtmlEncode(articlePreview.Title),
+                SubTitle = articlePreview.SubTitle,
+                Content = articlePreview.Content
+            };
+            ViewBag.AuthorName = (from a in _db.Members
+                                  where a.UserId == articlePreview.AuthorId
+                                  select string.IsNullOrEmpty(a.NickName) ? a.UserName : a.NickName).FirstOrDefault();
+            if (article.Content != null)
+            {
+                article.Content = articlePreview.Content.Replace("style=\"height:", "name=\"height:");
+                article.Content = HttpUtility.HtmlEncode(article.Content);
+            }
+            article.PostDate = DateTime.Now;
+            var one = new ArticleStruct
+            {
+                Article = article,
+                RootComments = new List<CommentLevel>()
+            };
+            ViewBag.isPreView = true;
+            return View("Index", one);
         }
 
         public long?[] GetTagId(string tags)
@@ -139,19 +160,28 @@ namespace Blog.Controllers
                     oneTag.LastUsedDate = DateTime.Now;
                     _db.SaveChanges();
                 }
-               catch(Exception)
-               {
-                   var oneTag = new Tags
-                   {
-                       TagContent = splitsTags[i],
-                       TagCount = 1
-                   };
-                   _db.Tags.Add(oneTag);
-                   _db.SaveChanges();
-                   retId[i] = oneTag.TagId;
-               }
+                catch (Exception)
+                {
+                    var oneTag = new Tags
+                    {
+                        TagContent = splitsTags[i],
+                        TagCount = 1
+                    };
+                    _db.Tags.Add(oneTag);
+                    _db.SaveChanges();
+                    retId[i] = oneTag.TagId;
+                }
             }
             return retId;
+        }
+
+        [HttpPost]
+        public JsonResult GetTagsList()
+        {
+            var tags = (from t in _db.Tags
+                select t.TagContent
+                ).ToArray();
+            return Json(tags);
         }
 
         [HttpPost]
@@ -162,8 +192,8 @@ namespace Blog.Controllers
             {
                 articlePost.CommentArticle.CommentId = null;
                 articlePost.CommentArticle.IsValid = 1;
-                if (Session["LoggedUserID"] !=null)
-                articlePost.CommentArticle.CommenterId =long.Parse(Session["LoggedUserID"].ToString());
+                if (Session["LoggedUserID"] != null)
+                    articlePost.CommentArticle.CommenterId = long.Parse(Session["LoggedUserID"].ToString());
                 if (articlePost.CommentArticle.ReplyId == null)
                     articlePost.CommentArticle.ReplyId = -1;
                 var address = Request.ServerVariables["REMOTE_ADDR"];
@@ -174,7 +204,7 @@ namespace Blog.Controllers
                 _db.ArticleComments.Add(articlePost.CommentArticle);
                 _db.SaveChanges();
             }
-            return RedirectToAction("Index", "Article", new{ArticleID=articlePost.Article.ArticleId});
+            return RedirectToAction("Index", "Article", new { ArticleID = articlePost.Article.ArticleId });
         }
 
 
@@ -182,7 +212,7 @@ namespace Blog.Controllers
         public JsonResult ArticleUpdate()
         {
             var ret = new RetJsonModel();
-            var articleContent  =HttpUtility.UrlDecode(Request.Form["Content"]);
+            var articleContent = HttpUtility.UrlDecode(Request.Form["Content"]);
             var userIdStr = Request.Form["UserID"];
             var articeIdStr = Request.Form["ArticleID"];
             try
@@ -191,19 +221,20 @@ namespace Blog.Controllers
                 var userId = long.Parse(userIdStr);
                 var article = _db.Articles.Find(articleId);
                 if (Session["LoggedUserID"].Equals(userIdStr) && article.AuthorId == userId)
-                {
-                    if (articleContent != null)
-                        article.Content = HttpUtility.HtmlEncode(articleContent.Replace("style=\"height:", "style=\"name:"));
-                    article.ModifyDate = DateTime.Now;
-                    _db.SaveChanges();
-                    ret.IsAccept = 1;
-                    ret.UserId = article.AuthorId.ToString();
-                }
-                else
-                {
-                    ret.IsAccept = 0;
-                    ret.Error = "Update Failed";
-                }
+                    if (Session["LoggedUserID"].Equals(userIdStr) && article.AuthorId == userId)
+                    {
+                        if (articleContent != null)
+                            article.Content = HttpUtility.HtmlEncode(articleContent.Replace("style=\"height:", "style=\"name:"));
+                        article.ModifyDate = DateTime.Now;
+                        _db.SaveChanges();
+                        ret.IsAccept = 1;
+                        ret.UserId = article.AuthorId.ToString();
+                    }
+                    else
+                    {
+                        ret.IsAccept = 0;
+                        ret.Error = "Update Failed";
+                    }
             }
             catch (Exception ex)
             {
@@ -212,11 +243,11 @@ namespace Blog.Controllers
             }
             return Json(ret);
         }
-         [HttpPost]
+        [HttpPost]
         public JsonResult TitleUpdate()
         {
             var ret = new RetJsonModel();
-            var titleStr  =HttpUtility.UrlDecode(Request.Form["Title"]);
+            var titleStr = HttpUtility.UrlDecode(Request.Form["Title"]);
             var subTitleStr = HttpUtility.UrlDecode(Request.Form["SubTitle"]);
             var userIdStr = Request.Form["UserID"];
             var articeIdStr = Request.Form["ArticleID"];

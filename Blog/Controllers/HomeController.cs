@@ -26,7 +26,6 @@ namespace Blog.Controllers
         //
         // GET: /Home/
         [HttpGet]
-        [OutputCache(CacheProfile = "CacheFor300Seconds",VaryByParam ="*")]
         public ActionResult Index()
         {
             ViewBag.currentPage = 1;
@@ -47,7 +46,6 @@ namespace Blog.Controllers
         }
 
         [HttpPost]
-        [OutputCache(CacheProfile = "CacheFor300Seconds")]
         public ActionResult Index(int currentPage, int lastPage)
         {
             ViewBag.currentPage = currentPage;

@@ -247,7 +247,6 @@
     <Content Include="Content\themes\base\tooltip.css" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
-    <Content Include="Scripts\Article\Article.js" />
     <Content Include="Scripts\FileUpload\bootstrap-filestyle.min.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
@@ -927,6 +926,7 @@
     <Folder Include="App_Data\" />
     <Folder Include="Content\css\fileUpload\" />
     <Folder Include="Content\css\TextEditor\" />
+    <Folder Include="Scripts\Article\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

@@ -37,7 +37,13 @@ namespace Blog.Controllers
         public ActionResult Post()
         {
             if (Session["LoggedUserID"] != null)
+            {
+                ViewBag.popularTags = (from a in _db.Tags
+                                       orderby a.TagCount descending
+                                       select a.TagContent
+    ).Take(10);
                 return View();
+            }
             return RedirectToAction("Login", "Admin");
         }
 
