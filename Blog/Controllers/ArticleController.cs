@@ -270,7 +270,7 @@ namespace Blog.Controllers
                     int packNum = int.Parse(splits[0]);
                     int imgNum = int.Parse(splits[1]);
                     string url = _emojis[packNum].ElementAt(imgNum);
-                    string imagePattern = @"<img src='\" + url + "' style='width:50px;height:50px;'/>";
+                    string imagePattern = "<img  data-trigger=\"hover\"  data-toggle=\"popover\" data-content=\"<img src='\\" + url + "' style='width:250px;height:250px;'/>\" src=\"\\" + url + "\" style=\"width:50px;height:50px;\"/>";
                     content = content.Replace(match.Value, imagePattern);
                 }
                 catch (Exception)

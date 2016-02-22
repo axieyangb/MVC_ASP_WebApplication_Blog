@@ -281,7 +281,7 @@
                             @Html.HiddenFor(a => a.CommentArticle.ReplyId, new { id = "ReplyId" })
                             @Html.HiddenFor(a => a.Article.ArticleId, new { value = Model.Article.ArticleId })
                             @Html.TextAreaFor(a => a.CommentArticle.Content, new { @class = "form-control", name = "Content", id = "Content", rows = "3" })
-                            <a class="btn" href="#" data-toggle="popover" data-placement="buttom" >Image</a>
+                            <a class="btn" id="emojiEntry" href="#" data-toggle="popover" data-placement="buttom" >Image</a>
                             @*<textarea class="form-control" ,name="Content", id="Content",rows="3"></textarea>*@
                         </div>
                         <button type="submit" class="btn btn-primary">Submit</button>
@@ -327,7 +327,7 @@
         document.getElementById("TitleEditButton").style.display = "initial";
     }
     $(document).ready(function () {
-        $('[data-toggle="popover"]').popover({
+        $('#emojiEntry[data-toggle="popover"]').popover({
             html: true,
             trigger: 'click',
             content: function () {
@@ -336,7 +336,13 @@
         }).click(function (e) {
             e.preventDefault();
         });
-
+        $('img[data-toggle="popover"]').popover({
+            html: true,
+            trigger: 'hover',
+            placement:'buttom'
+        }).click(function (e) {
+            e.preventDefault();
+        });
         $(".media-body > a").click(function () {
             $("#ReplyId").val($(this).attr("data-value"));
             $("#CommentTitle").html("Reply   " + $(this).attr("data-contentName") + "'s Comment:");

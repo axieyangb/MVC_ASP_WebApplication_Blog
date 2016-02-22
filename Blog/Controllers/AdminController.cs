@@ -37,12 +37,10 @@ namespace Blog.Controllers
                 {
                     string hashPass=EncryptString(member.Password,_passPhrase);
                     var v = db.Members.FirstOrDefault(a => a.UserName.Equals(member.UserName) && a.Password.Equals(hashPass));
-                    if (v != null)
-                    {
-                        Session["LoggedUserID"] = v.UserId.ToString();
-                        Session["LoggedUserName"] = String.IsNullOrEmpty(v.NickName) ? v.UserName : v.NickName;
-                        return RedirectToAction("Index", "Dashboard");
-                    }
+                    if (v == null) return View(member);
+                    Session["LoggedUserID"] = v.UserId.ToString();
+                    Session["LoggedUserName"] = String.IsNullOrEmpty(v.NickName) ? v.UserName : v.NickName;
+                    return RedirectToAction("Index", "Dashboard");
                 }
             }
             return View(member);

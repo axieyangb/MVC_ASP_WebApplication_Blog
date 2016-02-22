@@ -430,3 +430,20 @@ img::-moz-selection {
 body {
     webkit-tap-highlight-color: #0085a1;
 }
+
+#leftpanel {
+    margin: 10px;
+}
+#leftpanel-header {
+        font-family: 'Open Sans', 'Helvetica Neue', Helvetica, 'chineseCute',Arial, sans-serif;
+    font-size: 24px;
+    font-weight: 600;
+}
+
+#leftpanel-body {
+    font-family: 'Open Sans', 'Helvetica Neue', Helvetica, 'chineseCute',Arial, sans-serif;
+    font-size: 20px;
+    font-weight: 500;
+    margin: 0px;
+    padding: 0;
+}
