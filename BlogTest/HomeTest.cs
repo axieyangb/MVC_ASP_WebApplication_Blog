@@ -21,7 +21,7 @@ namespace BlogTest
         [Test]
         public void TestHomeIndex()
         {
-            var actResult = _home.Index() as ViewResult;
+            var actResult = _home.Index(null) as ViewResult;
             Assert.IsNotNull(actResult);
             var viewModel = actResult.ViewData.Model as IEnumerable<ArticleAbstract>;
             Assert.IsNotNull(viewModel);
@@ -48,8 +48,8 @@ namespace BlogTest
         {
             const int currentPage = 1;
             const int lastPage = 1;
-            _home.Index();
-            var actResult = _home.Index(currentPage, lastPage) as PartialViewResult;
+            _home.Index(null);
+            var actResult = _home.Index(currentPage, lastPage, null) as PartialViewResult;
             Assert.IsNotNull(actResult);
             var viewModel = actResult.ViewData.Model as IEnumerable<ArticleAbstract>;
             Assert.IsNotNull(viewModel);

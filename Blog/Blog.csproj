@@ -188,6 +188,7 @@
     <Content Include="Content\css\jquery-ui.structure.min.css" />
     <Content Include="Content\css\jquery-ui.theme.css" />
     <Content Include="Content\css\jquery-ui.theme.min.css" />
+    <Content Include="Content\css\page\Article.css" />
     <Content Include="Content\css\page\dashboard.css" />
     <Content Include="Content\css\page\gallery.css" />
     <Content Include="Content\css\page\home.css" />

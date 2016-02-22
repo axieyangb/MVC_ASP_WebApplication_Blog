@@ -1,0 +1,18 @@
+﻿.label-default {
+    margin: 5px;
+    font-family: 'Lora', 'Times New Roman','chineseCute', serif;
+    font-size: 12px;
+}
+#tags {
+    padding-top: 20px;
+}
+#tags >a {
+  text-decoration: none;    
+}
+
+#tags >a :hover {
+    background-color: #c67605;
+}
+#tags >a :visited {
+      background-color: #2d6987;
+}

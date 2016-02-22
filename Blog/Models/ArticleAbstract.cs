@@ -20,5 +20,10 @@ namespace Blog.Models
         public DateTime PostDate { get; set; }
 
         public string AuthorName { get; set; }
+        public long? TagId1 { get; set; }
+        public long? TagId2 { get; set; }
+        public long? TagId3 { get; set; }
+        public long? TagId4 { get; set; }
+        public long? TagId5 { get; set; }
     }
 }

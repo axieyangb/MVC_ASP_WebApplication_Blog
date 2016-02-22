@@ -8,13 +8,54 @@ using System.Data.Entity;
 using Blog.Models;
 using System.Text.RegularExpressions;
 using System.IO;
+using Microsoft.Ajax.Utilities;
+
+
 namespace Blog.Controllers
 {
     public class ArticleController : Controller
     {
+        private List<string>[] _emojis;
+        private readonly BlogContext _db;
+        public ArticleController()
+        {
+            var emojiRootDir = new DirectoryInfo(System.Web.Hosting.HostingEnvironment.MapPath("/Content/img/emoji/"));
+            var emojiPacks = emojiRootDir.GetDirectories();
+            _emojis = new List<string>[emojiPacks.Length];
+            for (int i = 0; i < emojiPacks.Length; i++)
+            {
+                if (_emojis[i] == null)
+                    _emojis[i] = new List<string>();
+                foreach (var fileName in emojiPacks[i].GetFiles())
+                {
+                    _emojis[i].Add(fileName.FullName.Replace(System.Web.HttpContext.Current.Request.PhysicalApplicationPath, string.Empty));
+                }
+            }
+            _db = new BlogContext(ConfigurationManager.ConnectionStrings["BlogContext"].ConnectionString);
+        }
+        /*Test Userage*/
+        public ArticleController(string connectionString)
+        {
+            _db = new BlogContext(connectionString);
+        }
+        public void SetEmojis(string rootDir)
+        {
+            var emojiRootDir = new DirectoryInfo(rootDir);
+            var emojiPacks = emojiRootDir.GetDirectories();
+            _emojis = new List<string>[emojiPacks.Length];
+            for (int i = 0; i < emojiPacks.Length; i++)
+            {
+                if (_emojis[i] == null)
+                    _emojis[i] = new List<string>();
+                foreach (var fileName in emojiPacks[i].GetFiles())
+                {
+                    _emojis[i].Add(fileName.FullName.Replace(rootDir, string.Empty));
+                }
+            }
+        }
         //
         // GET: /Article/
-        private readonly BlogContext _db = new BlogContext(ConfigurationManager.ConnectionStrings["BlogContext"].ConnectionString);
+
         [HttpGet]
         public ActionResult Index(long articleId = 0)
         {
@@ -22,9 +63,19 @@ namespace Blog.Controllers
             if (article == null)
                 return HttpNotFound();
             // article.Content = article.Content.Replace("\r\n", "<br>");
+
+            if (article.TagId1 != null)
+            { ViewBag.tag1 = _db.Tags.Find(article.TagId1)?.TagContent; ViewBag.tagId1 = article.TagId1; }
+            if (article.TagId2 != null)
+            { ViewBag.tag2 = _db.Tags.Find(article.TagId2)?.TagContent; ViewBag.tagId2 = article.TagId2; }
+            if (article.TagId3 != null)
+            { ViewBag.tag3 = _db.Tags.Find(article.TagId3)?.TagContent; ViewBag.tagId3 = article.TagId3; }
+            if (article.TagId4 != null)
+            { ViewBag.tag4 = _db.Tags.Find(article.TagId4)?.TagContent; ViewBag.tagId4 = article.TagId4; }
+            if (article.TagId5 != null)
+            { ViewBag.tag5 = _db.Tags.Find(article.TagId5)?.TagContent; ViewBag.tagId5 = article.TagId5; }
             if (articleId > 0)
             {
-
                 ViewBag.AuthorName = (from a in _db.Members
                                       where a.UserId == article.AuthorId
                                       select string.IsNullOrEmpty(a.NickName) ? a.UserName : a.NickName).FirstOrDefault();
@@ -64,12 +115,13 @@ namespace Blog.Controllers
         }
 
 
+
         [HttpPost]
         public JsonResult GetEmoji()
         {
             var categoaryName = Request.Form["categoaryName"];
-            var emojis = new DirectoryInfo(Path.Combine(Server.MapPath("/Content/img/emoji/"), categoaryName));
-            var oneCategory = emojis.GetFiles();
+            var emojiPack = new DirectoryInfo(Path.Combine(Server.MapPath("/Content/img/emoji/"), categoaryName));
+            var oneCategory = emojiPack.GetFiles();
             var urls = new string[oneCategory.Length];
             for (var i = 0; i < oneCategory.Length; i++)
             {
@@ -179,7 +231,7 @@ namespace Blog.Controllers
         public JsonResult GetTagsList()
         {
             var tags = (from t in _db.Tags
-                select t.TagContent
+                        select t.TagContent
                 ).ToArray();
             return Json(tags);
         }
@@ -200,14 +252,34 @@ namespace Blog.Controllers
                 articlePost.CommentArticle.IpAddress = address;
                 articlePost.CommentArticle.ArticleId = articlePost.Article.ArticleId;
                 articlePost.CommentArticle.CreateDate = DateTime.Now;
-                articlePost.CommentArticle.Content = HttpUtility.HtmlEncode(articlePost.CommentArticle.Content.Replace("\r\n", "<br>"));
+                articlePost.CommentArticle.Content = HttpUtility.HtmlEncode(RegexEmojiReplace(articlePost.CommentArticle.Content));
                 _db.ArticleComments.Add(articlePost.CommentArticle);
                 _db.SaveChanges();
             }
             return RedirectToAction("Index", "Article", new { ArticleID = articlePost.Article.ArticleId });
         }
 
-
+        public string RegexEmojiReplace(string content)
+        {
+            string pattern = @"\{[0-9]+\.[0-9]+\}\;";
+            foreach (Match match in Regex.Matches(content, pattern))
+            {
+                string[] splits = match.Value.Replace("{", "").Replace("};", "").Split('.');
+                try
+                {
+                    int packNum = int.Parse(splits[0]);
+                    int imgNum = int.Parse(splits[1]);
+                    string url = _emojis[packNum].ElementAt(imgNum);
+                    string imagePattern = @"<img src='\" + url + "' style='width:50px;height:50px;'/>";
+                    content = content.Replace(match.Value, imagePattern);
+                }
+                catch (Exception)
+                {
+                    // ignored
+                }
+            }
+            return content;
+        }
         [HttpPost]
         public JsonResult ArticleUpdate()
         {

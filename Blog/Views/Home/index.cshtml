@@ -19,7 +19,7 @@
     <div class="carousel-inner">
         <div class="item active">
             <!-- Set the first background image using inline CSS below. -->
-            <div class="fill" style="background-image: url('../../Content/img/home-bg.jpg'); "></div>
+            <div class="fill" style="background-image: url('/Content/img/home-bg.jpg'); "></div>
             <div class="carousel-caption">
                 <div class="site-heading">
                     <h1 class="title-heading">Share 分享</h1>
@@ -30,7 +30,7 @@
         </div>
         <div class="item">
             <!-- Set the second background image using inline CSS below. -->
-            <div class="fill" style="background-image: url('Content/img/home-freedom.jpg');"></div>
+            <div class="fill" style="background-image: url('/Content/img/home-freedom.jpg');"></div>
             <div class="carousel-caption">
                 <div class="site-heading">
                     <h1 class="title-heading">Free 自由</h1>
@@ -41,7 +41,7 @@
         </div>
         <div class="item">
             <!-- Set the third background image using inline CSS below. -->
-            <div class="fill" style="background-image: url('Content/img/home-brave.png');"></div>
+            <div class="fill" style="background-image: url('/Content/img/home-brave.png');"></div>
             <div class="carousel-caption">
                 <div class="site-heading">
                     <h1 class="title-heading">Brave 勇敢</h1>
@@ -64,12 +64,22 @@
 </header>
 
 
-
-
+<!-- Left Panel Content -->
+<div class="col-xl-3 col-md-3 col-lg-3 col-xs-10">
+    <div class="panel panel-default" id="leftpanel">
+        <div class="panel-heading" id="leftpanel-header">Most Popular Topics</div>
+        <div class="panel-body list-group" id="leftpanel-body">
+            @foreach (Blog.Models.Tags oneTag in ViewBag.category)
+            {
+                <a class="list-group-item @if(ViewBag.filter == @oneTag.TagId){@Html.Raw("active")}" href='/Home/Index/@oneTag.TagId' value="@oneTag.TagId">@oneTag.TagContent <span class="badge">@oneTag.TagCount</span></a>
+            }
+        </div>
+    </div>
+</div>
 
 <!-- Main Content -->
 
-<div class="col-lg-4 col-lg-offset-4 col-md-4 col-md-offset-4 col-xs-10 col-xs-offset-1">
+<div class="col-xl-4 col-lg-4 col-md-4 col-xs-10 col-xs-offset-1">
     <div id="articlesList">
         @{Html.RenderPartial(@"_ArticlesList", Model);}
     </div>
@@ -86,10 +96,14 @@
                 }))
                 {
                     <input type="hidden" name="currentPage" value="@ViewBag.currentPage" />
-                    <input type="hidden" name="lastPage" value="@ViewBag.lastPage" />
-                    <ul class="pager"><li class="btn next" id="next"> <a id="olderArticles">Older Posts &rarr;</a></li>
+                    <input type="hidden" name="lastPage" value="@ViewBag.lastPage"/>
+                    if (ViewBag.filter != null)
+                     {
+                         <input type="hidden" name="tagId" value="@ViewBag.filter"/>
+                     }
+                    <ul class="pager"><li class="btn next" id="next"> <a id="olderArticles">Older &rarr;</a></li>
                         <li id="Pageinfo">@ViewBag.currentPage / @ViewBag.lastPage</li>
-                        <li class="btn previous" id="previous" style="display: none"><a  id="newerArticles">&larr; Newer posts</a></li></ul>
+                        <li class="btn previous" id="previous" style="display: none"><a  id="newerArticles">&larr; Newer</a></li></ul>
                 }
             }
         </li>
@@ -112,19 +126,24 @@
         }
         $("#Pageinfo").html(currentPage + " / " + lastPage);
     }
-
+    function olderArticles() {
+        var currrentPage = $('input[name="currentPage"]').val();
+        $('input[name="currentPage"]').val((parseInt(currrentPage) + 1));
+        $("form").submit();
+        hiddenAndDisplay((parseInt(currrentPage) + 1));
+    }
+    function newerArticles() {
+        var currrentPage = $('input[name="currentPage"]').val();
+        $('input[name="currentPage"]').val((parseInt(currrentPage) - 1));
+        $("form").submit();
+        hiddenAndDisplay((parseInt(currrentPage) - 1));
+    }
     $(document).ready(function() {
         $("#olderArticles").click(function() {
-            var currrentPage = $('input[name="currentPage"]').val();
-            $('input[name="currentPage"]').val((parseInt(currrentPage) + 1));
-            $("form").submit();
-            hiddenAndDisplay((parseInt(currrentPage) + 1));
+            olderArticles();
         });
         $("#newerArticles").click(function() {
-            var currrentPage = $('input[name="currentPage"]').val();
-            $('input[name="currentPage"]').val((parseInt(currrentPage) - 1));
-            $("form").submit();
-            hiddenAndDisplay((parseInt(currrentPage) - 1));
+            newerArticles();
         });
     });
 

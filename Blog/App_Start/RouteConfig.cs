@@ -13,6 +13,11 @@ namespace Blog
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
             routes.MapRoute(
+                name: "ArticleFilters",
+                url: "Home/Index/{tagId}",
+                defaults: new { controller = "Home", action = "Index",tagid=UrlParameter.Optional}
+            );
+            routes.MapRoute(
                name: "Blog",
                url: "Article/{action}/{ArticleID}",
                defaults: new { controller = "Article", action = "Index", ArticleID = UrlParameter.Optional }
