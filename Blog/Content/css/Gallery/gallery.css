@@ -1,19 +1,37 @@
-﻿    .thumbnail :hover {
-        position:relative;
-        z-index:999
-    }
-    .thumbnail :hover {
-  transform: scale(1.7,1.7);
-  transition: .1s transform;
-      background-color: #fff;
+﻿.thumbnail :hover {
+    position: relative;
+    z-index: 999;
+}
+
+.thumbnail :hover {
+    -webkit-transform: scale(1.7,1.7);
+    -moz-transform: scale(1.7,1.7);
+    -ms-transform: scale(1.7,1.7);
+    -o-transform: scale(1.7,1.7);
+    transform: scale(1.7,1.7);
+    -webkit-transition: .1s transform;
+    -moz-transition: .1s transform;
+    -ms-transition: .1s transform;
+    -o-transition: .1s transform;
+    transition: .1s transform;
+    background-color: #fff;
     border: 1px solid #ddd;
+    -ms-border-radius: 4px;
     border-radius: 4px;
+    -webkit-box-shadow: 5px 5px 12px #000000;
+    -webkit-box-shadow: 5px 5px 12px rgba(0,0,0,0.60);
     padding: 2px;
 }
+
+.thumbnail {
+    -webkit-box-shadow: 5px 5px 12px #000000;
+    -webkit-box-shadow: 5px 5px 12px rgba(0,0,0,0.60);
+}
+
 #pagination {
-    text-align:center;
+    text-align: center;
 }
 
 .active {
-    z-index:2;
+    z-index: 2;
 }

@@ -3,11 +3,11 @@
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<script src="~/Scripts/Gallery/fullsizable.js?v=1"></script>
-<script src="~/Scripts/Gallery/jquery.touchSwipe.min.js"></script>
-<link href="~/Content/css/Gallery/fullsizable-theme.css?v=1" rel="stylesheet" type="text/css">
-<link href="~/Content/css/Gallery/fullsizable.css?v=1" rel="stylesheet" type="text/css">
-<link href="~/Content/css/Gallery/gallery.css?v=2" rel="stylesheet" type="text/css">
+<script src="/Scripts/Gallery/fullsizable.js"></script>
+<script src="/Scripts/Gallery/jquery.touchSwipe.min.js"></script>
+<link href="/Content/css/Gallery/fullsizable-theme.css" rel="stylesheet" type="text/css">
+<link href="/Content/css/Gallery/fullsizable.css" rel="stylesheet" type="text/css">
+<link href="/Content/css/Gallery/gallery.css" rel="stylesheet" type="text/css">
 <script>
     $(function () {
         $('#gallery > a').fullsizable({
@@ -47,7 +47,7 @@
                         data-FocusLength="@img.FocusLength" data-WhiteBalanceMode="@img.WhiteBalanceMode" data-LensModel="@img.LensModel"
                          href="@img.Url">
                 @* ReSharper disable once Html.PathError *@
-                <img class="img-responsive" src="@img.Url.Substring(0, img.Url.Length - img.FileName.Length)thumbtail/@img.FileName"/>
+                <img class="img-responsive" src="@img.Url.Substring(0, img.Url.Length - img.FileName.Length)thumbtail/@img.FileName" alt="image"/>
 
             </a>
                 i++;
@@ -67,7 +67,7 @@
                         </a>
                     </li>    
                 }
-                @for (int i = (((int)ViewBag.pageIndex - 4) < 0) ? 0 : ((int)ViewBag.pageIndex - 4); i < ViewBag.pageCount && i < (int)ViewBag.pageIndex + 5; i++)
+                @for (var i = (((int)ViewBag.pageIndex - 4) < 0) ? 0 : ((int)ViewBag.pageIndex - 4); i < ViewBag.pageCount && i < (int)ViewBag.pageIndex + 5; i++)
                 {
                     if (i == ViewBag.pageIndex)
                     {

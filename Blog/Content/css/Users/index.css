@@ -1,36 +1,53 @@
 ﻿.profile-userpic img {
-  float:none;
+    float:none;
    display: block;
    margin:auto;
   width: 50%;
   height:50%;
+    -webkit-box-shadow: 5px 5px 5px #aaaaaa;
+    -ms-box-shadow: 5px 5px 5px #aaaaaa;
     box-shadow: 5px 5px 5px #aaaaaa;
 }
+
 .profile-userpic {
     padding:20px;
 }
 .bg_img {
     position:absolute;
+    -ms-background-size:cover;
     background-size:cover;
   z-index: 1;
       padding:0;
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-  opacity:.7;
-  
+    -webkit-box-shadow: 0 4px 8px 0 #000000, 0 6px 20px 0 #000000;
+    -webkit-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    -ms-box-shadow: 0 4px 8px 0 #000000, 0 6px 20px 0 #000000;
+    -ms-box-shadow: 0 4px 8px 0 #000000, 0 6px 20px 0 #000000;
+    -ms-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    box-shadow: 0 4px 8px 0 #000000, 0 6px 20px 0 #000000;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    -ms-opacity:.7;
+    opacity:.7;
 }
 
 .ProfileCard {
     display:block;
-        background-color:rgba(217, 237, 247,0.3);
+    background-color:#d9edf7;
+    background-color:rgba(217, 237, 247,0.3);
     z-index: 999;
 }
+
 .profile-usermenu {
+    -ms-opacity:0.9;
     opacity:0.9;
 }
+
+
 #contact {
       float:none;
   margin:  auto;
    display: block;
+   text-decoration: none;
+    width: fit-content;
 }
 .profile-info {
     text-align:center;
