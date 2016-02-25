@@ -84,6 +84,7 @@
     function Preview(event) {
         var frm = event.closest("form");
         frm.method = "get";
+        $("#Contnet").val(encodeURI($("#Contnet").val()));
         frm.action = "/Article/ArticlePreview";
         frm.target = "_blank";
     }
