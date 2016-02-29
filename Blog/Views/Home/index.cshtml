@@ -6,6 +6,48 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+<script type="text/javascript">
+
+
+    function searchSelector(obj) {
+        var content = obj.attributes['data-value'].value;
+        $("#searchCategory").html(content + ' <span class="caret"></span>');
+        $('input[name="filterField"]').val(content);
+        if (content === "Month") {
+            $('input#searchInput').attr('type', 'Month');
+            $('input#searchInput').removeAttr('maxlength');
+            $('input#searchInput').unbind("keyup");
+            $('input#searchInput').val("");
+        }
+        else if (content === "Day") {
+            $('input#searchInput').attr('type', 'Date');
+            $('input#searchInput').removeAttr('maxlength');
+            $('input#searchInput').unbind("keyup");
+            $('input#searchInput').val("");
+        }
+        else if (content === "Year") {
+            $('input#searchInput').attr('type', 'text');
+            $('input#searchInput').attr('maxlength', '4');
+            $('input#searchInput').val("");
+            $('input#searchInput').attr('placeholder', 'yyyy');
+            $('input#searchInput').keyup(function () {
+                $('input#searchInput').val(this.value.match(/[12][0-9]*/));
+            });
+        } else {
+            $('input#searchInput').removeAttr('maxlength');
+            $('input#searchInput').removeAttr('placeholder');
+            $('input#searchInput').val("");
+            $('input#searchInput').attr('type', 'text');
+            $('input#searchInput').unbind("keyup");
+        }
+        $('#goSearch').attr('class', 'btn btn-default');
+        $('input#searchInput').removeAttr('disabled');
+    }
+
+
+
+
+</script>
 <!-- Half Page Image Background Carousel Header -->
 <header id="myCarousel" class="carousel slide col-xs-12">
     <!-- Indicators -->
@@ -14,7 +56,6 @@
         <li data-target="#myCarousel" data-slide-to="1"></li>
         <li data-target="#myCarousel" data-slide-to="2"></li>
     </ol>
-
     <!-- Wrapper for Slides -->
     <div class="carousel-inner">
         <div class="item active">
@@ -63,18 +104,54 @@
 
 </header>
 
-
 <!-- Left Panel Content -->
 <div class="col-xl-3 col-md-3 col-lg-3 col-xs-10">
+    <!-- Search Bar -->
+    <div class="input-group" id="searchBar">
+        <div class="input-group-btn dropdown">
+            <a id="searchCategory" role="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-menu-hamburger"></span>&nbsp;Search <span class="caret"></span></a>
+            <ul class="dropdown-menu multi-level" role="menu">
+                <li><a role="button" onclick="searchSelector(this);" data-value="Title"><span class="glyphicon glyphicon-book"></span>&nbsp;Title</a></li>
+                <li><a role="button" onclick="searchSelector(this);" data-value="Subtitle"><span class="glyphicon glyphicon-bookmark"></span>&nbsp;Subtitle</a></li>
+                <li><a role="button" onclick="searchSelector(this);"data-value="Author"><span class="glyphicon glyphicon-user"></span>&nbsp;Author</a></li>
+                <li class="dropdown-submenu">
+                    <a tabindex="-1" role="button"><span class="glyphicon glyphicon-th-list"></span>&nbsp;PostTime</a>
+                    <ul class="dropdown-menu">
+                        <li><a role="button" onclick="searchSelector(this);"data-value="Year"><span class="glyphicon glyphicon-calendar"></span>&nbsp;Year</a></li>
+                        <li><a role="button" onclick="searchSelector(this);"data-value="Month"><span class="glyphicon glyphicon-calendar"></span>&nbsp;Month</a></li>
+                        <li ><a role="button" onclick="searchSelector(this);"data-value="Day"><span class="glyphicon glyphicon-calendar"></span>&nbsp;Day</a></li>
+                    </ul>
+
+                </li>
+                <li role="separator" class="divider"></li>
+                <li class="disabled"><a role="button" data-value="Content">Content</a></li>
+            </ul>
+        </div>
+        <input type="text" class="form-control" disabled="disabled" aria-label="SearchBar" id="searchInput">
+        <div class="input-group-btn">
+            <button type="button" onclick="searchRun();" id="goSearch" class="btn btn-default disabled"><span class="glyphicon glyphicon-search"></span></button>
+        </div>
+    </div>
+
+    <!-- Topic category -->
     <div class="panel panel-default" id="leftpanel">
-        <div class="panel-heading" id="leftpanel-header">Most Popular Topics</div>
+        <div class="panel-heading" id="leftpanel-header">
+            Most Popular Topics
+            @if (ViewBag.filter != null)
+            {
+                <a class="pull-right" href="/Home/Index"><span class="glyphicon glyphicon-share-alt"></span></a>
+            }
+        </div>
         <div class="panel-body list-group" id="leftpanel-body">
             @foreach (Blog.Models.Tags oneTag in ViewBag.category)
             {
-                <a class="list-group-item @if(ViewBag.filter == @oneTag.TagId){@Html.Raw("active")}" href='/Home/Index/@oneTag.TagId' value="@oneTag.TagId">@oneTag.TagContent <span class="badge">@oneTag.TagCount</span></a>
+                <a class="list-group-item @if (ViewBag.filter == @oneTag.TagId)
+                                          {@Html.Raw("active")
+                                          }" href='/Home/Index/@oneTag.TagId' value="@oneTag.TagId">@oneTag.TagContent<span class="badge">@oneTag.TagCount</span></a>
             }
         </div>
     </div>
+
 </div>
 
 <!-- Main Content -->
@@ -86,7 +163,7 @@
     <!-- Pager -->
     <ul class="pager">
         <li class="next">
-            @if (ViewBag.currentPage < ViewBag.lastPage)
+            @if (ViewBag.currentPage <= ViewBag.lastPage)
             {
                 using (Ajax.BeginForm(new AjaxOptions
                 {
@@ -96,55 +173,22 @@
                 }))
                 {
                     <input type="hidden" name="currentPage" value="@ViewBag.currentPage" />
-                    <input type="hidden" name="lastPage" value="@ViewBag.lastPage"/>
+                    <input type="hidden" name="lastPage" value="@ViewBag.lastPage" />
+                    <input type="hidden" name="filterField" value="@if(ViewBag.filterField!=null) {@ViewBag.filterField} " />
+                    <input type="hidden" name="matchKey" value="@if(ViewBag.matchKey!=null) {@ViewBag.matchKey} " />
                     if (ViewBag.filter != null)
-                     {
-                         <input type="hidden" name="tagId" value="@ViewBag.filter"/>
-                     }
-                    <ul class="pager"><li class="btn next" id="next"> <a id="olderArticles">Older &rarr;</a></li>
-                        <li id="Pageinfo">@ViewBag.currentPage / @ViewBag.lastPage</li>
-                        <li class="btn previous" id="previous" style="display: none"><a  id="newerArticles">&larr; Newer</a></li></ul>
+                    {
+                        <input type="hidden" name="tagId" value="@ViewBag.filter" />
+                    }
                 }
             }
         </li>
     </ul>
 </div>
 
-<hr>
-<script type="text/javascript">
-    function hiddenAndDisplay(currentPage) {
-        var lastPage=@ViewBag.lastPage;
-        if (currentPage === lastPage) {
-            $('li[id="next"]').attr("style", "display:none");
-        } else {
-            $('li[id="next"]').attr("style", "display:initial");
-        }
-        if (currentPage === 1) {
-            $('li[id="previous"]').attr("style", "display:none");
-        } else {
-            $('li[id="previous"]').attr("style", "display:initial");
-        }
-        $("#Pageinfo").html(currentPage + " / " + lastPage);
-    }
-    function olderArticles() {
-        var currrentPage = $('input[name="currentPage"]').val();
-        $('input[name="currentPage"]').val((parseInt(currrentPage) + 1));
-        $("form").submit();
-        hiddenAndDisplay((parseInt(currrentPage) + 1));
-    }
-    function newerArticles() {
-        var currrentPage = $('input[name="currentPage"]').val();
-        $('input[name="currentPage"]').val((parseInt(currrentPage) - 1));
-        $("form").submit();
-        hiddenAndDisplay((parseInt(currrentPage) - 1));
-    }
-    $(document).ready(function() {
-        $("#olderArticles").click(function() {
-            olderArticles();
-        });
-        $("#newerArticles").click(function() {
-            newerArticles();
-        });
-    });
+<!-- Right Panel Content -->
+<div class="col-xl-3 col-lg-3 col-md-3 col-xs-10">
 
-</script>
+</div>
+<hr>
+

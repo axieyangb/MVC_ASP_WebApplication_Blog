@@ -1,17 +1,136 @@
-﻿@model IEnumerable<Blog.Models.ArticleAbstract> 
+﻿@using System.Globalization
+@using System.Text.RegularExpressions
+@model IEnumerable<Blog.Models.ArticleAbstract>
 @foreach (var item in Model)
+{
+    var postTime = item.PostDate.ToString(CultureInfo.InvariantCulture);
+    if (ViewBag.filterField != null && ViewBag.matchKey != null)
     {
-        <a href="@Url.Action("Index","Article",new {@item.ArticleId})">
-            <div class="post-preview">
-
-                <h2 class="post-title">
-                    @Html.DisplayFor(modelItem => item.Title)
-                </h2>
-                <h3 class="post-subtitle">
-                    @Html.DisplayFor(modelItem => item.SubTitle)
-                </h3>
-                <p class="post-meta">Posted by <a href="#">@Html.DisplayFor(modelItem => item.AuthorName)</a> <span class="postdate"> @Html.DisplayFor(modelItem => item.PostDate)</span></p>
-            </div>
-        </a>
-        <hr>
+        if (ViewBag.filterField == "Title")
+        {
+            item.Title = Regex.Replace(item.Title,ViewBag.matchKey, "<mark>" + ViewBag.matchKey + "</mark>",RegexOptions.IgnoreCase);
+        }
+        else if (ViewBag.filterField == "Subtitle")
+        {
+            item.SubTitle= Regex.Replace(item.SubTitle,ViewBag.matchKey, "<mark>" + ViewBag.matchKey + "</mark>", RegexOptions.IgnoreCase);
+        }
+        else if (ViewBag.filterField.ToString() == "Author")
+        {
+            item.AuthorName= Regex.Replace(item.AuthorName,ViewBag.matchKey, "<mark>" + ViewBag.matchKey + "</mark>", RegexOptions.IgnoreCase);
+        }
+        else if (ViewBag.filterField == "Year")
+        {
+            postTime = Regex.Replace(postTime, ViewBag.matchKey, "<mark>" + ViewBag.matchKey + "</mark>", RegexOptions.IgnoreCase);
+        }
+        else if (ViewBag.filterField == "Month")
+        {
+            try
+            {
+                var splits = ((string) ViewBag.matchKey).Split('-');
+                var parts = postTime.Split('/');
+                parts[0] = Regex.Replace(parts[0], splits[1], "<mark>" + splits[1] + "</mark>", RegexOptions.IgnoreCase);
+                parts[2] = Regex.Replace(parts[2], splits[0], "<mark>" + splits[0] + "</mark>", RegexOptions.IgnoreCase);
+                postTime =string.Join("/",parts);
+            }
+            catch (Exception)
+            {
+                // ignored
+            }
+        }
+        else if (ViewBag.filterField == "Day")
+        {
+            try
+            {
+                var splits = ((string)ViewBag.matchKey).Split('-');
+                var parts = postTime.Split('/');
+                parts[0] = Regex.Replace(parts[0], splits[1], "<mark>" + splits[1] + "</mark>", RegexOptions.IgnoreCase);
+                parts[2] = Regex.Replace(parts[2], splits[0], "<mark>" + splits[0] + "</mark>", RegexOptions.IgnoreCase);
+                parts[1] = Regex.Replace(parts[1], splits[2], "<mark>" + splits[2] + "</mark>", RegexOptions.IgnoreCase);
+                postTime = string.Join("/", parts);
+            }
+            catch (Exception)
+            {
+                // ignored
+            }
+        }
     }
+    <a href="@Url.Action("Index","Article",new {@item.ArticleId})">
+        <div class="post-preview">
+
+            <h2 class="post-title">
+                @Html.Raw(WebUtility.HtmlDecode(item.Title))
+            </h2>
+            <h3 class="post-subtitle">
+                @Html.Raw(WebUtility.HtmlDecode(item.SubTitle))
+            </h3>
+            <p class="post-meta">Posted by <a href="#">@Html.Raw(WebUtility.HtmlDecode(item.AuthorName))</a> <span class="postdate"> @Html.Raw(WebUtility.HtmlDecode(postTime))</span></p>
+        </div>
+    </a>
+        <hr>
+}
+
+<ul class="pager">
+    <li class="btn next" id="next"> <a id="olderArticles">Older &rarr;</a></li>
+    <li id="Pageinfo"></li>
+    <li class="btn previous" id="previous" style="display: none"><a id="newerArticles">&larr; Newer</a></li>
+</ul>
+
+<script>
+
+    function hiddenAndDisplay(currentPage) {
+        var lastPage = @ViewBag.lastPage;
+        $('input[name="lastPage"]').val(lastPage);
+        if (currentPage >= parseInt(lastPage)) {
+            $('li[id="next"]').attr("style", "display:none");
+        } else {
+            $('li[id="next"]').attr("style", "display:initial");
+        }
+        if (currentPage === 1) {
+            $('li[id="previous"]').attr("style", "display:none");
+        } else {
+            $('li[id="previous"]').attr("style", "display:initial");
+        }
+        if (parseInt(lastPage) === 0) lastPage = 1;
+        $("#Pageinfo").html(currentPage + " / " + lastPage);
+    }
+    function olderArticles() {
+        var currrentPage = $('input[name="currentPage"]').val();
+        $('input[name="currentPage"]').val((parseInt(currrentPage) + 1));
+        $("form").bind('ajax:success', function() {
+            hiddenAndDisplay((parseInt(currrentPage) + 1));
+        });
+        $("form").submit();
+
+    }
+    function newerArticles() {
+        var currrentPage = $('input[name="currentPage"]').val();
+        $('input[name="currentPage"]').val((parseInt(currrentPage) - 1));
+        $("form").bind('ajax:success', function() {
+            hiddenAndDisplay((parseInt(currrentPage) - 1));
+        });
+        $("form").submit();
+    
+    }
+
+    $(document).ready(function () {
+        var currentPage = $('input[name="currentPage"]').val();
+        if (currentPage == undefined) currentPage = 1;
+        hiddenAndDisplay(parseInt(parseInt(currentPage)));
+        $("#olderArticles").click(function () {
+            olderArticles();
+        });
+        $("#newerArticles").click(function () {
+            newerArticles();
+        });
+    });
+    function searchRun() {
+        $('input[name="matchKey"]').val($("#searchInput").val());
+        $('input[name="currentPage"]').val("1");
+
+        $("form").bind('ajax:success', function() {
+            hiddenAndDisplay(1);
+        });
+        $("form").submit();
+        
+    }
+</script>

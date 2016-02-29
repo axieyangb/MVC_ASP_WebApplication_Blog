@@ -16,3 +16,15 @@
 #tags >a :visited {
       background-color: #2d6987;
 }
+.nav-tabs {
+    border-bottom: none;
+}
+#emojiheader {
+    padding-bottom: 0;
+}
+div[ud="emojicontent"]{
+    padding-top: 5px;
+    padding-left: 0;
+    padding-right: 0;
+}
+

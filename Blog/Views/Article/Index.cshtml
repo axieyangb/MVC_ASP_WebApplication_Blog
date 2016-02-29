@@ -10,12 +10,14 @@
 <script>
     var emojiPackNum = 0;
     function getEmoji(one) {
+        $('li[role="presentation"]').removeAttr('class');
+        one.parentNode.className = "active";
         emojiPackNum = one.getAttribute("value");
         var ajax = new XMLHttpRequest();
         ajax.addEventListener("load", completeFetchEmojiHandler, false);
         var list = document.getElementById("emojisList");
         list.innerHTML = "";
-        list.innerHTML = "<img class='col-xl-12 col-lg-12 col-md-12 col-sm-12' src='/Content/img/loading.gif'/>";
+        list.innerHTML = "<img class='col-xl-12 col-lg-12 col-xl-12 col-md-12 col-sm-12' src='/Content/img/loading.gif'/>";
         var data = new FormData();
         data.append('categoaryName', one.innerHTML);
         ajax.open("POST", "/Article/GetEmoji");
@@ -35,9 +37,8 @@
         var list = document.getElementById("emojisList");
         list.innerHTML = "";
         for (var i = 0; i < feedback.length; i++) {
-            var oneNode = "<a  class=\"col-xl-1 col-lg-2 col-md-4 col-sm-6 col-xs-6 thumbnail thumb\"  onclick=\"addOneEmoji(this)\" value=" + i + " > "
-                + (i + 1)
-                + ".<img src='\\" + feedback[i] + "' style='width:50px;height:50px;'/></a>";
+            var oneNode = "<a class=\"col-xl-1 col-lg-2 col-md-4 col-sm-4 col-xs-3 thumbnail thumb\"  onclick=\"addOneEmoji(this)\" value=" + i + " > "
+                + "<img  src='\\" + feedback[i] + "' style='width:50px;height:50px;'/></a>";
             list.innerHTML += oneNode;
         }
     }
@@ -86,7 +87,7 @@
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 col-sm-10  col-xs-offset-1 ">
                 <div class="col-xl-12 col-lg-12 col-md-12  col-sm-12  col-xs-12 ">
                     <div class="post-heading">
-                        <a class="pull-right btn" id="TitleEditButton" style="display: none" data-toggle="modal" data-target="#modalEditTitle" data-operation="edit" @if (ViewBag.isPreView != null && ViewBag.isPreView) { @Html.Raw("disabled = 'disabled'")         }><span class="glyphicon glyphicon-pencil"></span></a>
+                        <a class="pull-right btn" id="TitleEditButton" style="display: none" data-toggle="modal" data-target="#modalEditTitle" data-operation="edit" @if (ViewBag.isPreView != null && ViewBag.isPreView) { @Html.Raw("disabled = 'disabled'")         }><span class="glyphicon glyphicon-edit"></span></a>
                         <h1>@Html.DisplayFor(item => Model.Article.Title)</h1>
                         <h2 class="subheading">@Html.DisplayFor(item => Model.Article.SubTitle)</h2>
                         <span class="meta">Posted by <a href="#">@ViewBag.AuthorName</a> <span class="postdate">@Html.DisplayFor(item => Model.Article.PostDate)</span> </span>
@@ -139,7 +140,7 @@
 <article>
     <div class="container">
         <div class="row">
-            <a class="pull-right btn" id="ContentEditButton" style="display: none" data-operation="edit" @if (ViewBag.isPreView != null && ViewBag.isPreView) { @Html.Raw("disabled = 'disabled'")         }><span class="glyphicon glyphicon-pencil"></span></a>
+            <a class="pull-right btn" id="ContentEditButton" style="display: none" data-operation="edit" @if (ViewBag.isPreView != null && ViewBag.isPreView) { @Html.Raw("disabled = 'disabled'")         }><span class="glyphicon glyphicon-edit"></span></a>
         </div>
         <br />
         <div class="row">
@@ -281,7 +282,7 @@
                             @Html.HiddenFor(a => a.CommentArticle.ReplyId, new { id = "ReplyId" })
                             @Html.HiddenFor(a => a.Article.ArticleId, new { value = Model.Article.ArticleId })
                             @Html.TextAreaFor(a => a.CommentArticle.Content, new { @class = "form-control", name = "Content", id = "Content", rows = "3" })
-                            <a class="btn" id="emojiEntry" href="#" data-toggle="popover" data-placement="buttom" >Image</a>
+                            <a class="btn" id="emojiEntry" href="#" data-toggle="popover" data-placement="buttom" ><span class="glyphicon glyphicon-picture"></span></a>
                             @*<textarea class="form-control" ,name="Content", id="Content",rows="3"></textarea>*@
                         </div>
                         <button type="submit" class="btn btn-primary">Submit</button>
@@ -294,14 +295,17 @@
 
 <div id="emojiPack" class="popper-content hide">
     <div class="panel panel-default">
-        <div class="panel-body">
+        <div class="panel-heading" id="emojiheader">
+            <ul class="nav nav-tabs">
+                @for (var i = 0; ViewBag.emoji != null && i < ViewBag.emoji.Length; i++)
+                {
+                    <li role="presentation"><a class="btn" onclick="getEmoji(this);" value="@i">@ViewBag.emoji[i]</a></li>
+                }
+            </ul>
+        </div>
+        <div class="panel-body" ud="emojicontent">
             <div class="row emoji">
-                <ul class="nav nav-tabs">
-                    @for (var i = 0; ViewBag.emoji != null && i < ViewBag.emoji.Length; i++)
-                    {
-                        <li role="presentation"><a class="btn" onclick="getEmoji(this);" value="@i">@ViewBag.emoji[i]</a></li>
-                    }
-                </ul>
+
                 <div id="emojisList">
                 </div>
             </div>
@@ -385,7 +389,7 @@
                 if (CKEDITOR.instances.articleContent)
                     CKEDITOR.instances.articleContent.destroy();
                 updateArticle();
-                this.innerHTML = "<span class=\"glyphicon glyphicon-pencil\"></span>";
+                this.innerHTML = "<span class=\"glyphicon glyphicon-edit\"></span>";
                 this.setAttribute("data-operation", "edit");
             }
         });
