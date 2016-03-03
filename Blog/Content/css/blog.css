@@ -297,8 +297,6 @@ hr.small {
 
 #leftpanel,#searchBar {
     margin: 10px;
-      -webkit-box-shadow: 5px 5px 12px #000000;
-    -webkit-box-shadow: 5px 5px 12px rgba(0,0,0,0.60);
 }
 #leftpanel-header {
         font-family: 'Open Sans', 'Helvetica Neue', Helvetica, 'chineseCute',Arial, sans-serif;
@@ -377,8 +375,4 @@ footer {
     -webkit-border-radius: 6px 0 6px 6px;
     -moz-border-radius: 6px 0 6px 6px;
     border-radius: 6px 0 6px 6px;
-}
-.dropdown-menu {
-     -webkit-box-shadow: 5px 5px 12px #000000;
-    -webkit-box-shadow: 5px 5px 12px rgba(0,0,0,0.60);
 }

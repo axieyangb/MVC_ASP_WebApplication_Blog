@@ -163,10 +163,9 @@ namespace Blog.Controllers
                 article.TagId5 = tagsId[4];
                 _db.Articles.Add(article);
                 _db.SaveChanges();
-                return View("Index", one);
+                return RedirectToAction("Index",new { articleId =article.ArticleId});
             }
-            ViewBag.isPreView = true;
-            return View("Index", one);
+            return RedirectToAction("Index", "Home");
         }
 
         [HttpGet]
