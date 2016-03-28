@@ -49,7 +49,7 @@ namespace BlogTest
             const int currentPage = 1;
             const int lastPage = 1;
             _home.Index(null);
-            var actResult = _home.Index(currentPage, lastPage, null) as PartialViewResult;
+            var actResult = _home.Index(currentPage, lastPage,"","", null) as PartialViewResult;
             Assert.IsNotNull(actResult);
             var viewModel = actResult.ViewData.Model as IEnumerable<ArticleAbstract>;
             Assert.IsNotNull(viewModel);

@@ -23,10 +23,9 @@
     <![endif]-->
 </head>
 <body>
-
-            @Scripts.Render("~/bundles/jquery")
+            @Scripts.Render("~/bundles/js")
     <!-- Navigation -->
-    <nav class="navbar navbar-default navbar-custom">
+    <nav class="navbar navbar-custom">
         <div class="container-fluid">
             <!-- Brand and toggle get grouped for better mobile display -->
             <div class="navbar-header page-scroll">
@@ -43,16 +42,16 @@
             <div class="collapse navbar-collapse row" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav navbar-right">
                     <li>
-                        <a href="/Home">主页 Home</a>
+                        <a href="/Home">Home</a>
                     </li>
                     <li>
-                        <a href="/Gallery">图片 Gallery</a>
+                        <a href="/Gallery">Gallery</a>
                     </li>
                     <li>
-                       <a href="/Error">文章 Article</a>
+                       <a href="/Error">Article</a>
                     </li>
                     <li>
-                        <a href="/Users">联系 Contact</a>
+                        <a href="/Users">Contact</a>
                     </li>
                     <li>
                         @if (Session["LoggedUserID"] == null)
@@ -64,14 +63,14 @@
                             <a href="#" data-toggle="collapse"  data-target="#menu"> @Session["LoggedUserName"].ToString()<span class="caret"></span></a>
                              <ul id="menu" class="collapse">
                                   <li>
-                                    <a href ="/Dashboard"><p class="profile">面板 Dashboard</p></a>
+                                    <a href ="/Dashboard" class="btn btn-block"><p class="profile">面板 Dashboard</p></a>
                                  </li>
                                    <li>
-                                    <a href ="/Dashboard/ViewImage/@Session["LoggedUserID"]"><p class="profile">私人图库 Personal Gallery</p></a>
+                                    <a href ="/Dashboard/ViewImage/@Session["LoggedUserID"]"  class="btn btn-block"><p class="profile ">私人图库 Personal Gallery</p></a>
                                  </li>
 
                                  <li>
-                                    <a href ="/Dashboard/Logout"><p class="profile">登出 Logout</p></a>
+                                    <a href ="/Admin/Logout"  class="btn btn-block"><p class="profile">登出 Logout</p></a>
                                  </li>
                              </ul>
                         }
@@ -84,7 +83,7 @@
     </nav>
 
 
-    @RenderBody()
+        @RenderBody()
 
       <!-- Footer -->
     <br>
@@ -117,11 +116,12 @@
                     </ul>
                     <p class="copyright text-muted">Copyright &copy; Your Website 2015 by jerry</p>
         </div>
-    <script>
-        jQuery(document).ready(function ($) {
-            $('[data-toggle="tooltip"]').tooltip({ 'placement': 'bottom' });
-        });
-    </script>
+<script>
+    $.material.init();
+    jQuery(document).ready(function ($) {
+        $('[data-toggle="tooltip"]').tooltip({ 'placement': 'bottom' });
+    });
+</script>
 </body>
 
 

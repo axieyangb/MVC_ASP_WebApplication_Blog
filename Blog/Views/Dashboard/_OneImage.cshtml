@@ -1,16 +1,16 @@
 ﻿@model Blog.Models.ImageViewModel
-@if(Model!=null)
+@if (Model != null)
 {
     <div class="col-lg-3 col-md-4 col-xs-6 unit" id="unit_@Model.ImageId">
         <div class="thumb">
             <div class="front">
                 @if (Model.ContentType.Contains("video"))
                 {
-                    <img src="~/Content/img/video-icon.svg" alt="Hejsan" id="#image" data-source="@Model.Url" class="img-thumbnail"/>
+                <img src="~/Content/img/video-icon.svg" alt="Hejsan" id="#image" data-source="@Model.Url" class="img-thumbnail" />
                 }
                 else
                 {
-                    <img src="@Model.Url.Substring(0, Model.Url.Length - Model.FileName.Length)thumbtail/@Model.FileName" alt="Hejsan" data-source="@Model.Url" class="img-thumbnail"/>
+                <img src="@Model.Url.Substring(0, Model.Url.Length - Model.FileName.Length)thumbtail/@Model.FileName" alt="Hejsan" data-source="@Model.Url" class="img-thumbnail" />
                 }
             </div>
             <div class="back">
@@ -18,20 +18,20 @@
             </div>
         </div>
         <div class="detail">
-            <div class="input-group  input-group-sm">
-                <span class="input-group-addon">URL</span>
-                <input type="text" class="form-control" value="@Model.Url">
-                <span class="btn-default btn-sm input-group-addon copyIcon" id="toolTipSpan" data-toggle="tooltip" data-original-title="Copy to ClipBoard"></span>
-            </div>
-            <span>
-            @using (Html.BeginForm("PicOperation", "DashBoard", FormMethod.Post))
-            {
-                <a class="btn btn-default btn-sm" data-src="@Model.Url" data-type="@Model.ContentType" data-toggle="modal" data-target="#MediaDetail">Large</a>
-                <input type="text" name="ImageID" id="imageID" value="@Model.ImageId" hidden />
-                <button type="button" class="btn @(Model.IsPublish != 1 ? Html.Raw("btn-default") : Html.Raw("btn-primary")) btn-sm" data-toggle="modal" data-target="#modalPopMessage" name="PublishOrPrivate" value="@Model.IsPublish">@(Model.IsPublish == 1 ? Html.Raw("Be Private") : Html.Raw("Be Public"))</button>
-                <button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#modalPopMessage" name="DeletePicture" value="@Model.IsPublish">Delete</button>
-            }
-        </span>
+                <span class="glyphicon glyphicon-copy input-group-addon btn btn-info" value="@Model.Url"  onclick="copyToClipboard(this.getAttribute('value'))" data-toggle="tooltip" data-original-title="Copy to ClipBoard"> URL</span>
+                @using (Html.BeginForm("PicOperation", "DashBoard", FormMethod.Post))
+                {
+                    <a class="btn btn-primary btn-raised" data-src="@Model.Url" data-type="@Model.ContentType" data-toggle="modal" data-target="#MediaDetail">Large</a>
+                    <input type="text" name="ImageID" id="imageID" value="@Model.ImageId" hidden />
+                    <a class="btn btn-raised btn-danger" data-toggle="modal" data-target="#modalPopMessage" name="DeletePicture" value="@Model.IsPublish">Delete</a>
+                    <br/>
+                    <span class="togglebutton">
+                        <label>
+                            <input type="checkbox" @(Model.IsPublish != 1 ? Html.Raw("") : Html.Raw("checked")) data-toggle="modal" data-target="#modalPopMessage" name="PublishOrPrivate" value="@Model.IsPublish" />@(Model.IsPublish == 1 ? Html.Raw("Be Private") : Html.Raw("Be Public"))
+                        </label>
+                    </span>
+                    @*<button type="button" class="btn btn-raised @(Model.IsPublish != 1 ? Html.Raw("btn-default") : Html.Raw("btn-primary")) btn-sm" data-toggle="modal" data-target="#modalPopMessage" name="PublishOrPrivate" value="@Model.IsPublish">@(Model.IsPublish == 1 ? Html.Raw("Be Private") : Html.Raw("Be Public"))</button>*@
+                }
         </div>
     </div>
 }

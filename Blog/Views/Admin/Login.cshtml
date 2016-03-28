@@ -1,8 +1,8 @@
 ﻿@model Blog.Models.Member  
-<div class="wrapper">
+<div class="wrapper well">
     @* ReSharper disable once UnknownCssClass *@
-      @using (Html.BeginForm("Login", "Admin", FormMethod.Post, new {@class="form-signin" }))
-      {    
+      @using (Html.BeginForm("Login", "Admin", FormMethod.Post, new {@class= "form form-signin" }))
+      {
       <h2 class="form-signin-heading">登录 Login</h2>
             @Html.AntiForgeryToken()
           @Html.ValidationSummary(true)
@@ -11,11 +11,15 @@
           @Html.PasswordFor(a=>a.Password , new {@class="form-control password password-field", placeholder="密码 Password", })
            <br>
           @Html.ValidationMessageFor(a=>a.Password )
-        <input type="checkbox"><span>记住我 Remember me</span>
+          <div class="checkbox">
+              <label>
+                  <input type="checkbox">&nbsp;<span id="checkBoxInfo">记住我 Remember me</span>
+              </label>
+          </div>
           <br>
           <br>
-      <input type="submit" class="btn btn-lg btn-primary btn-block" value="登录 Login"/>
-       <br><a href='@Url.Action("Signup","Admin")'>没有账户 Don't have an account?</a> 
+      <input type="submit" class="btn btn-lg btn-raised btn-primary btn-block" value="登录 Login"/>
+       <br><a id="noAccount"href='@Url.Action("Signup","Admin")'>没有账户 Don't have an account?</a> 
       }
 
 

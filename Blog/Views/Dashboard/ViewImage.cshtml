@@ -34,8 +34,8 @@
                 <p id="pop-up-message"></p>
             </div>
             <div class="modal-footer">
-                <button type="button" id="pop-up-confirm" class="btn btn-primary btn-sm">Comfirm</button>
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" id="pop-up-confirm" class="btn btn-raised btn-primary btn-sm">Comfirm</button>
+                <button type="button" class="btn btn-raised btn-sm" data-dismiss="modal">Close</button>
             </div>
         </div>
 
@@ -55,7 +55,7 @@
                 <div id="pop-up-media" class="col-lg-12 col-md-12 col-xs-12  col-sm-12"></div>
             </div>
             <div class="modal-footer col-lg-12 col-md-12 col-xs-12  col-sm-12">
-                  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                  <button type="button" class="btn btn-raised btn-default" data-dismiss="modal">Close</button>
             </div>
         </div>
 
@@ -72,6 +72,10 @@
                 trigger: 'click'
             });
         });
+        $.material.init();
+    }
+    function copyToClipboard(text) {
+        window.prompt("Copy to clipboard: Ctrl+C, Enter", text);
     }
     $(document).ready(function () {
         loadScript();
@@ -79,8 +83,11 @@
             $(this).prev('input').focus().select();
             document.execCommand('copy');
         });
+
+        var tagetElement;
         $('#modalPopMessage').on('show.bs.modal', function (event) {
             var target = $(event.relatedTarget);
+            tagetElement = target;
             var operator = target.attr("name");
             var value = target.val();
             if (operator === "PublishOrPrivate" && value === "0") {
@@ -113,6 +120,11 @@
                 });
             });
       
+        });
+        $('#modalPopMessage').on('hidden.bs.modal', function(event) {
+            var val = tagetElement.attr('value');
+            if (val === "1") tagetElement.attr('checked','checked');
+            else tagetElement.attr('checked');
         });
         $('#MediaDetail').on('show.bs.modal', function (event) {
             var target = $(event.relatedTarget);

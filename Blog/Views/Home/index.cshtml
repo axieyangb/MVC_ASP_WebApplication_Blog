@@ -1,12 +1,12 @@
 ﻿@using System.Net.Http
 @using System.Web.UI.WebControls
 @model IEnumerable<Blog.Models.ArticleAbstract>
-@{
-    ViewBag.Title = "Blog";
-    Layout = "~/Views/Shared/_Layout.cshtml";
-}
-<script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
-<script type="text/javascript">
+    @{
+        ViewBag.Title = "Blog";
+        Layout = "~/Views/Shared/_Layout.cshtml";
+    }
+    <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+    <script type="text/javascript">
 
 
     function searchSelector(obj) {
@@ -18,19 +18,17 @@
             $('input#searchInput').removeAttr('maxlength');
             $('input#searchInput').unbind("keyup");
             $('input#searchInput').val("");
-        }
-        else if (content === "Day") {
+        } else if (content === "Day") {
             $('input#searchInput').attr('type', 'Date');
             $('input#searchInput').removeAttr('maxlength');
             $('input#searchInput').unbind("keyup");
             $('input#searchInput').val("");
-        }
-        else if (content === "Year") {
+        } else if (content === "Year") {
             $('input#searchInput').attr('type', 'text');
             $('input#searchInput').attr('maxlength', '4');
             $('input#searchInput').val("");
             $('input#searchInput').attr('placeholder', 'yyyy');
-            $('input#searchInput').keyup(function () {
+            $('input#searchInput').keyup(function() {
                 $('input#searchInput').val(this.value.match(/[12][0-9]*/));
             });
         } else {
@@ -40,130 +38,133 @@
             $('input#searchInput').attr('type', 'text');
             $('input#searchInput').unbind("keyup");
         }
-        $('#goSearch').attr('class', 'btn btn-default');
+        $('#goSearch').attr('class', 'btn btn-primary btn-raised');
         $('input#searchInput').removeAttr('disabled');
     }
 
 
+    </script>
 
 
-</script>
-<!-- Half Page Image Background Carousel Header -->
-<header id="myCarousel" class="carousel slide col-xs-12">
-    <!-- Indicators -->
-    <ol class="carousel-indicators">
-        <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
-        <li data-target="#myCarousel" data-slide-to="1"></li>
-        <li data-target="#myCarousel" data-slide-to="2"></li>
-    </ol>
-    <!-- Wrapper for Slides -->
-    <div class="carousel-inner">
-        <div class="item active">
-            <!-- Set the first background image using inline CSS below. -->
-            <div class="fill" style="background-image: url('/Content/img/home-bg.jpg'); "></div>
-            <div class="carousel-caption">
-                <div class="site-heading">
-                    <h1 class="title-heading">Share 分享</h1>
-                    <hr class="small">
-                    <span class="subheading">套马的汉子 Horse's Soulmate</span>
+    <!-- Half Page Image Background Carousel Header -->
+    <header id="myCarousel" class="carousel slide">
+        <!-- Indicators -->
+        <ol class="carousel-indicators">
+            <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+            <li data-target="#myCarousel" data-slide-to="1"></li>
+            <li data-target="#myCarousel" data-slide-to="2"></li>
+        </ol>
+        <!-- Wrapper for Slides -->
+        <div class="carousel-inner panel">
+            <div class="item active">
+                <!-- Set the first background image using inline CSS below. -->
+                <div class="fill" style="background-image: url('/Content/img/home-bg.png'); "></div>
+                <div class="carousel-caption">
+                    <div class="site-heading">
+                        <h1 class="title-heading">Share 分享</h1>
+                        <hr class="small">
+                        <span class="subheading">套马的汉子 Horse's Soulmate</span>
+                    </div>
+                </div>
+            </div>
+            <div class="item">
+                <!-- Set the second background image using inline CSS below. -->
+                <div class="fill" style="background-image: url('/Content/img/home-freedom.png');"></div>
+                <div class="carousel-caption">
+                    <div class="site-heading">
+                        <h1 class="title-heading">Free 自由</h1>
+                        <hr class="small">
+                        <span class="subheading">心理鸡汤 Chicken Soup</span>
+                    </div>
+                </div>
+            </div>
+            <div class="item">
+                <!-- Set the third background image using inline CSS below. -->
+                <div class="fill" style="background-image: url('/Content/img/home-brave.png');"></div>
+                <div class="carousel-caption">
+                    <div class="site-heading">
+                        <h1 class="title-heading">Brave 勇敢</h1>
+                        <hr class="small">
+                        <span class="subheading">往前一步是蓝天 You jump I jump</span>
+                    </div>
                 </div>
             </div>
         </div>
-        <div class="item">
-            <!-- Set the second background image using inline CSS below. -->
-            <div class="fill" style="background-image: url('/Content/img/home-freedom.jpg');"></div>
-            <div class="carousel-caption">
-                <div class="site-heading">
-                    <h1 class="title-heading">Free 自由</h1>
-                    <hr class="small">
-                    <span class="subheading">心理鸡汤 Chicken Soup</span>
+
+
+        <!-- Controls -->
+        <a class="left carousel-control" href="#myCarousel" data-slide="prev">
+            <span class="icon-prev"></span>
+        </a>
+        <a class="right carousel-control" href="#myCarousel" data-slide="next">
+            <span class="icon-next"></span>
+        </a>
+
+    </header>
+    <div class="container-fluid">
+        <!-- Left Panel Content -->
+        <div class="col-xl-3 col-md-3 col-lg-3 col-xs-10">
+            <!-- Search Bar -->
+            <div class="row">
+                <div class="form form-inline" id="searchBar">
+                    <div class="input-group-btn dropdown form-control">
+                        <a id="searchCategory" role="button" class="btn btn-primary btn-raised dropdown-toggle" data-toggle="dropdown">Search <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a role="button" onclick="searchSelector(this);" data-value="Title"><span class="glyphicon glyphicon-book"></span>&nbsp;Title</a></li>
+                            <li><a role="button" onclick="searchSelector(this);" data-value="Subtitle"><span class="glyphicon glyphicon-bookmark"></span>&nbsp;Subtitle</a></li>
+                            <li><a role="button" onclick="searchSelector(this);" data-value="Author"><span class="glyphicon glyphicon-user"></span>&nbsp;Author</a></li>
+                            <li><a role="button" onclick="searchSelector(this);" data-value="Year"><span class="glyphicon glyphicon-calendar"></span>&nbsp;Year</a></li>
+                            <li><a role="button" onclick="searchSelector(this);" data-value="Month"><span class="glyphicon glyphicon-calendar"></span>&nbsp;Month</a></li>
+                            <li><a role="button" onclick="searchSelector(this);" data-value="Day"><span class="glyphicon glyphicon-calendar"></span>&nbsp;Day</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li class="disabled"><a role="button" data-value="Content">Content</a></li>
+                        </ul>
+                    </div>
+
+                    <input type="text" class="form-control" disabled="disabled" aria-label="SearchBar" id="searchInput">
+                    <button onclick="searchRun();" id="goSearch" class="btn btn-primary btn-raised disabled"><span class="glyphicon glyphicon-search"></span></button>
+                </div>
+            </div>
+            <!-- Topic category -->
+            <div class="row">
+                <div class="panel panel-primary col-xs-12" id="leftpanel">
+                    <div class="panel-heading" id="leftpanel-header">
+                        <h4>
+                            Most Popular Topics
+                            @if (ViewBag.filter != null)
+                            {
+                                <a class="pull-right" href="/Home/Index"><span class="glyphicon glyphicon-share-alt"></span></a>
+                            }
+                        </h4>
+                    </div>
+                    <div class="panel-body" id="leftpanel-body">
+                        <table class="table table-striped table-hover">
+                            @foreach (Blog.Models.Tags oneTag in ViewBag.category)
+                            {
+                                <tr class="@if (ViewBag.filter == @oneTag.TagId)
+                                              {@Html.Raw("success")
+                                              }">
+                                    <td>
+                                        <a class="btn btn-link pull-left" href='/Home/Index/@oneTag.TagId' value="@oneTag.TagId">@oneTag.TagContent</a><span class="badge pull-right">@oneTag.TagCount</span>
+                                    </td>
+                                </tr>
+                            }
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
-        <div class="item">
-            <!-- Set the third background image using inline CSS below. -->
-            <div class="fill" style="background-image: url('/Content/img/home-brave.png');"></div>
-            <div class="carousel-caption">
-                <div class="site-heading">
-                    <h1 class="title-heading">Brave 勇敢</h1>
-                    <hr class="small">
-                    <span class="subheading">往前一步是蓝天 You jump I jump</span>
-                </div>
+
+        <!-- Main Content -->
+
+        <div class="col-xl-4 col-lg-4 col-md-4 col-xs-10 col-xs-offset-1">
+            <div id="articlesList">
+                @{Html.RenderPartial(@"_ArticlesList", Model);}
             </div>
-        </div>
-    </div>
-
-
-    <!-- Controls -->
-    <a class="left carousel-control" href="#myCarousel" data-slide="prev">
-        <span class="icon-prev"></span>
-    </a>
-    <a class="right carousel-control" href="#myCarousel" data-slide="next">
-        <span class="icon-next"></span>
-    </a>
-
-</header>
-
-<!-- Left Panel Content -->
-<div class="col-xl-3 col-md-3 col-lg-3 col-xs-10">
-    <!-- Search Bar -->
-    <div class="input-group" id="searchBar">
-        <div class="input-group-btn dropdown">
-            <a id="searchCategory" role="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-menu-hamburger"></span>&nbsp;Search <span class="caret"></span></a>
-            <ul class="dropdown-menu multi-level" role="menu">
-                <li><a role="button" onclick="searchSelector(this);" data-value="Title"><span class="glyphicon glyphicon-book"></span>&nbsp;Title</a></li>
-                <li><a role="button" onclick="searchSelector(this);" data-value="Subtitle"><span class="glyphicon glyphicon-bookmark"></span>&nbsp;Subtitle</a></li>
-                <li><a role="button" onclick="searchSelector(this);"data-value="Author"><span class="glyphicon glyphicon-user"></span>&nbsp;Author</a></li>
-                <li class="dropdown-submenu">
-                    <a tabindex="-1" role="button"><span class="glyphicon glyphicon-th-list"></span>&nbsp;PostTime</a>
-                    <ul class="dropdown-menu">
-                        <li><a role="button" onclick="searchSelector(this);"data-value="Year"><span class="glyphicon glyphicon-calendar"></span>&nbsp;Year</a></li>
-                        <li><a role="button" onclick="searchSelector(this);"data-value="Month"><span class="glyphicon glyphicon-calendar"></span>&nbsp;Month</a></li>
-                        <li ><a role="button" onclick="searchSelector(this);"data-value="Day"><span class="glyphicon glyphicon-calendar"></span>&nbsp;Day</a></li>
-                    </ul>
-
-                </li>
-                <li role="separator" class="divider"></li>
-                <li class="disabled"><a role="button" data-value="Content">Content</a></li>
-            </ul>
-        </div>
-        <input type="text" class="form-control" disabled="disabled" aria-label="SearchBar" id="searchInput">
-        <div class="input-group-btn">
-            <button type="button" onclick="searchRun();" id="goSearch" class="btn btn-default disabled"><span class="glyphicon glyphicon-search"></span></button>
-        </div>
-    </div>
-
-    <!-- Topic category -->
-    <div class="panel panel-default" id="leftpanel">
-        <div class="panel-heading" id="leftpanel-header">
-            Most Popular Topics
-            @if (ViewBag.filter != null)
-            {
-                <a class="pull-right" href="/Home/Index"><span class="glyphicon glyphicon-share-alt"></span></a>
-            }
-        </div>
-        <div class="panel-body list-group" id="leftpanel-body">
-            @foreach (Blog.Models.Tags oneTag in ViewBag.category)
-            {
-                <a class="list-group-item @if (ViewBag.filter == @oneTag.TagId)
-                                          {@Html.Raw("active")
-                                          }" href='/Home/Index/@oneTag.TagId' value="@oneTag.TagId">@oneTag.TagContent<span class="badge">@oneTag.TagCount</span></a>
-            }
-        </div>
-    </div>
-
-</div>
-
-<!-- Main Content -->
-
-<div class="col-xl-4 col-lg-4 col-md-4 col-xs-10 col-xs-offset-1">
-    <div id="articlesList">
-        @{Html.RenderPartial(@"_ArticlesList", Model);}
-    </div>
-    <!-- Pager -->
-    <ul class="pager">
-        <li class="next">
-            @if (ViewBag.currentPage <= ViewBag.lastPage)
+            <!-- Pager -->
+            <ul class="pager">
+                <li class="next">
+                    @if (ViewBag.currentPage <= ViewBag.lastPage)
             {
                 using (Ajax.BeginForm(new AjaxOptions
                 {
@@ -172,23 +173,24 @@
                     UpdateTargetId = "articlesList"
                 }))
                 {
-                    <input type="hidden" name="currentPage" value="@ViewBag.currentPage" />
-                    <input type="hidden" name="lastPage" value="@ViewBag.lastPage" />
-                    <input type="hidden" name="filterField" value="@if(ViewBag.filterField!=null) {@ViewBag.filterField} " />
-                    <input type="hidden" name="matchKey" value="@if(ViewBag.matchKey!=null) {@ViewBag.matchKey} " />
-                    if (ViewBag.filter != null)
-                    {
-                        <input type="hidden" name="tagId" value="@ViewBag.filter" />
+                            <input type="hidden" name="currentPage" value="@ViewBag.currentPage" />
+                            <input type="hidden" name="lastPage" value="@ViewBag.lastPage" />
+                                            <input type="hidden" name="filterField" value="@if(ViewBag.filterField!=null) {@ViewBag.filterField} " />
+                                            <input type="hidden" name="matchKey" value="@if(ViewBag.matchKey!=null) {@ViewBag.matchKey} " />
+                            if (ViewBag.filter != null)
+                            {
+                                <input type="hidden" name="tagId" value="@ViewBag.filter" />
+                            }
+                        }
                     }
-                }
-            }
-        </li>
-    </ul>
-</div>
+                </li>
+            </ul>
+        </div>
 
-<!-- Right Panel Content -->
-<div class="col-xl-3 col-lg-3 col-md-3 col-xs-10">
+        <!-- Right Panel Content -->
+        <div class="col-xl-3 col-lg-3 col-md-3 col-xs-10">
 
-</div>
-<hr>
+        </div>
+    </div>
+    <hr>
 

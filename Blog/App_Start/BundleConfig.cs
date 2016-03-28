@@ -21,15 +21,18 @@ namespace Blog
         {
             bundles.IgnoreList.Clear();
             AddDefaultIgnorePatterns(bundles.IgnoreList);
-            bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
-                       
+            bundles.Add(new ScriptBundle("~/bundles/js").Include(
                          "~/Scripts/bootstrap.min.js",
                          "~/Scripts/jquery-2.2.0.min.js",
                           "~/Scripts/jquery-ui-1.11.4.min.js",
-                          "~/Scripts/timetransfer.js"
-
+                          "~/Scripts/timetransfer.js",
+                          "~/Scripts/Meterial/material.min.js",
+                          "~/Scripts/Meterial/ripples.min.js"
                        ));
-
+            bundles.Add(new ScriptBundle("~/bundles/DashboardJs").Include(
+                    "~/Scripts/bootstrap.min.js",
+                    "~/Scripts/jquery-2.2.0.min.js"
+                  ));
             bundles.Add(new ScriptBundle("~/bundles/upload").Include(
                        "~/Scripts/FileUpload/*.js"
                      ));
@@ -37,16 +40,16 @@ namespace Blog
             bundles.Add(new ScriptBundle("~/bundles/gallery").Include(
                        "~/Scripts/Gallery/jquery.touchSwipe.min.js"
                      ));
-            bundles.Add(new StyleBundle("~/Content/css").Include("~/Content/site.css",
-              "~/Content/css/blog.css",
-                "~/Content/css/blog.min.css",
-                "~/Content/css/bootstrap.min.css",
+            bundles.Add(new StyleBundle("~/Content/css").Include(
                  "~/Content/css/Home-half-slider.css",
                   "~/Content/css/fonts.css",
                   "~/Content/css/jquery-ui.min.css",
                   "~/Content/css/jquery-ui.structure.min.css",
-                  "~/Content/css/jquery-ui.theme.min.css"
-
+                  "~/Content/css/jquery-ui.theme.min.css",
+                  "~/Content/css/bootstrap.min.css",
+                "~/Content/css/Meterial/ripples.min.css",
+                "~/Content/css/Meterial/bootstrap-material-design.min.css",
+                "~/Content/css/blog.css"
                 ));
             bundles.Add(new StyleBundle("~/Content/css/admin").Include(
                 "~/Content/css/page/login.css",
@@ -55,7 +58,7 @@ namespace Blog
 
             bundles.Add(new StyleBundle("~/Content/css/dashboard").Include(
                 "~/Content/css/page/dashboard.css",
-           
+
               "~/Content/css/bootstrap.min.css",
                 "~/Content/css/fonts.css"
                 ));

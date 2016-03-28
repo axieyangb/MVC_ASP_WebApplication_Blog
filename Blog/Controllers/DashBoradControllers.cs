@@ -7,6 +7,7 @@ using System.Web.Mvc;
 using Blog.Models;
 using System.Data.Entity;
 using System.IO;
+using System.Net;
 using System.Web.Script.Serialization;
 using Newtonsoft.Json.Linq;
 using Simple.ImageResizer;
@@ -29,9 +30,28 @@ namespace Blog.Controllers
         }
         public ActionResult Index()
         {
-            if (Session["LoggedUserID"] != null)
-                return View();
-            return RedirectToAction("Login", "Admin");
+            if (Session["LoggedUserID"] == null)
+                return RedirectToAction("Login", "Admin");
+            long userId = int.Parse(Session["LoggedUserID"].ToString());
+            ViewBag.totalArticles = _db.Articles.Count(a => a.AuthorId == userId);
+            ViewBag.totalUploadPictures = _db.Images.Count(a => a.UserId == userId && a.DeleteTime == null);
+            ViewBag.currentPublishPictures = _db.Images.Count(a => a.UserId == userId && a.DeleteTime == null && a.IsPublish == 1);
+            ViewBag.totalComments = _db.ArticleComments.Count(a => a.CommenterId == userId);
+            return View();
+        }
+
+        public ActionResult ReplyTable_Index()
+        {
+            if (Session["LoggedUserID"] == null)
+                return Content("Session Expired");
+            long userId = int.Parse(Session["LoggedUserID"].ToString());
+            var comments = (from a in _db.CommentDetailInfo
+                            join b in _db.Articles on a.ArticleId equals b.ArticleId
+                            where b.AuthorId == userId && b.IsRemoved == 0
+                            select a);
+
+            ViewBag.Comments = comments;
+            return PartialView();
         }
 
         public ActionResult Post()

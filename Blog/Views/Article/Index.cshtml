@@ -37,7 +37,7 @@
         var list = document.getElementById("emojisList");
         list.innerHTML = "";
         for (var i = 0; i < feedback.length; i++) {
-            var oneNode = "<a class=\"col-xl-1 col-lg-2 col-md-4 col-sm-4 col-xs-3 thumbnail thumb\"  onclick=\"addOneEmoji(this)\" value=" + i + " > "
+            var oneNode = "<a class=\"col-xl-1 col-lg-2 col-md-4 col-sm-4 col-xs-6 btn\"  href=\"javascript:void(0)\"  onclick=\"addOneEmoji(this)\" value=" + i + "> "
                 + "<img  src='\\" + feedback[i] + "' style='width:50px;height:50px;'/></a>";
             list.innerHTML += oneNode;
         }
@@ -80,7 +80,7 @@
 </script>
 <!-- Page Header -->
 <!-- Set your background image for this header on the line below. -->
-<header class="intro-header" style="background-image: url('/Content/img/article-bg.jpg')">
+<header class="intro-header" style="background-color:#009688">
     <div class="container">
         <div class="row">
 
@@ -151,8 +151,8 @@
 
 
                 <!-- Blog Comments -->
-                <button class="btn btn-primary btn-block" data-toggle="modal" data-target="#Comment" id="LeaveCommend" @if (ViewBag.isPreView != null && ViewBag.isPreView) { @Html.Raw("disabled = 'disabled'")         }>Leave Comment</button>
-                <a class="btn btn-primary btn-block" data-toggle="collapse" href="#comments" @if (ViewBag.isPreView != null && ViewBag.isPreView) { @Html.Raw("disabled = 'disabled'")        }>Comments <span class="badge">@Model.RootComments.Count</span></a>
+                <button class="btn btn-primary btn-raised btn-block" data-toggle="modal" data-target="#Comment" id="LeaveCommend" @if (ViewBag.isPreView != null && ViewBag.isPreView) { @Html.Raw("disabled = 'disabled'")         }>Leave Comment</button>
+                <a class="btn btn-primary btn-raised btn-block" data-toggle="collapse" href="#comments" @if (ViewBag.isPreView != null && ViewBag.isPreView) { @Html.Raw("disabled = 'disabled'")        }>Comments <span class="badge">@Model.RootComments.Count</span></a>
                 <hr>
                 <!-- Comment -->
                 <div class="collapse" id="comments">
@@ -162,7 +162,7 @@
                         {
                             var item = Model.RootComments.ElementAt(i);
                         <!-- Comment -->
-                            <div class="media">
+                            <div class="media panel">
                                 <a class="pull-left btn">
                                     <img class="media-object" src="http://placehold.it/64x64" alt="">
                                 </a><span class="badge pull-right">
@@ -251,7 +251,7 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="submit" id="pop-up-confirm" class="btn btn-primary btn-sm" onclick="updateTitle()">Comfirm</button>
+                <button type="submit" id="pop-up-confirm" class="btn btn-primary btn-raised btn-sm" onclick="updateTitle()">Comfirm</button>
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
             </div>
         </div>
@@ -271,7 +271,7 @@
             </div>
             <div class="modal-body">
                 <!-- Comments Form -->
-                <div class="well">
+                <div class="panel" style="padding: 10px;">
                     <h4 id="CommentTitle">Leave a Comment:</h4>
                     <blockquote id="CommentContext" hidden></blockquote>
                     @using (Html.BeginForm("CommentPost", "Article", FormMethod.Post, new { role = "form" }))
@@ -285,7 +285,7 @@
                             <a class="btn" id="emojiEntry" href="#" data-toggle="popover" data-placement="buttom" ><span class="glyphicon glyphicon-picture"></span></a>
                             @*<textarea class="form-control" ,name="Content", id="Content",rows="3"></textarea>*@
                         </div>
-                        <button type="submit" class="btn btn-primary">Submit</button>
+                        <button type="submit" class="btn btn-raised btn-primary">Submit</button>
                     }
                 </div>
             </div>

@@ -3,10 +3,9 @@
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     @Styles.Render("~/Content/css/dashboard")
-    <link href="~/Content/css/bootstrap.css" rel="stylesheet" />
-    <link href="~/Content/css/bootstrap.min.css" rel="stylesheet" />
-    <link href="~/Content/css/fonts.css" rel="stylesheet" />
-    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/DashboardJs")
+        @RenderSection("Scripts",required:false)
+    
 </head>
 <body>
 
@@ -23,52 +22,52 @@
         </div>
 
     </nav>
-    <div class="container-fluid" id="Container">
-        <div class="row">
-            <nav class="col-lg-2 col-md-2 col-sm-2 col-xs-0" id="side-navbar">
-                <!-- Sidebar Menu Items - These collapse to the responsive navigation menu on small screens -->
-                <div class="collapse navbar-collapse navbar-ex1-collapse" id="side-ul-block">
-                    <ul class="nav navbar-nav side-nav">
-                        <li class="col-md-12 col-ml-12 col-xs-12" id="Index">
-                            @* ReSharper disable once Html.PathError *@
-                            <a href="/Dashboard"><i class="fa fa-fw fa-dashboard active"></i>Dashboard</a>
-                        </li>
-                        <li class="col-md-12 col-ml-12 col-xs-12" id="Post">
-                            @* ReSharper disable once Html.PathError *@
-                            @* ReSharper disable once Html.PathError *@
-                            <a href="/Dashboard/Post"><i class="fa fa-paper-plane"></i>Article Post</a>
-                        </li>
-                        <li class="col-md-12 col-ml-12 col-xs-12 " id="Upload">
-                            @* ReSharper disable once Html.PathError *@
+<div class="container-fluid" id="Container">
+    <div class="row">
+        <nav class="col-lg-2 col-md-2 col-sm-2 col-xs-0" id="side-navbar">
+            <!-- Sidebar Menu Items - These collapse to the responsive navigation menu on small screens -->
+            <div class="collapse navbar-collapse navbar-ex1-collapse" id="side-ul-block">
+                <ul class="nav navbar-nav side-nav">
+                    <li class="col-md-12 col-ml-12 col-xs-12" id="Index">
+                        @* ReSharper disable once Html.PathError *@
+                        <a href="/Dashboard"><i class="fa fa-fw fa-dashboard active"></i>Dashboard</a>
+                    </li>
+                    <li class="col-md-12 col-ml-12 col-xs-12" id="Post">
+                        @* ReSharper disable once Html.PathError *@
+                        @* ReSharper disable once Html.PathError *@
+                        <a href="/Dashboard/Post"><i class="fa fa-paper-plane"></i>Article Post</a>
+                    </li>
+                    <li class="col-md-12 col-ml-12 col-xs-12 " id="Upload">
+                        @* ReSharper disable once Html.PathError *@
                         <a href="/Dashboard/Upload"><i class="fa fa-fw fa-table"></i>Media Post</a>
-                        </li>
-                        <li class="col-md-12 col-ml-12 col-xs-12" id="Review">
-                            <a href="/Dashboard/ViewImage/@Session["LoggedUserID"]"><i class="fa fa-fw fa-edit"></i>View my Gallery</a>
-                        </li>
-                        <li class="col-md-12  col-ml-12 col-xs-12" id="Empty">
-                            <a href="javascript:;" data-toggle="collapse" data-target="#demo"><i class="fa fa-fw fa-arrows-v"></i>Empty <i class="fa fa-fw fa-caret-down"></i></a>
-                            <ul id="demo" class="collapse">
-                                <li>
-                                    <a href="#">Duilding Item</a>
-                                </li>
-                                <li>
-                                    <a href="#">Duilding Item</a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="col-md-12 col-xs-12" id="Profile">
-                            @* ReSharper disable once Html.PathError *@
-                            <a href="/Dashboard/EditProfile"><i class="fa fa-fw fa-file"></i>Edit Your Profile</a>
-                        </li>
-                    </ul>
-                </div>
-                <!-- /.navbar-collapse -->
-            </nav>
-            <div id="page-wrapper" class="col-lg-8 col-xs-10 col-xs-offset-1 col-sm-8 col-sm-offset-1 col-md-8 ">
-                @RenderBody()
+                    </li>
+                    <li class="col-md-12 col-ml-12 col-xs-12" id="Review">
+                        <a href="/Dashboard/ViewImage/@Session["LoggedUserID"]"><i class="fa fa-fw fa-edit"></i>View my Gallery</a>
+                    </li>
+                    <li class="col-md-12  col-ml-12 col-xs-12" id="Empty">
+                        <a href="javascript:;" data-toggle="collapse" data-target="#demo"><i class="fa fa-fw fa-arrows-v"></i>Empty <i class="fa fa-fw fa-caret-down"></i></a>
+                        <ul id="demo" class="collapse">
+                            <li>
+                                <a href="#">Duilding Item</a>
+                            </li>
+                            <li>
+                                <a href="#">Duilding Item</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="col-md-12 col-xs-12" id="Profile">
+                        @* ReSharper disable once Html.PathError *@
+                        <a href="/Dashboard/EditProfile"><i class="fa fa-fw fa-file"></i>Edit Your Profile</a>
+                    </li>
+                </ul>
             </div>
+            <!-- /.navbar-collapse -->
+        </nav>
+        <div id="page-wrapper" class="col-lg-8 col-xs-10 col-xs-offset-1 col-sm-8 col-sm-offset-1 col-md-8 ">
+            @RenderBody()
         </div>
     </div>
+</div>
 </body>
 </html>
 
