@@ -42,12 +42,7 @@
     min-height:inherit;
 }
 
-.copyIcon, .copyIcon:hover {
-    padding: 0px 20px;
-    background-image: url('/Content/img/copy.png');
-    background-repeat: no-repeat;
-    background-position: center;
-    opacity: 0.6;
-   min-width:41px;
-}
 
+.togglebutton > label {
+    color: black;
+}

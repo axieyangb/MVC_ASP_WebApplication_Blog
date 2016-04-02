@@ -36,11 +36,11 @@ namespace Blog.Controllers
             ViewBag.totalArticles = _db.Articles.Count(a => a.AuthorId == userId);
             ViewBag.totalUploadPictures = _db.Images.Count(a => a.UserId == userId && a.DeleteTime == null);
             ViewBag.currentPublishPictures = _db.Images.Count(a => a.UserId == userId && a.DeleteTime == null && a.IsPublish == 1);
-            ViewBag.totalComments = _db.ArticleComments.Count(a => a.CommenterId == userId);
+            ViewBag.totalComments = _db.ArticleComments.Count(a => a.CommenterId == userId&&a.IsValid==1);
             return View();
         }
 
-        public ActionResult ReplyTable_Index()
+        public ActionResult _CommentTable_Index()
         {
             if (Session["LoggedUserID"] == null)
                 return Content("Session Expired");
@@ -52,6 +52,23 @@ namespace Blog.Controllers
 
             ViewBag.Comments = comments;
             return PartialView();
+        }
+
+        [HttpPost]
+        public bool CommentDelete(int? commentId)
+        {
+            if (commentId == null) return false;
+            try
+            {
+                var oneComent = _db.ArticleComments.First(a => a.CommentId == commentId);
+                oneComent.IsValid = 0;
+                _db.SaveChanges();
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
 
         public ActionResult Post()

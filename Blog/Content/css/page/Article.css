@@ -1,6 +1,5 @@
 ﻿.label-default {
     margin: 5px;
-    font-family: 'Lora', 'Times New Roman','chineseCute', serif;
     font-size: 12px;
 }
 #tags {
@@ -9,12 +8,9 @@
 #tags >a {
   text-decoration: none;    
 }
-
 #tags >a :hover {
-    background-color: #c67605;
-}
-#tags >a :visited {
-      background-color: #2d6987;
+    background-color: #009688;
+    color: white;
 }
 .nav-tabs {
     border-bottom: none;
@@ -28,3 +24,38 @@ div[ud="emojicontent"]{
     padding-right: 0;
 }
 
+.panel {
+    margin-bottom: 0;
+}
+.panel-heading {
+    padding: 0px;
+    margin-bottom: 0;
+}
+.popover{ padding: 0;}
+.popover-content {
+    padding: 0;
+}
+.label, .label.label-default {
+    background-color: #FFF176;
+    color: #009688;
+    -ms-border-radius: 4px;
+    border-radius: 4px;
+}
+
+.btn, .input-group-btn .btn
+ {
+    margin-left: 0;
+    margin-right: 0;
+    padding: 4px;
+}
+li .active {
+    background-color:#FFF176
+}
+
+div[class="media panel"] {
+    padding: 15px;
+}
+
+.intro-header {
+    background-color: #009688
+}

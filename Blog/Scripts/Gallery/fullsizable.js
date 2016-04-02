@@ -46,9 +46,11 @@ Options:
     var image;
     image = images[current_image];
     if (image.ratio == null) {
-      image.ratio = (image.naturalHeight / image.naturalWidth).toFixed(2);
+        var naturalWidth = image.getAttribute("data-imageWidth").split(" ")[0];
+        var naturalHeight = image.getAttribute("data-imageHeight").split(" ")[0];
+        image.ratio = (naturalHeight / naturalWidth).toFixed(2);
     }
-    if ($(window).height() / image.ratio > $(window).width()) {
+    if ($(window).height() > $(window).width()) {
       $(image).width($(window).width());
       $(image).height($(window).width() * image.ratio);
       return $(image).css('margin-top', ($(window).height() - $(image).height()) / 2);
@@ -250,7 +252,7 @@ Options:
         stored_scroll_position = $(window).scrollTop();
         $('#' + options.detach_id).css('display', 'none');
         resizeImage();
-      }
+      }   
       bindCurtainEvents();
       return $(document).trigger('fullsizable:opened', opening_selector);
     });

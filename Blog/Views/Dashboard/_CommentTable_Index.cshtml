@@ -1,0 +1,32 @@
+﻿
+@using Blog.Models
+@model CommentDetailInfoView
+@foreach (CommentDetailInfoView one in ViewBag.comments)
+{
+    <tr>
+        <td>
+            @if (one.Title.Length > 10)
+            {
+                <a href="/Article/Index/@one.ArticleId" target="_blank" data-title="@one.Title">@Html.Raw(one.Title.Substring(0, 10) + "...")</a>
+            }
+            else
+            {
+                <a href="/Article/Index/@one.ArticleId" target="_blank">
+                    @Html.Raw(one.Title)
+                </a>
+            }
+        </td>
+        <td>@one.CommentName</td>
+        <td>@one.Country</td>
+
+        <td>@one.CreateDate.ToShortDateString()</td>
+        <td>
+            @(one.ReplyName == null ? Html.Raw("") : Html.Raw(one.ReplyName))
+        </td>
+        <td>
+            <a class="btn btn-link" data-toggle="modal" data-target="#replyDetail" data-content="@one.Content">Detail</a>
+        </td>
+        <td><button class="btn btn-default" data-toggle="modal" data-target="#confirm" data-actionCode="1" data-commentId="@one.CommentId">Delete</button></td>
+    </tr>
+}
+

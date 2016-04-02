@@ -41,6 +41,8 @@ namespace Blog.Models
         public DateTime PostDate { get; set; }
         [Column("ModifyDate")]
         public DateTime? ModifyDate { get; set; }
+        [Column("isRemoved")]
+        public  int IsRemoved { get; set; }
 
     }
 }
