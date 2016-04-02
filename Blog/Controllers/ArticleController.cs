@@ -326,7 +326,7 @@ namespace Blog.Controllers
             {
                 var articleId = long.Parse(articeIdStr);
                 var userId = long.Parse(userIdStr);
-                var article = _db.Articles.Find(articleId);
+                var article = _db.Articles.First(a => a.ArticleId == articleId);
                 if (Session["LoggedUserID"].Equals(userIdStr) && article.AuthorId == userId)
                 {
                     if (titleStr != null) article.Title = Regex.Replace(titleStr, "[^0-9a-zA-Z \u4E00-\u9FFF]+", "");

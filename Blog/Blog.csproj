@@ -955,6 +955,9 @@
     <Content Include="Scripts\Meterial\material.min.js.map" />
     <Content Include="Scripts\Meterial\ripples.min.js.map" />
     <Content Include="Views\Dashboard\_CommentTable_Index.cshtml" />
+    <Content Include="Views\Dashboard\_ArticleTable_Index.cshtml" />
+    <Content Include="Views\Dashboard\_ArticleChart_Index.cshtml" />
+    <Content Include="Views\Dashboard\_ArticleCommentChart_Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
