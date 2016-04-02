@@ -3,7 +3,7 @@
 @model CommentDetailInfoView
 @foreach (CommentDetailInfoView one in ViewBag.comments)
 {
-    <tr>
+    <tr data-commentId="@one.CommentId">
         <td>
             @if (one.Title.Length > 10)
             {

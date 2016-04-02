@@ -10,7 +10,7 @@
 </h1>
 <ol class="breadcrumb">
     <li class="active">
-        <i class="fa fa-dashboard"></i>Dashboard
+        <i class="glyphicon glyphicon-dashboard"></i>&nbsp;Dashboard
     </li>
 </ol>
 
@@ -46,52 +46,59 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-sm-4">
+        <div class="col-sm-6">
             <div class="well">
-                <p>Text</p>
-                <p>Text</p>
-                <p>Text</p>
+                <div>
+                    @Html.Action("_ArticleChart_Index", "DashBoard")
+                </div>
             </div>
         </div>
-        <div class="col-sm-4">
+        <div class="col-sm-6">
             <div class="well">
-                <p>Text</p>
-                <p>Text</p>
-                <p>Text</p>
-            </div>
-        </div>
-        <div class="col-sm-4">
-            <div class="well">
-                <p>Text</p>
-                <p>Text</p>
-                <p>Text</p>
+                <div>
+                    @Html.Action("_ArticleCommentChart_Index", "DashBoard")
+                </div>
             </div>
         </div>
     </div>
     <div class="row">
-        <div class="col-sm-8">
+        <div class="col-sm-7">
             <div class="well">
+                <h4>Comments</h4>
                 <table id="replyTable" class="table table-striped table-bordered">
                     <thead>
-                        <tr>
-                            <th>Artile</th>
-                            <th>Name</th>
-                            <th>Country</th>
-                            <th>Date</th>
-                            <th>ReplyName</th>
-                            <th>Detail</th>
-                            <th>Action</th>
-                        </tr>
+                    <tr>
+                        <th>Artile</th>
+                        <th>Name</th>
+                        <th>Country</th>
+                        <th>Date</th>
+                        <th>ReplyName</th>
+                        <th>Detail</th>
+                        <th>Action</th>
+                    </tr>
                     </thead>
                     <tbody>
-                        @Html.Action("_CommentTable_Index", "DashBoard")
+                    @Html.Action("_CommentTable_Index", "DashBoard")
                     </tbody>
                 </table>
             </div>
         </div>
-        <div class="col-sm-4">
+        <div class="col-sm-5">
             <div class="well">
-                <p>Text</p>
+                <h4>Articles</h4>
+                <table id="articleTable" class="table table-striped table-bordered">
+                    <thead>
+                    <tr>
+                        <th>Article</th>
+                        <th>CreateDate</th>
+                        <th>LastModify</th>
+                        <th>Action</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    @Html.Action("_ArticleTable_Index", "DashBoard")
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
@@ -129,7 +136,7 @@
             <div class="modal-body" id="confirmBody"></div>
             <div class="modal-footer">
                 <button type="button" id="actionButton"></button>
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal" id="ConfirmClose">Close</button>
             </div>
         </div>
     </div>

@@ -54,6 +54,74 @@ namespace Blog.Controllers
             return PartialView();
         }
 
+        public ActionResult _ArticleChart_Index()
+        {
+            if (Session["LoggedUserID"] == null)
+                return Content("Session Expired");
+            long userId = int.Parse(Session["LoggedUserID"].ToString());
+            List<double>[] posteNums =new List<double>[2];
+            posteNums[0]=  new List<double>();
+            posteNums[1] = new List<double>();
+            List<DateTime> articlePostTime = (from a in _db.Articles
+                                      where a.IsRemoved == 0 && a.AuthorId == userId
+                                      select a.PostDate).ToList();
+            List<DateTime> picturePostTime = (from a in _db.Images
+                                              where a.DeleteTime!=null && a.UserId == userId
+                                              select a.UpdateDate).ToList();
+            int currentMonth = DateTime.Now.Month;
+            int currentYear = DateTime.Now.Year;
+            for (int i = 0; i < 6; i++)
+            {
+                if (currentMonth <= 0)
+                {
+                    currentMonth = 12;
+                    currentYear--;
+                }
+                int countArticle = articlePostTime.Count(a => a.Year == currentYear && a.Month == currentMonth);
+                int countPicture = picturePostTime.Count(a => a.Year == currentYear && a.Month == currentMonth);
+                posteNums[0].Insert(0, countArticle);
+                posteNums[1].Insert(0, countPicture);
+                currentMonth--;
+            }
+            return PartialView(posteNums);
+        }
+
+        public ActionResult _ArticleCommentChart_Index()
+        {
+            if (Session["LoggedUserID"] == null)
+                return Content("Session Expired");
+            long userId = int.Parse(Session["LoggedUserID"].ToString());
+            List<double> commentNums = new List<double>();
+            List<DateTime> commentDates = (from a in _db.ArticleComments
+                join ar in _db.Articles on a.ArticleId equals ar.ArticleId
+                where ar.AuthorId == userId && a.IsValid == 1 && ar.IsRemoved == 0
+                select a.CreateDate).ToList();
+            int currentMonth = DateTime.Now.Month;
+            int currentYear = DateTime.Now.Year;
+            for (int i = 0; i < 6; i++)
+            {
+                if (currentMonth <= 0)
+                {
+                    currentMonth = 12;
+                    currentYear--;
+                }
+                int countComments = commentDates.Count(a => a.Year == currentYear && a.Month == currentMonth);
+                commentNums.Insert(0, countComments);
+                currentMonth--;
+            }
+            return PartialView(commentNums);
+        }
+        public ActionResult _ArticleTable_Index()
+        {
+            if (Session["LoggedUserID"] == null)
+                return Content("Session Expired");
+            long userId = int.Parse(Session["LoggedUserID"].ToString());
+            List<Article>  articles = (from a in _db.Articles
+                            where a.IsRemoved==0&&a.AuthorId==userId
+                            select a).ToList();
+            return PartialView(articles);
+        }
+
         [HttpPost]
         public bool CommentDelete(int? commentId)
         {
@@ -62,6 +130,23 @@ namespace Blog.Controllers
             {
                 var oneComent = _db.ArticleComments.First(a => a.CommentId == commentId);
                 oneComent.IsValid = 0;
+                _db.SaveChanges();
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+
+        [HttpPost]
+        public bool ArticleDelete(int? articleId)
+        {
+            if (articleId == null) return false;
+            try
+            {
+                var oneArticle = _db.Articles.First(a => a.ArticleId == articleId);
+                oneArticle.IsRemoved = 1;
                 _db.SaveChanges();
                 return true;
             }
