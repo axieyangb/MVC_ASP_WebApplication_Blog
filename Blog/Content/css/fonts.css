@@ -1,24 +1,24 @@
 ﻿
 @font-face {
     font-family: 'Roboto-Light';
-    src: url('../fonts/Roboto/Roboto-Light.ttf') format('truetype');
+    src: url('/Content/fonts/Roboto/Roboto-Light.ttf') format('truetype');
 }
 @font-face {
     font-family: 'Roboto-Regular';
-    src: url('../fonts/Roboto/Roboto-Regular.ttf') format('truetype');
+    src: url('/Content/fonts/Roboto/Roboto-Regular.ttf') format('truetype');
 }
 @font-face {
     font-family: 'Roboto-Medium';
-    src: url('../fonts/Roboto/Roboto-Medium.ttf') format('truetype');
+    src: url('/Content/fonts/Roboto/Roboto-Medium.ttf') format('truetype');
 }
 @font-face {
     font-family: 'Roboto-Bold';
-    src: url('../fonts/Roboto/Roboto-Bold.ttf') format('truetype');
+    src: url('/Content/fonts/Roboto/Roboto-Bold.ttf') format('truetype');
 }
-@font-face {
+/*@font-face {
     font-family: 'Hiragino Sans GB W3';
     src: url('../fonts/Hiragino Sans GB W3.ttf') format('truetype');
-}
+}*/
 @font-face {
     font-family:'chineseCute';
     src:url('/Content/fonts/chineseCuteFont.ttf');
@@ -34,4 +34,10 @@
 @font-face {
     font-family:'yuanti';
     src:url('/Content/fonts/yuanti.ttf');
+}
+@font-face {
+    font-family:'bootstrapIcons';
+    src:url('/Content/fonts/glyphicons-halflings-regular.woff2'),
+       url('/Content/fonts/glyphicons-halflings-regular.woff'),
+        url('/Content/fonts/glyphicons-halflings-regular.ttf') ;
 }
